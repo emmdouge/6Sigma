@@ -1,4 +1,4 @@
-package analyzer;
+package component;
 
 import java.util.ArrayList;
 

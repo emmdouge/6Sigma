@@ -10,7 +10,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import analyzer.Range;
+import component.MovingRange;
+import component.Range;
 import reader.Data;
 import reader.TxtFileReader;
 

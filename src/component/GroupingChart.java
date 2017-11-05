@@ -1,4 +1,4 @@
-package analyzer;
+package component;
 
 import java.util.ArrayList;
 
@@ -11,6 +11,8 @@ abstract public class  GroupingChart {
 	protected int numSamples;
 	protected double[] points;
 	ArrayList<Double> limits;
+	ArrayList<String> yNames;
+	protected int offset = 0;
 	
 	abstract public double calcPoints(int start, int end);
 	abstract protected ArrayList<Double> calcLimits() throws Exception;
@@ -21,5 +23,13 @@ abstract public class  GroupingChart {
 	
 	public ArrayList<Double> getLimits() {
 		return this.limits;
+	}	
+	
+	public ArrayList<String> getYNames() {
+		return this.yNames;
+	}
+	
+	public int getOffset() {
+		return this.offset;
 	}
 }

@@ -10,7 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import analyzer.Range;
+import component.Range;
 import reader.Data;
 import reader.TxtFileReader;
 
@@ -27,20 +27,20 @@ public class TestRange {
 	
 	@Test
 	public void testD1() throws Exception {
-		Range r = new Range(d1, 1);
+		Range r = new Range(1, d1);
 		assertEquals(27, r.getPoints().length);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	
 	@Test(expected = Exception.class)
 	public void testSampleSizeTooBigForD1() throws Exception {
-		Range r = new Range(d1, 3);
+		Range r = new Range(3, d1);
 		assertEquals(18, r.getPoints().length);
 	}	
 	
 	@Test
 	public void testD2() throws Exception {
-		Range r = new Range(d2, 1);
+		Range r = new Range(1, d2);
 		assertEquals(59, r.getPoints().length);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}

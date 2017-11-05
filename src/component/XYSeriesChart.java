@@ -1,4 +1,4 @@
-package analyzer;
+package component;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -25,10 +25,11 @@ public class XYSeriesChart extends ApplicationFrame {
 
     /**
      * A demonstration application showing an XY series containing a null value.
+     * @param offsets 
      *
      * @param title  the frame title.
      */
-    public XYSeriesChart(Data d, ArrayList<double[]> datas, ArrayList<Double> limits) {
+    public XYSeriesChart(Data d, ArrayList<double[]> datas, ArrayList<Double> limits, ArrayList<Integer> offsets) {
     
         super(d.getType()+" Chart");
 		double min = Double.MAX_VALUE;
@@ -36,21 +37,25 @@ public class XYSeriesChart extends ApplicationFrame {
         final XYSeriesCollection data = new XYSeriesCollection();
 		for(int j = 0; j < datas.size(); j++) {
 	        XYSeries series = new XYSeries(d.getYNames().get(j));
-	        for(int i = 1; i < datas.get(j).length+1; i++) {
-	        	series.add(i, datas.get(j)[i-1]);
-				if(min > datas.get(j)[i-1]) {
-					min = datas.get(j)[i-1];
+	        int offset = offsets.get(j);
+	        for(int i = 1+offset; i < datas.get(j).length+1+offsets.get(j); i++) {
+	        	
+	        	series.add(i, datas.get(j)[i-offset-1]);
+				if(min > datas.get(j)[i-offset-1]) {
+					min = datas.get(j)[i-offset-1];
 				}
-				if(max < datas.get(j)[i-1]) {
-					max = datas.get(j)[i-1];
+				if(max < datas.get(j)[i-offset-1]) {
+					max = datas.get(j)[i-offset-1];
 				}
 	        }
 	        data.addSeries(series);
 		}
         
-		min = min > limits.get(0)? limits.get(0): min;
-		max = max < limits.get(limits.size()-1)? limits.get(limits.size()-1): max;
-        
+		if(!limits.isEmpty()) {
+			min = min > limits.get(0)? limits.get(0): min;
+			max = max < limits.get(limits.size()-1)? limits.get(limits.size()-1): max;
+		}
+		
         final JFreeChart chart = ChartFactory.createXYLineChart(
     		d.getRowName()+" "+d.getType()+" Chart",
             d.getRowName(), 
@@ -75,9 +80,9 @@ public class XYSeriesChart extends ApplicationFrame {
         setContentPane(chartPanel);
     }
 
-   public static void run(Data d, ArrayList<double[]> data, ArrayList<Double> limits) {
+   public static void run(Data d, ArrayList<double[]> data, ArrayList<Double> limits, ArrayList<Integer> offsets) {
 	  if(Graph.show) {
-		   XYSeriesChart chart = new XYSeriesChart(d, data, limits);
+		   XYSeriesChart chart = new XYSeriesChart(d, data, limits, offsets);
 	      chart.pack( );          
 	      RefineryUtilities.centerFrameOnScreen( chart );          
 	      chart.setVisible( true ); 

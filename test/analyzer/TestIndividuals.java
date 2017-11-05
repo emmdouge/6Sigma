@@ -1,4 +1,5 @@
-package reader;
+package analyzer;
+
 
 import static org.junit.Assert.*;
 
@@ -10,38 +11,34 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import analyzer.Range;
-import analyzer.XBar;
+import component.Individuals;
+import component.Range;
+import component.XBar;
+import reader.Data;
+import reader.TxtFileReader;
 
-public class TestXBar {
+public class TestIndividuals {
 
 	Data shiftData;
 	Data newTestsPassingData;
-	Range r;
 	
 	@Before
 	public void setup() throws Exception {
 		shiftData = TxtFileReader.readFile("shift");
 		newTestsPassingData = TxtFileReader.readFile("NewTestsPassing");
-		r = new Range(shiftData);
 	}
 	
 	@Test
 	public void testShiftData() throws Exception {
-		XBar x = new XBar(shiftData, r.getAvgRange());
-		assertEquals(27, x.getPoints().length);
+		Individuals i = new Individuals(shiftData);
+		assertEquals(216, i.getPoints().length);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	
-	@Test(expected = Exception.class)
-	public void testSampleSizeTooBigForShiftData() throws Exception {
-		XBar x = new XBar(shiftData, 3, r.getAvgRange());
-	}	
-	
 	@Test
 	public void testNewTestsPassingData() throws Exception {
-		XBar x = new XBar(newTestsPassingData, r.getAvgRange());
-		assertEquals(59, x.getPoints().length);
+		Individuals i = new Individuals(newTestsPassingData);
+		assertEquals(295, i.getPoints().length);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 

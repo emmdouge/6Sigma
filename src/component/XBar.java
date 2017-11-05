@@ -1,4 +1,4 @@
-package analyzer;
+package component;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -6,44 +6,47 @@ import org.jfree.ui.RefineryUtilities;
 
 import reader.Data;
 
-public class MovingMean extends GroupingChart {
+public class XBar extends GroupingChart {
 	
 	private double processMean;
 	private double avgRange;
 	
-	public MovingMean(Data d, double avgRange) throws Exception {
-		this(d, 2, avgRange);
+	public XBar(Data d, double avgRange) throws Exception {
+		this(1, d, avgRange);
 	}
 	
-	public MovingMean(Data d, int k, double avgRange) throws Exception {
-		this.avgRange = avgRange;
+	public XBar(int rowsPerSample, Data d, double avgRange) throws Exception {
 		this.data = d;
-		d.setType("Moving Mean");
-		ArrayList<String> yNames = new ArrayList<String>();
-		yNames.add("Mean k = "+k);
+		d.setType("Mean");
+		yNames = new ArrayList<String>();
+		yNames.add("Mean");
 		d.setYNames(yNames);
-		this.numSamples = data.getAllPoints().size()-k;
+		this.avgRange = avgRange;
+		double check = data.getAllPoints().size()/data.getPointsPerRow() % rowsPerSample;
+		this.numSamples = check == 0? data.getAllPoints().size()/data.getPointsPerRow()/rowsPerSample: ((int)data.getAllPoints().size()/data.getPointsPerRow()/rowsPerSample)-1;
 		System.out.println(this.numSamples);
-		this.sampleSize = k;
+		this.sampleSize = d.getPointsPerRow()*rowsPerSample;
 		System.out.println("sample size: "+this.sampleSize);
 		System.out.println("num samples: "+this.numSamples);
+		Homogeneity.test(d);
 		points = new double[this.numSamples];
 		for(int i = 0; i < this.numSamples; i++) {
-			int start = i;
-			int end = (i)+this.sampleSize;
+			int start = i*this.sampleSize;
+			int end = (i+1)*this.sampleSize;
 			double mean = calcPoints(start, end);
 			points[i] = mean;
 			this.processMean += points[i];
-			System.out.println(i+" mm: "+mean+" ("+start+"~"+end+")"+" +avg: "+this.processMean);
+			System.out.println(i+" m: "+mean+" ("+start+"~"+end+")"+" +avg: "+this.processMean);
 		}
 		this.processMean = this.processMean/this.numSamples;
 		System.out.println("process mean: "+this.processMean);
-		ArrayList<Double> limits = new ArrayList<Double>();
 		limits = calcLimits();
 		Collections.sort(limits);
 		ArrayList<double[]> allLines = new ArrayList<double[]>();
 		allLines.add(points);
-		XYSeriesChart.run(d, allLines, limits);
+		ArrayList<Integer> offsets = new ArrayList<Integer>();
+		offsets.add(this.offset);
+		XYSeriesChart.run(d, allLines, limits, offsets);
 	}
 	
 	/**

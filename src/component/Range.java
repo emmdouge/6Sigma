@@ -1,4 +1,4 @@
-package analyzer;
+package component;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -10,18 +10,18 @@ public class Range extends GroupingChart {
 	private double avgRange;
 	
 	public Range(Data d) throws Exception {
-		this(d, 1);
+		this(1, d);
 	}
 	
-	public Range(Data d, int sets) throws Exception {
+	public Range(int rowsPerSample, Data d) throws Exception {
 		this.data = d;
 		d.setType("Range");
-		ArrayList<String> yNames = new ArrayList<String>();
+		yNames = new ArrayList<String>();
 		yNames.add("Range");
 		d.setYNames(yNames);
-		double check = data.getAllPoints().size()/data.getPointsPerRow() % sets;
-		this.numSamples = check == 0? data.getAllPoints().size()/data.getPointsPerRow()/sets: ((int)data.getAllPoints().size()/data.getPointsPerRow()/sets)-1;
-		this.sampleSize = d.getPointsPerRow()*sets;
+		double check = data.getAllPoints().size()/data.getPointsPerRow() % rowsPerSample;
+		this.numSamples = check == 0? data.getAllPoints().size()/data.getPointsPerRow()/rowsPerSample: ((int)data.getAllPoints().size()/data.getPointsPerRow()/rowsPerSample)-1;
+		this.sampleSize = d.getPointsPerRow()*rowsPerSample;
 		System.out.println("sample size: "+this.sampleSize);
 		System.out.println("num samples: "+this.numSamples);
 		Homogeneity.test(d);
@@ -40,7 +40,9 @@ public class Range extends GroupingChart {
 		Collections.sort(limits);
 		ArrayList<double[]> allLines = new ArrayList<double[]>();
 		allLines.add(points);
-		XYSeriesChart.run(d, allLines, limits);
+		ArrayList<Integer> offsets = new ArrayList<Integer>();
+		offsets.add(this.offset);
+		XYSeriesChart.run(d, allLines, limits, offsets);
 	}
 	
 	/**

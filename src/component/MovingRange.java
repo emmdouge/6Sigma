@@ -1,4 +1,4 @@
-package analyzer;
+package component;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -17,12 +17,13 @@ public class MovingRange extends GroupingChart {
 	public MovingRange(Data d, int k) throws Exception {
 		this.data = d;
 		d.setType("Moving Range");
-		ArrayList<String> yNames = new ArrayList<String>();
+		yNames = new ArrayList<String>();
 		yNames.add("Range k = "+k);
 		d.setYNames(yNames);
 		this.numSamples = data.getAllPoints().size()-k;
 		System.out.println(this.numSamples);
 		this.sampleSize = k;
+		this.offset = k;
 		System.out.println("sample size: "+this.sampleSize);
 		System.out.println("num samples: "+this.numSamples);
 		points = new double[this.numSamples];
@@ -36,12 +37,13 @@ public class MovingRange extends GroupingChart {
 		}
 		this.avgRange = this.avgRange/this.numSamples;
 		System.out.println("avg range: "+this.avgRange);
-		ArrayList<Double> limits = new ArrayList<Double>();
 		limits = calcLimits();
 		Collections.sort(limits);
 		ArrayList<double[]> allLines = new ArrayList<double[]>();
 		allLines.add(points);
-		XYSeriesChart.run(d, allLines, limits);
+		ArrayList<Integer> offsets = new ArrayList<Integer>();
+		offsets.add(this.offset);
+		XYSeriesChart.run(d, allLines, limits, offsets);
 	}
 	
 	/**

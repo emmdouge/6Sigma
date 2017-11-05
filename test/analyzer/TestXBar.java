@@ -11,8 +11,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import analyzer.Range;
-import analyzer.XBar;
+import component.Range;
+import component.XBar;
 import reader.Data;
 import reader.TxtFileReader;
 
@@ -38,7 +38,7 @@ public class TestXBar {
 	
 	@Test(expected = Exception.class)
 	public void testSampleSizeTooBigForShiftData() throws Exception {
-		XBar x = new XBar(shiftData, 3, r.getAvgRange());
+		XBar x = new XBar(3, shiftData, r.getAvgRange());
 	}	
 	
 	@Test

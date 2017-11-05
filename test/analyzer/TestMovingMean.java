@@ -12,8 +12,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import analyzer.Range;
-import analyzer.XBar;
+import component.MovingMean;
+import component.MovingRange;
+import component.Range;
+import component.XBar;
 import reader.Data;
 import reader.TxtFileReader;
 
