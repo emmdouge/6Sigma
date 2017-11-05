@@ -2,6 +2,7 @@ package reader;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import analyzer.TestIndivMovMean;
 import analyzer.TestIndividuals;
 import analyzer.TestMovingMean;
 import analyzer.TestMovingRange;
@@ -15,7 +16,7 @@ import analyzer.TestXBar;
 	TestMovingRange.class,
 	TestMovingMean.class,
 	TestIndividuals.class,
-	
+	TestIndivMovMean.class
 })
 
 public class AllTests {
