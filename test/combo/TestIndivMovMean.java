@@ -1,4 +1,4 @@
-package analyzer;
+package combo;
 
 import static org.junit.Assert.*;
 
@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import org.junit.Before;
 import org.junit.Test;
 
-import chart.IndivMovMean;
+import combo.IndivMovMean;
 import component.MovingRange;
 import reader.Data;
 import reader.TxtFileReader;

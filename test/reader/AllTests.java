@@ -2,12 +2,12 @@ package reader;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import analyzer.TestIndivMovMean;
-import analyzer.TestIndividuals;
-import analyzer.TestMovingMean;
-import analyzer.TestMovingRange;
-import analyzer.TestRange;
-import analyzer.TestXBar;
+import combo.TestIndivMovMean;
+import component.TestIndividuals;
+import component.TestMovingMean;
+import component.TestMovingRange;
+import component.TestRange;
+import component.TestXBar;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({

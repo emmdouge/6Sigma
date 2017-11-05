@@ -1,4 +1,4 @@
-package chart;
+package combo;
 
 import java.util.ArrayList;
 
