@@ -76,9 +76,11 @@ public class XYSeriesChart extends ApplicationFrame {
     }
 
    public static void run(Data d, ArrayList<double[]> data, ArrayList<Double> limits) {
-	  XYSeriesChart chart = new XYSeriesChart(d, data, limits);
-      chart.pack( );          
-      RefineryUtilities.centerFrameOnScreen( chart );          
-      chart.setVisible( true ); 
+	  if(Graph.show) {
+		   XYSeriesChart chart = new XYSeriesChart(d, data, limits);
+	      chart.pack( );          
+	      RefineryUtilities.centerFrameOnScreen( chart );          
+	      chart.setVisible( true ); 
+	  }
    }
 }

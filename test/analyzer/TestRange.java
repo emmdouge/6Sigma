@@ -1,4 +1,4 @@
-package reader;
+package analyzer;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import analyzer.Range;
+import reader.Data;
+import reader.TxtFileReader;
 
 public class TestRange {
 
