@@ -17,6 +17,10 @@ public class XBar extends GroupingChart {
 	
 	public XBar(Data d, int sets, double avgRange) throws Exception {
 		this.data = d;
+		d.setType("Mean");
+		ArrayList<String> yNames = new ArrayList<String>();
+		yNames.add("Mean");
+		d.setYNames(yNames);
 		this.avgRange = avgRange;
 		double check = data.getAllPoints().size()/data.getPointsPerRow() % sets;
 		this.numSamples = check == 0? data.getAllPoints().size()/data.getPointsPerRow()/sets: ((int)data.getAllPoints().size()/data.getPointsPerRow()/sets)-1;
@@ -39,7 +43,9 @@ public class XBar extends GroupingChart {
 		ArrayList<Double> limits = new ArrayList<Double>();
 		limits = calcLimits();
 		Collections.sort(limits);
-		XYSeriesChart.run("Mean", d.getRowName(), points, limits);
+		ArrayList<double[]> allLines = new ArrayList<double[]>();
+		allLines.add(points);
+		XYSeriesChart.run(d, allLines, limits);
 	}
 	
 	/**

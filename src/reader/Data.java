@@ -13,6 +13,8 @@ public class Data {
 	private int numRows;
 	private int pointsPerRow;
 	private ArrayList<Double> allPoints;
+	private ArrayList<String> yNames;
+	private String type;
 	
 	public Data(String filename) throws IOException {
 		this.filename = filename;
@@ -68,5 +70,21 @@ public class Data {
 	
 	public void setAllPoints(ArrayList<Double> points) {
 		this.allPoints = points;
+	}
+
+	public void setYNames(ArrayList<String> yNames) {
+		this.yNames = yNames;
+	}
+	
+	public ArrayList<String> getYNames() {
+		return this.yNames;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	public String getType() {
+		return this.type;
 	}
 }

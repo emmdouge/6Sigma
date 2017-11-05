@@ -15,6 +15,10 @@ public class Range extends GroupingChart {
 	
 	public Range(Data d, int sets) throws Exception {
 		this.data = d;
+		d.setType("Range");
+		ArrayList<String> yNames = new ArrayList<String>();
+		yNames.add("Range");
+		d.setYNames(yNames);
 		double check = data.getAllPoints().size()/data.getPointsPerRow() % sets;
 		this.numSamples = check == 0? data.getAllPoints().size()/data.getPointsPerRow()/sets: ((int)data.getAllPoints().size()/data.getPointsPerRow()/sets)-1;
 		this.sampleSize = d.getPointsPerRow()*sets;
@@ -34,7 +38,9 @@ public class Range extends GroupingChart {
 		System.out.println("avg range: "+this.avgRange);
 		limits = calcLimits();
 		Collections.sort(limits);
-		XYSeriesChart.run("Range", d.getRowName(), points, limits);
+		ArrayList<double[]> allLines = new ArrayList<double[]>();
+		allLines.add(points);
+		XYSeriesChart.run(d, allLines, limits);
 	}
 	
 	/**
