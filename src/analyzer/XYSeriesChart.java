@@ -60,7 +60,7 @@ public class XYSeriesChart extends ApplicationFrame {
 
         for(int i = 0; i < limits.size(); i++) {
         	Color color = (i == 0 || i == limits.size()-1)? Color.RED: Color.YELLOW;
-        	chart.getXYPlot().addRangeMarker(new ValueMarker(limits.get(i), color, new BasicStroke(1), Color.RED, null, 1));
+        	chart.getXYPlot().addRangeMarker(new ValueMarker(limits.get(i), color, new BasicStroke(1), Color.BLACK, null, 1));
         	System.out.println(limits.get(i));
         }
         chart.getXYPlot().getRangeAxis().setRange(min, max+1);

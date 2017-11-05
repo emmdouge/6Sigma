@@ -6,19 +6,18 @@ import org.jfree.ui.RefineryUtilities;
 
 import reader.Data;
 
-public class XBar {
-	private Data data;
-	private int sampleSize;
-	private int numSamples;
-	private double[] means;
-	private double processMean;
+public class XBar extends GroupingChart {
 	
-	public XBar(Data d) throws Exception {
-		this(d, 1);
+	private double processMean;
+	private double avgRange;
+	
+	public XBar(Data d, double avgRange) throws Exception {
+		this(d, 1, avgRange);
 	}
 	
-	public XBar(Data d, int sets) throws Exception {
+	public XBar(Data d, int sets, double avgRange) throws Exception {
 		this.data = d;
+		this.avgRange = avgRange;
 		double check = data.getAllPoints().size()/data.getPointsPerRow() % sets;
 		this.numSamples = check == 0? data.getAllPoints().size()/data.getPointsPerRow()/sets: ((int)data.getAllPoints().size()/data.getPointsPerRow()/sets)-1;
 		System.out.println(this.numSamples);
@@ -26,115 +25,78 @@ public class XBar {
 		System.out.println("sample size: "+this.sampleSize);
 		System.out.println("num samples: "+this.numSamples);
 		Homogeneity.test(d);
-		means = new double[this.numSamples];
+		points = new double[this.numSamples];
 		for(int i = 0; i < this.numSamples; i++) {
 			int start = i*this.sampleSize;
 			int end = (i+1)*this.sampleSize;
-			double mean = calcMean(start, end);
-			means[i] = mean;
-			this.processMean += means[i];
+			double mean = calcPoints(start, end);
+			points[i] = mean;
+			this.processMean += points[i];
 			System.out.println(i+" m: "+mean+" ("+start+"~"+end+")"+" +avg: "+this.processMean);
 		}
 		this.processMean = this.processMean/this.numSamples;
-		System.out.println("avg range: "+this.processMean);
+		System.out.println("process mean: "+this.processMean);
 		ArrayList<Double> limits = new ArrayList<Double>();
 		limits = calcLimits();
 		Collections.sort(limits);
-		XYSeriesChart.run("Range", d.getRowName(), means, limits);
-	}
-
-	public double[] getMeans() {
-		return this.means;
+		XYSeriesChart.run("Mean", d.getRowName(), points, limits);
 	}
 	
-	public double calcMean(int start, int end) {
-		double max = Double.MIN_VALUE;
-		double min = Double.MAX_VALUE;
-		
+	/**
+	 * Calculates the mean for each sample
+	 */
+	public double calcPoints(int start, int end) {
+		double sum = 0;
 		for(int i = start; i < end; i++) {
-			double currentPoint = this.data.getAllPoints().get(i);
-			if(currentPoint > max) {
-				max = currentPoint;
-			}
-			if(currentPoint < min) {
-				min = currentPoint;
-			}
+			sum += this.data.getAllPoints().get(i);
 		}
-		return Math.abs(max-min);
+		return sum/(end-start);
 	}
-
 	
-	private ArrayList<Double> calcLimits() throws Exception {
+	protected ArrayList<Double> calcLimits() throws Exception {
 		ArrayList<Double> limits = new ArrayList<Double>();
+		double a2 = 0;
 		switch (this.sampleSize) {
 			case 2: 
-				limits.add(this.processMean*.0);
-				limits.add(this.processMean*4.12);
-				limits.add(this.processMean*.44);
-				limits.add(this.processMean*2.81);
-				return limits;
+				a2 = 1.88;
+				break;
 			case 3: 
-				limits.add(this.processMean*.04);
-				limits.add(this.processMean*2.98);
-				limits.add(this.processMean*.18);
-				limits.add(this.processMean*2.17);
-				return limits;
+				a2 = 1.02;
+				break;
 			case 4: 
-				limits.add(this.processMean*.1);
-				limits.add(this.processMean*2.57);
-				limits.add(this.processMean*.29);
-				limits.add(this.processMean*1.93);
-				return limits;
+				a2 = .73;
+				break;
 			case 5: 
-				limits.add(this.processMean*.16);
-				limits.add(this.processMean*2.34);
-				limits.add(this.processMean*.37);
-				limits.add(this.processMean*1.81);
-				return limits;
+				a2 = .58;
+				break;
 			case 6: 
-				limits.add(this.processMean*.21);
-				limits.add(this.processMean*2.21);
-				limits.add(this.processMean*.42);
-				limits.add(this.processMean*1.72);
-				return limits;
+				a2 = .48;
+				break;
 			case 7: 
-				limits.add(this.processMean*.26);
-				limits.add(this.processMean*2.11);
-				limits.add(this.processMean*.46);
-				limits.add(this.processMean*1.66);
-				return limits;
+				a2 = .42;
+				break;
 			case 8: 
-				limits.add(this.processMean*.29);
-				limits.add(this.processMean*2.04);
-				limits.add(this.processMean*.50);
-				limits.add(this.processMean*1.62);
-				return limits;
+				a2 = .37;
+				break;
 			case 9: 
-				limits.add(this.processMean*.32);
-				limits.add(this.processMean*1.99);
-				limits.add(this.processMean*.52);
-				limits.add(this.processMean*1.58);
-				return limits;
+				a2 = .34;
+				break;
 			case 10: 
-				limits.add(this.processMean*.35);
-				limits.add(this.processMean*1.93);
-				limits.add(this.processMean*.54);
-				limits.add(this.processMean*1.56);
-				return limits;
+				a2 = .31;
+				break;
 			case  11: 
-				limits.add(this.processMean*.38);
-				limits.add(this.processMean*1.91);
-				limits.add(this.processMean*.56);
-				limits.add(this.processMean*1.53);
-				return limits;
+				a2 = .29;
+				break;
 			case  12: 
-				limits.add(this.processMean*.4);
-				limits.add(this.processMean*1.87);
-				limits.add(this.processMean*.58);
-				limits.add(this.processMean*1.51);
-				return limits;
+				a2 = .27;
+				break;
 			default:
 				throw new Exception("SAMPLE SIZE TOO BIG!");
 		}
+		limits.add(this.processMean+((2.0/3.0)*this.avgRange*a2));
+		limits.add(this.processMean-((2.0/3.0)*this.avgRange*a2));
+		limits.add(this.processMean+(this.avgRange*a2));
+		limits.add(this.processMean-(this.avgRange*a2));
+		return limits;
 	}
 }

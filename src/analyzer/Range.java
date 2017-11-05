@@ -6,11 +6,7 @@ import org.jfree.ui.RefineryUtilities;
 
 import reader.Data;
 
-public class Range {
-	private Data data;
-	private int sampleSize;
-	private int numSamples;
-	private double[] ranges;
+public class Range extends GroupingChart {
 	private double avgRange;
 	
 	public Range(Data d) throws Exception {
@@ -25,28 +21,26 @@ public class Range {
 		System.out.println("sample size: "+this.sampleSize);
 		System.out.println("num samples: "+this.numSamples);
 		Homogeneity.test(d);
-		ranges = new double[this.numSamples];
+		points = new double[this.numSamples];
 		for(int i = 0; i < this.numSamples; i++) {
 			int start = i*this.sampleSize;
 			int end = (i+1)*this.sampleSize;
-			double range = calcRange(start, end);
-			ranges[i] = range;
-			this.avgRange += ranges[i];
+			double range = calcPoints(start, end);
+			points[i] = range;
+			this.avgRange += points[i];
 			System.out.println(i+" r: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
 		}
 		this.avgRange = this.avgRange/this.numSamples;
 		System.out.println("avg range: "+this.avgRange);
-		ArrayList<Double> limits = new ArrayList<Double>();
 		limits = calcLimits();
 		Collections.sort(limits);
-		XYSeriesChart.run("Range", d.getRowName(), ranges, limits);
-	}
-
-	public double[] getRanges() {
-		return this.ranges;
+		XYSeriesChart.run("Range", d.getRowName(), points, limits);
 	}
 	
-	public double calcRange(int start, int end) {
+	/**
+	 * Calculates the range for each sample
+	 */
+	public double calcPoints(int start, int end) {
 		double max = Double.MIN_VALUE;
 		double min = Double.MAX_VALUE;
 		
@@ -61,9 +55,13 @@ public class Range {
 		}
 		return Math.abs(max-min);
 	}
+	
+	public double getAvgRange() {
+		return this.avgRange;
+	}
 
 	
-	private ArrayList<Double> calcLimits() throws Exception {
+	protected ArrayList<Double> calcLimits() throws Exception {
 		ArrayList<Double> limits = new ArrayList<Double>();
 		switch (this.sampleSize) {
 			case 2: 

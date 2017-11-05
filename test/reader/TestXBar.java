@@ -11,35 +11,37 @@ import org.junit.Before;
 import org.junit.Test;
 
 import analyzer.Range;
+import analyzer.XBar;
 
-public class TestRange {
+public class TestXBar {
 
-	Data d1;
-	Data d2;
+	Data shiftData;
+	Data newTestsPassingData;
+	Range r;
 	
 	@Before
-	public void setup() throws IOException {
-		d1 = TxtFileReader.readFile("shift");
-		d2 = TxtFileReader.readFile("NewTestsPassing");
+	public void setup() throws Exception {
+		shiftData = TxtFileReader.readFile("shift");
+		newTestsPassingData = TxtFileReader.readFile("NewTestsPassing");
+		r = new Range(shiftData);
 	}
 	
 	@Test
-	public void testD1() throws Exception {
-		Range r = new Range(d1, 1);
-		assertEquals(27, r.getPoints().length);
+	public void testShiftData() throws Exception {
+		XBar x = new XBar(shiftData, r.getAvgRange());
+		assertEquals(27, x.getPoints().length);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	
 	@Test(expected = Exception.class)
-	public void testSampleSizeTooBigForD1() throws Exception {
-		Range r = new Range(d1, 3);
-		assertEquals(18, r.getPoints().length);
+	public void testSampleSizeTooBigForShiftData() throws Exception {
+		XBar x = new XBar(shiftData, 3, r.getAvgRange());
 	}	
 	
 	@Test
-	public void testD2() throws Exception {
-		Range r = new Range(d2, 1);
-		assertEquals(59, r.getPoints().length);
+	public void testNewTestsPassingData() throws Exception {
+		XBar x = new XBar(newTestsPassingData, r.getAvgRange());
+		assertEquals(59, x.getPoints().length);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 
