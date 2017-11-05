@@ -63,6 +63,8 @@ public class XBar extends GroupingChart {
 		ArrayList<Double> limits = new ArrayList<Double>();
 		double a2 = 0;
 		switch (this.sampleSize) {
+			case 1:
+				throw new Exception("SAMPLE SIZE TOO SMALL!");
 			case 2: 
 				a2 = 1.88;
 				break;

@@ -12,7 +12,7 @@ public class MovingMean extends GroupingChart {
 	private double avgRange;
 	
 	public MovingMean(Data d, double avgRange) throws Exception {
-		this(d, 10, avgRange);
+		this(d, 2, avgRange);
 	}
 	
 	public MovingMean(Data d, int k, double avgRange) throws Exception {
@@ -61,6 +61,8 @@ public class MovingMean extends GroupingChart {
 		ArrayList<Double> limits = new ArrayList<Double>();
 		double a2 = 0;
 		switch (this.sampleSize) {
+			case 1:
+				throw new Exception("SAMPLE SIZE TOO SMALL!");
 			case 2: 
 				a2 = 1.88;
 				break;

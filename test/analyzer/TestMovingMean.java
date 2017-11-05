@@ -21,31 +21,33 @@ public class TestMovingMean {
 
 	Data shiftData;
 	Data newTestsPassingData;
-	Range r;
 	
 	@Before
 	public void setup() throws Exception {
 		shiftData = TxtFileReader.readFile("shift");
 		newTestsPassingData = TxtFileReader.readFile("NewTestsPassing");
-		r = new Range(shiftData);
 	}
 	
 	@Test
 	public void testShiftData() throws Exception {
-		MovingMean mm = new MovingMean(shiftData, r.getAvgRange());
-		assertEquals(206, mm.getPoints().length);
+		int k = 5;
+		MovingRange r = new MovingRange(shiftData, k);
+		MovingMean mm = new MovingMean(shiftData, k, r.getAvgRange());
+		assertEquals(211, mm.getPoints().length);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	
 	@Test(expected = Exception.class)
 	public void testSampleSizeTooBigForShiftData() throws Exception {
-		MovingMean mm = new MovingMean(shiftData, 3, r.getAvgRange());
+		MovingMean mm = new MovingMean(shiftData, 13, new MovingRange(shiftData, 13).getAvgRange());
 	}	
 	
 	@Test
 	public void testNewTestsPassingData() throws Exception {
-		MovingMean mm = new MovingMean(newTestsPassingData, r.getAvgRange());
-		assertEquals(59, mm.getPoints().length);
+		int k = 5;
+		MovingRange r = new MovingRange(shiftData, k);
+		MovingMean mm = new MovingMean(shiftData, k, r.getAvgRange());
+		assertEquals(211, mm.getPoints().length);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 

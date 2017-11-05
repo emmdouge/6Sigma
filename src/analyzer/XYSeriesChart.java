@@ -54,7 +54,7 @@ public class XYSeriesChart extends ApplicationFrame {
         final JFreeChart chart = ChartFactory.createXYLineChart(
     		d.getRowName()+" "+d.getType()+" Chart",
             d.getRowName(), 
-            " ", 
+            d.getFilename().split("/")[1], 
             data,
             PlotOrientation.VERTICAL,
             true,

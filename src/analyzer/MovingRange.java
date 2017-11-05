@@ -6,36 +6,37 @@ import org.jfree.ui.RefineryUtilities;
 
 import reader.Data;
 
-public class Range extends GroupingChart {
+public class MovingRange extends GroupingChart {
+	
 	private double avgRange;
 	
-	public Range(Data d) throws Exception {
-		this(d, 1);
+	public MovingRange(Data d) throws Exception {
+		this(d, 2);
 	}
 	
-	public Range(Data d, int sets) throws Exception {
+	public MovingRange(Data d, int k) throws Exception {
 		this.data = d;
-		d.setType("Range");
+		d.setType("Moving Range");
 		ArrayList<String> yNames = new ArrayList<String>();
-		yNames.add("Range");
+		yNames.add("Range k = "+k);
 		d.setYNames(yNames);
-		double check = data.getAllPoints().size()/data.getPointsPerRow() % sets;
-		this.numSamples = check == 0? data.getAllPoints().size()/data.getPointsPerRow()/sets: ((int)data.getAllPoints().size()/data.getPointsPerRow()/sets)-1;
-		this.sampleSize = d.getPointsPerRow()*sets;
+		this.numSamples = data.getAllPoints().size()-k;
+		System.out.println(this.numSamples);
+		this.sampleSize = k;
 		System.out.println("sample size: "+this.sampleSize);
 		System.out.println("num samples: "+this.numSamples);
-		Homogeneity.test(d);
 		points = new double[this.numSamples];
 		for(int i = 0; i < this.numSamples; i++) {
-			int start = i*this.sampleSize;
-			int end = (i+1)*this.sampleSize;
+			int start = i;
+			int end = (i)+this.sampleSize;
 			double range = calcPoints(start, end);
 			points[i] = range;
 			this.avgRange += points[i];
-			System.out.println(i+" r: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
+			System.out.println(i+" mr: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
 		}
 		this.avgRange = this.avgRange/this.numSamples;
 		System.out.println("avg range: "+this.avgRange);
+		ArrayList<Double> limits = new ArrayList<Double>();
 		limits = calcLimits();
 		Collections.sort(limits);
 		ArrayList<double[]> allLines = new ArrayList<double[]>();
@@ -61,11 +62,6 @@ public class Range extends GroupingChart {
 		}
 		return Math.abs(max-min);
 	}
-	
-	public double getAvgRange() {
-		return this.avgRange;
-	}
-
 	
 	protected ArrayList<Double> calcLimits() throws Exception {
 		ArrayList<Double> limits = new ArrayList<Double>();
@@ -141,5 +137,9 @@ public class Range extends GroupingChart {
 			default:
 				throw new Exception("SAMPLE SIZE TOO BIG!");
 		}
+	}
+
+	public double getAvgRange() {
+		return this.avgRange;
 	}
 }
