@@ -31,21 +31,7 @@ public class TxtFileReader {
 		return d;
 	}
 	
-	public static Data readFileOfUnequalSize(String filename) throws IOException
-	{
-		filename = "data/"+filename+".csv";
-		
-		Data d = new Data(filename);
-
-		readProps(d);
-		readNumRows(d);
-		readPointsPerRow(d);
-		readUData(d);
-
-		return d;
-	}
-	
-	private static void readUData(Data d) throws FileNotFoundException, IOException {
+	private static void readData(Data d) throws FileNotFoundException, IOException {
 
 		FileReader pointR =  new FileReader(d.getFilename());
 		BufferedReader pointBR = new BufferedReader(pointR);
@@ -109,37 +95,37 @@ public class TxtFileReader {
 		d.setCols(cols);
 	}
 	
-	private static void readData(Data d) throws FileNotFoundException, IOException {
-
-		FileReader pointR =  new FileReader(d.getFilename());
-		BufferedReader pointBR = new BufferedReader(pointR);
-		String currentLine = null;
-		double[][] array = new double[d.getNumRows()][d.getPointsPerRow()];		
-		currentLine = pointBR.readLine();
-		ArrayList<Double> points  = new ArrayList<Double>();
-		while ((currentLine = pointBR.readLine()) != null) {
-	        String[] data = currentLine.split(",");
-			for(int i = 1; i < data.length; i++) {
-				points.add(Double.parseDouble(data[i]));
-			}
-		}
-		
-		d.setAllPoints(points);
-		
-		System.out.println(points.size());
-		pointBR.close();
-				
-		for(int i = 0; i < d.getNumRows(); i++) {
-			for(int j = 0; j < d.getPointsPerRow(); j++) {
-				System.out.print("("+i+":"+j+":"+((i*d.getPointsPerRow())+j)+")");
-				array[i][j] = points.get((i*d.getPointsPerRow())+j); 
-				System.out.print(array[i][j]+", ");
-			}
-			System.out.println();
-		}
-		
-		d.setData(array);
-	}
+//	private static void readData(Data d) throws FileNotFoundException, IOException {
+//
+//		FileReader pointR =  new FileReader(d.getFilename());
+//		BufferedReader pointBR = new BufferedReader(pointR);
+//		String currentLine = null;
+//		double[][] array = new double[d.getNumRows()][d.getPointsPerRow()];		
+//		currentLine = pointBR.readLine();
+//		ArrayList<Double> points  = new ArrayList<Double>();
+//		while ((currentLine = pointBR.readLine()) != null) {
+//	        String[] data = currentLine.split(",");
+//			for(int i = 1; i < data.length; i++) {
+//				points.add(Double.parseDouble(data[i]));
+//			}
+//		}
+//		
+//		d.setAllPoints(points);
+//		
+//		System.out.println(points.size());
+//		pointBR.close();
+//				
+//		for(int i = 0; i < d.getNumRows(); i++) {
+//			for(int j = 0; j < d.getPointsPerRow(); j++) {
+//				System.out.print("("+i+":"+j+":"+((i*d.getPointsPerRow())+j)+")");
+//				array[i][j] = points.get((i*d.getPointsPerRow())+j); 
+//				System.out.print(array[i][j]+", ");
+//			}
+//			System.out.println();
+//		}
+//		
+//		d.setData(array);
+//	}
 
 	private static int readPointsPerRow(Data d) throws FileNotFoundException, IOException {
 		FileReader pointR =  new FileReader(d.getFilename());
