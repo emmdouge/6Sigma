@@ -18,11 +18,13 @@ public class TestIndivMovMean {
 
 	Data d1;
 	Data d2;
+	Data d3;
 	
 	@Before
 	public void setup() throws IOException {
 		d1 = TxtFileReader.readFile("shift");
-		d2 = TxtFileReader.readFile("NewTestsPassing");
+		d2 = TxtFileReader.readFile("NewTestsPassing");;
+		d3 = TxtFileReader.readFile("cyclo2");
 	}
 	
 	@Test

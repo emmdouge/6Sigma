@@ -13,6 +13,8 @@ public class Data {
 	private int numRows;
 	private int pointsPerRow;
 	private ArrayList<Double> allPoints;
+	private ArrayList<double[]> cols;
+	private ArrayList<Integer> colOffsets;
 	private ArrayList<String> yNames;
 	private String type;
 	
@@ -47,6 +49,23 @@ public class Data {
 	public String[] getColNames() {
 		return this.colNames;
 	}
+	
+	public ArrayList<double[]> getCols() {
+		return this.cols;
+	}
+	
+	public void setCols(ArrayList<double[]> cols) {
+		this.cols = cols;
+	}
+	
+	public void setColOffsets(ArrayList<Integer> colOffsets) {
+		this.colOffsets = colOffsets;
+	}
+	
+	public ArrayList<Integer> getColOffsets() {
+		return this.colOffsets;
+	}
+
 
 	public void setNumRows(int rows) {
 		this.numRows = rows;

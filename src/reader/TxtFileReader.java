@@ -30,7 +30,85 @@ public class TxtFileReader {
 
 		return d;
 	}
+	
+	public static Data readFileOfUnequalSize(String filename) throws IOException
+	{
+		filename = "data/"+filename+".csv";
+		
+		Data d = new Data(filename);
 
+		readProps(d);
+		readNumRows(d);
+		readPointsPerRow(d);
+		readUData(d);
+
+		return d;
+	}
+	
+	private static void readUData(Data d) throws FileNotFoundException, IOException {
+
+		FileReader pointR =  new FileReader(d.getFilename());
+		BufferedReader pointBR = new BufferedReader(pointR);
+		String currentLine = null;	
+		currentLine = pointBR.readLine();
+		ArrayList<Double> points  = new ArrayList<Double>();
+		while ((currentLine = pointBR.readLine()) != null) {
+	        String[] data = currentLine.split(",");
+			for(int i = 1; i < data.length; i++) {
+				if(!data[i].equals("NULL"))
+				points.add(Double.parseDouble(data[i]));
+			}
+		}
+		
+		d.setAllPoints(points);
+		
+		System.out.println(points.size());
+
+		double[][] array = new double[d.getNumRows()][d.getPointsPerRow()];		
+				
+		for(int i = 0; i < d.getNumRows(); i++) {
+			for(int j = 0; j < d.getPointsPerRow(); j++) {
+				array[i][j] = Double.MIN_VALUE; 
+			}
+		}
+
+		pointR =  new FileReader(d.getFilename());
+		pointBR = new BufferedReader(pointR);
+		currentLine = null;
+		pointBR.readLine();
+		for(int i = 0; i < d.getNumRows(); i++) {
+			String[] row = pointBR.readLine().split(",");
+			int offset = 0;
+			for(int j = 0; j < d.getPointsPerRow(); j++) {
+				if(!row[j+1].equals("NULL")) {
+					array[i][j] = Double.parseDouble(row[j+1]);
+				}
+			}
+			System.out.println();
+		}
+		d.setData(array);
+		ArrayList<Integer> colOffsets = new ArrayList<Integer>();
+		ArrayList<double[]> cols = new ArrayList<double[]>();
+		for(int i = 0; i < d.getPointsPerRow(); i++) {
+			int offset = 0;
+			for(int j = 0; j < d.getNumRows(); j++) {
+				if(array[j][i] == Double.MIN_VALUE) {
+					offset++;
+				}
+			}
+			colOffsets.add(offset);
+			double[] col = new double[d.getNumRows()-offset];
+			for(int j = offset, x = 0; j < d.getNumRows(); j++, x++) {
+				col[x] = array[j][i];
+				System.out.println(col[x]);
+			}
+			System.out.println("--------------------");
+			cols.add(col);
+		}
+		d.setColOffsets(colOffsets);
+		d.setCols(cols);
+	}
+	
 	private static void readData(Data d) throws FileNotFoundException, IOException {
 
 		FileReader pointR =  new FileReader(d.getFilename());
