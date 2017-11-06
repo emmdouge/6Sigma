@@ -6,6 +6,8 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import shared.Constant;
+
 public class TestTxtFileReader {
 
 	@Test
@@ -15,11 +17,14 @@ public class TestTxtFileReader {
 		assertEquals(5, d.getPointsPerRow());
 	}
 	
-//	@Test
-//	public void testURead() throws IOException {
-//		Data d = TxtFileReader.readFileOfUnequalSize("cyclo2");
-//		assertEquals(60, d.getNumRows());
-//		assertEquals(9, d.getPointsPerRow());
-//	}
+	@Test
+	public void testFReader() throws IOException {
+		//compare each value with what we expect it to be
+		double [] dataActual = TxtFileReader.readFile("lab2").getAllPoints();
+		for(int i = 0; i < dataActual.length; i++) {
+			assertEquals(dataActual[i], Constant.DATA_EXPECTED[i], 0);
+		}
+		assertEquals(24, dataActual.length);
+	}
 
 }

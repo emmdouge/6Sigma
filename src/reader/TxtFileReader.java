@@ -76,6 +76,7 @@ public class TxtFileReader {
 			}
 		}
 
+		pointBR.close();
 		pointR =  new FileReader(d.getFilename());
 		pointBR = new BufferedReader(pointR);
 		currentLine = null;
@@ -104,11 +105,11 @@ public class TxtFileReader {
 			double[] col = new double[d.getNumRows()-offset];
 			for(int j = offset, x = 0; j < d.getNumRows(); j++, x++) {
 				col[x] = array[j][i];
-				System.out.println(col[x]);
 			}
 			System.out.println("--------------------");
 			cols.add(col);
 		}
+		pointBR.close();
 		d.setColOffsets(colOffsets);
 		d.setCols(cols);
 	}
@@ -145,6 +146,20 @@ public class TxtFileReader {
 //		d.setData(array);
 //	}
 
+	private static void readNumRows(Data d) throws FileNotFoundException, IOException {
+		FileReader rowR =  new FileReader(d.getFilename());
+		BufferedReader rowBR = new BufferedReader(rowR);
+
+		rowBR.readLine();
+		int rows = 0;
+		while ((rowBR.readLine()) != null) {
+			rows++;
+		}
+		System.out.println("rows: "+rows);
+		d.setNumRows(rows);
+		rowBR.close();
+	}
+
 	private static int readPointsPerRow(Data d) throws FileNotFoundException, IOException {
 		FileReader pointR =  new FileReader(d.getFilename());
 		BufferedReader pointBR = new BufferedReader(pointR);
@@ -163,20 +178,6 @@ public class TxtFileReader {
 		d.setPointsPerRow(numPoints);
 		pointBR.close();
 		return numPoints;
-	}
-
-	private static void readNumRows(Data d) throws FileNotFoundException, IOException {
-		FileReader rowR =  new FileReader(d.getFilename());
-		BufferedReader rowBR = new BufferedReader(rowR);
-
-		rowBR.readLine();
-		int rows = 0;
-		while ((rowBR.readLine()) != null) {
-			rows++;
-		}
-		System.out.println("rows: "+rows);
-		d.setNumRows(rows);
-		rowBR.close();
 	}
 
 	public static void readProps(Data d) throws IOException {
