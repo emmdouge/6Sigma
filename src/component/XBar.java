@@ -17,36 +17,66 @@ public class XBar extends GroupingChart {
 	
 	public XBar(int rowsPerSample, Data d, double avgRange) throws Exception {
 		this.data = d;
-		d.setType("Mean");
-		yNames = new ArrayList<String>();
-		yNames.add("Mean");
-		d.setYNames(yNames);
-		this.avgRange = avgRange;
-		double check = data.getAllPoints().length/data.getPointsPerRow() % rowsPerSample;
-		this.numSamples = check == 0? data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample: ((int)data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample)-1;
-		System.out.println(this.numSamples);
-		this.sampleSize = d.getPointsPerRow()*rowsPerSample;
-		System.out.println("sample size: "+this.sampleSize);
-		System.out.println("num samples: "+this.numSamples);
-		Homogeneity.test(d);
-		points = new double[this.numSamples];
-		for(int i = 0; i < this.numSamples; i++) {
-			int start = i*this.sampleSize;
-			int end = (i+1)*this.sampleSize;
-			double mean = calcPoints(data.getAllPoints(), start, end);
-			points[i] = mean;
-			this.processMean += points[i];
-			System.out.println(i+" m: "+mean+" ("+start+"~"+end+")"+" +avg: "+this.processMean);
+		if(d.getUseCols()) {
+			d.setType("Ranges");
+			ArrayList<double[]> allLines = new ArrayList<double[]>();
+			for(int x = 0; x < d.getPointsPerRow(); x++) {
+				double check = data.getCols().get(x).length % rowsPerSample;
+				this.numSamples = check == 0? data.getCols().get(x).length/rowsPerSample: ((int)data.getCols().get(x).length/rowsPerSample)-1;
+				//rowsPerSample isn't actually rowsPerSample when its using cols
+				//its actually the sample size
+				this.sampleSize = rowsPerSample;
+				System.out.println(this.numSamples);
+				System.out.println("sample size: "+this.sampleSize);
+				System.out.println("num samples: "+this.numSamples);
+				points = new double[this.numSamples];
+				for(int i = 0; i < this.numSamples; i++) {
+					int start = i*this.sampleSize;
+					int end = (i+1)*this.sampleSize;
+					double mean = calcPoints(data.getCols().get(x), start, end);
+					points[i] = mean;
+					this.processMean += points[i];
+					System.out.println(i+" m: "+mean+" ("+start+"~"+end+")"+" +avg: "+this.processMean);
+				}
+				this.processMean = this.processMean/this.numSamples;
+				System.out.println("process mean: "+this.processMean);
+				allLines.add(points);
+			}
+			limits = new ArrayList<Double>();
+			XYSeriesChart.run(d, allLines, limits, d.getColOffsets());
 		}
-		this.processMean = this.processMean/this.numSamples;
-		System.out.println("process mean: "+this.processMean);
-		limits = calcLimits();
-		Collections.sort(limits);
-		ArrayList<double[]> allLines = new ArrayList<double[]>();
-		allLines.add(points);
-		ArrayList<Integer> offsets = new ArrayList<Integer>();
-		offsets.add(this.offset);
-		XYSeriesChart.run(d, allLines, limits, offsets);
+		else {
+			d.setType("Mean");
+			yNames = new ArrayList<String>();
+			yNames.add("Mean");
+			d.setYNames(yNames);
+			this.avgRange = avgRange;
+			double check = data.getAllPoints().length/data.getPointsPerRow() % rowsPerSample;
+			this.numSamples = check == 0? data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample: ((int)data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample)-1;
+			System.out.println(this.numSamples);
+			this.sampleSize = d.getPointsPerRow()*rowsPerSample;
+			System.out.println("sample size: "+this.sampleSize);
+			System.out.println("num samples: "+this.numSamples);
+			Homogeneity.test(d);
+			points = new double[this.numSamples];
+			for(int i = 0; i < this.numSamples; i++) {
+				int start = i*this.sampleSize;
+				int end = (i+1)*this.sampleSize;
+				double mean = calcPoints(data.getAllPoints(), start, end);
+				points[i] = mean;
+				this.processMean += points[i];
+				System.out.println(i+" m: "+mean+" ("+start+"~"+end+")"+" +avg: "+this.processMean);
+			}
+			this.processMean = this.processMean/this.numSamples;
+			System.out.println("process mean: "+this.processMean);
+			limits = calcLimits();
+			Collections.sort(limits);
+			ArrayList<double[]> allLines = new ArrayList<double[]>();
+			allLines.add(points);
+			ArrayList<Integer> offsets = new ArrayList<Integer>();
+			offsets.add(this.offset);
+			XYSeriesChart.run(d, allLines, limits, offsets);
+		}
 	}
 	
 	/**

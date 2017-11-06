@@ -15,34 +15,64 @@ public class Range extends GroupingChart {
 	
 	public Range(int rowsPerSample, Data d) throws Exception {
 		this.data = d;
-		d.setType("Range");
-		yNames = new ArrayList<String>();
-		yNames.add("Range");
-		d.setYNames(yNames);
-		double check = data.getAllPoints().length/data.getPointsPerRow() % rowsPerSample;
-		this.numSamples = check == 0? data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample: ((int)data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample)-1;
-		this.sampleSize = d.getPointsPerRow()*rowsPerSample;
-		System.out.println("sample size: "+this.sampleSize);
-		System.out.println("num samples: "+this.numSamples);
-		Homogeneity.test(d);
-		points = new double[this.numSamples];
-		for(int i = 0; i < this.numSamples; i++) {
-			int start = i*this.sampleSize;
-			int end = (i+1)*this.sampleSize;
-			double range = calcPoints(data.getAllPoints(), start, end);
-			points[i] = range;
-			this.avgRange += points[i];
-			System.out.println(i+" r: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
+		if(d.getUseCols()) {
+			d.setType("Ranges");
+			ArrayList<double[]> allLines = new ArrayList<double[]>();
+			for(int x = 0; x < d.getPointsPerRow(); x++) {
+				double check = data.getCols().get(x).length % rowsPerSample;
+				this.numSamples = check == 0? data.getCols().get(x).length/rowsPerSample: ((int)data.getCols().get(x).length/rowsPerSample)-1;
+				//rowsPerSample isn't actually rowsPerSample when its using cols
+				//its actually the sample size
+				this.sampleSize = rowsPerSample;
+				System.out.println(this.numSamples);
+				System.out.println("sample size: "+this.sampleSize);
+				System.out.println("num samples: "+this.numSamples);
+				points = new double[this.numSamples];
+				for(int i = 0; i < this.numSamples; i++) {
+					int start = i*this.sampleSize;
+					int end = (i+1)*this.sampleSize;
+					double range = calcPoints(data.getCols().get(x), start, end);
+					points[i] = range;
+					this.avgRange += points[i];
+					System.out.println(i+" mr: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
+				}
+				this.avgRange = this.avgRange/this.numSamples;
+				System.out.println("avg range: "+this.avgRange);
+				allLines.add(points);
+			}
+			limits = new ArrayList<Double>();
+			XYSeriesChart.run(d, allLines, limits, d.getColOffsets());
 		}
-		this.avgRange = this.avgRange/this.numSamples;
-		System.out.println("avg range: "+this.avgRange);
-		limits = calcLimits();
-		Collections.sort(limits);
-		ArrayList<double[]> allLines = new ArrayList<double[]>();
-		allLines.add(points);
-		ArrayList<Integer> offsets = new ArrayList<Integer>();
-		offsets.add(this.offset);
-		XYSeriesChart.run(d, allLines, limits, offsets);
+		else {
+			d.setType("Range");
+			yNames = new ArrayList<String>();
+			yNames.add("Range");
+			d.setYNames(yNames);
+			double check = data.getAllPoints().length/data.getPointsPerRow() % rowsPerSample;
+			this.numSamples = check == 0? data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample: ((int)data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample)-1;
+			this.sampleSize = d.getPointsPerRow()*rowsPerSample;
+			System.out.println("sample size: "+this.sampleSize);
+			System.out.println("num samples: "+this.numSamples);
+			Homogeneity.test(d);
+			points = new double[this.numSamples];
+			for(int i = 0; i < this.numSamples; i++) {
+				int start = i*this.sampleSize;
+				int end = (i+1)*this.sampleSize;
+				double range = calcPoints(data.getAllPoints(), start, end);
+				points[i] = range;
+				this.avgRange += points[i];
+				System.out.println(i+" r: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
+			}
+			this.avgRange = this.avgRange/this.numSamples;
+			System.out.println("avg range: "+this.avgRange);
+			limits = calcLimits();
+			Collections.sort(limits);
+			ArrayList<double[]> allLines = new ArrayList<double[]>();
+			allLines.add(points);
+			ArrayList<Integer> offsets = new ArrayList<Integer>();
+			offsets.add(this.offset);
+			XYSeriesChart.run(d, allLines, limits, offsets);
+		}
 	}
 	
 	/**

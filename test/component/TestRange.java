@@ -18,11 +18,13 @@ public class TestRange {
 
 	Data d1;
 	Data d2;
+	Data cyclo;
 	
 	@Before
 	public void setup() throws IOException {
 		d1 = TxtFileReader.readFile("shift");
 		d2 = TxtFileReader.readFile("NewTestsPassing");
+		cyclo = TxtFileReader.readFile("cyclo2", true);
 	}
 	
 	@Test
@@ -42,6 +44,12 @@ public class TestRange {
 	public void testD2() throws Exception {
 		Range r = new Range(1, d2);
 		assertEquals(59, r.getPoints().length);
+		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
+	}	
+	
+	@Test
+	public void testCycloData() throws Exception {
+		Range r = new Range(3, cyclo);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 

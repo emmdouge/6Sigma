@@ -21,9 +21,11 @@ public class MovingMean extends GroupingChart {
 		this.sampleSize = k;
 		this.offset = k;
 		if(d.getUseCols()) {
-			d.setType("Moving Means");
+			d.setType("Moving Means k = "+k);
+			ArrayList<Integer> colOffsets = new ArrayList<Integer>();
 			ArrayList<double[]> allLines = new ArrayList<double[]>();
 			for(int x = 0; x < d.getPointsPerRow(); x++) {
+				colOffsets.add(d.getColOffsets().get(x)+this.sampleSize);
 				this.numSamples = data.getCols().get(x).length-k;
 				System.out.println(this.numSamples);
 				System.out.println("sample size: "+this.sampleSize);
@@ -41,6 +43,7 @@ public class MovingMean extends GroupingChart {
 				System.out.println("process mean: "+this.processMean);
 				allLines.add(points);
 			}
+			d.setColOffsets(colOffsets);
 			limits = new ArrayList<Double>();
 			XYSeriesChart.run(d, allLines, limits, d.getColOffsets());
 		}

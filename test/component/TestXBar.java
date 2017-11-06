@@ -20,6 +20,7 @@ public class TestXBar {
 
 	Data shiftData;
 	Data newTestsPassingData;
+	Data cyclo;
 	Range r;
 	
 	@Before
@@ -27,6 +28,7 @@ public class TestXBar {
 		shiftData = TxtFileReader.readFile("shift");
 		newTestsPassingData = TxtFileReader.readFile("NewTestsPassing");
 		r = new Range(shiftData);
+		cyclo = TxtFileReader.readFile("cyclo2", true);
 	}
 	
 	@Test
@@ -45,6 +47,12 @@ public class TestXBar {
 	public void testNewTestsPassingData() throws Exception {
 		XBar x = new XBar(newTestsPassingData, r.getAvgRange());
 		assertEquals(59, x.getPoints().length);
+		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
+	}	
+	
+	@Test
+	public void testCycloData() throws Exception {
+		XBar x = new XBar(3, cyclo, 0);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 

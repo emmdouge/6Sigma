@@ -16,34 +16,63 @@ public class MovingRange extends GroupingChart {
 	
 	public MovingRange(Data d, int k) throws Exception {
 		this.data = d;
-		d.setType("Moving Range");
-		yNames = new ArrayList<String>();
-		yNames.add("Range k = "+k);
-		d.setYNames(yNames);
-		this.numSamples = data.getAllPoints().length-k;
-		System.out.println(this.numSamples);
 		this.sampleSize = k;
 		this.offset = k;
-		System.out.println("sample size: "+this.sampleSize);
-		System.out.println("num samples: "+this.numSamples);
-		points = new double[this.numSamples];
-		for(int i = 0; i < this.numSamples; i++) {
-			int start = i;
-			int end = (i)+this.sampleSize;
-			double range = calcPoints(data.getAllPoints(), start, end);
-			points[i] = range;
-			this.avgRange += points[i];
-			System.out.println(i+" mr: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
+		if(d.getUseCols()) {
+			d.setType("Moving Ranges");
+			ArrayList<double[]> allLines = new ArrayList<double[]>();
+			ArrayList<Integer> colOffsets = new ArrayList<Integer>();
+			for(int x = 0; x < d.getPointsPerRow(); x++) {
+				colOffsets.add(d.getColOffsets().get(x)+this.sampleSize);
+				this.numSamples = data.getCols().get(x).length-k;
+				System.out.println(this.numSamples);
+				System.out.println("sample size: "+this.sampleSize);
+				System.out.println("num samples: "+this.numSamples);
+				points = new double[this.numSamples];
+				for(int i = 0; i < this.numSamples; i++) {
+					int start = i;
+					int end = (i)+this.sampleSize;
+					double range = calcPoints(data.getCols().get(x), start, end);
+					points[i] = range;
+					this.avgRange += points[i];
+					System.out.println(i+" mr: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
+				}
+				this.avgRange = this.avgRange/this.numSamples;
+				System.out.println("avg range: "+this.avgRange);
+				allLines.add(points);
+			}
+			d.setColOffsets(colOffsets);
+			limits = new ArrayList<Double>();
+			XYSeriesChart.run(d, allLines, limits, d.getColOffsets());
 		}
-		this.avgRange = this.avgRange/this.numSamples;
-		System.out.println("avg range: "+this.avgRange);
-		limits = calcLimits();
-		Collections.sort(limits);
-		ArrayList<double[]> allLines = new ArrayList<double[]>();
-		allLines.add(points);
-		ArrayList<Integer> offsets = new ArrayList<Integer>();
-		offsets.add(this.offset);
-		XYSeriesChart.run(d, allLines, limits, offsets);
+		else {
+			d.setType("Moving Range");
+			yNames = new ArrayList<String>();
+			yNames.add("Range k = "+k);
+			d.setYNames(yNames);
+			this.numSamples = data.getAllPoints().length-k;
+			System.out.println(this.numSamples);
+			System.out.println("sample size: "+this.sampleSize);
+			System.out.println("num samples: "+this.numSamples);
+			points = new double[this.numSamples];
+			for(int i = 0; i < this.numSamples; i++) {
+				int start = i;
+				int end = (i)+this.sampleSize;
+				double range = calcPoints(data.getAllPoints(), start, end);
+				points[i] = range;
+				this.avgRange += points[i];
+				System.out.println(i+" mr: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
+			}
+			this.avgRange = this.avgRange/this.numSamples;
+			System.out.println("avg range: "+this.avgRange);
+			limits = calcLimits();
+			Collections.sort(limits);
+			ArrayList<double[]> allLines = new ArrayList<double[]>();
+			allLines.add(points);
+			ArrayList<Integer> offsets = new ArrayList<Integer>();
+			offsets.add(this.offset);
+			XYSeriesChart.run(d, allLines, limits, offsets);
+		}
 	}
 	
 	/**
