@@ -22,8 +22,8 @@ public class XBar extends GroupingChart {
 		yNames.add("Mean");
 		d.setYNames(yNames);
 		this.avgRange = avgRange;
-		double check = data.getAllPoints().size()/data.getPointsPerRow() % rowsPerSample;
-		this.numSamples = check == 0? data.getAllPoints().size()/data.getPointsPerRow()/rowsPerSample: ((int)data.getAllPoints().size()/data.getPointsPerRow()/rowsPerSample)-1;
+		double check = data.getAllPoints().length/data.getPointsPerRow() % rowsPerSample;
+		this.numSamples = check == 0? data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample: ((int)data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample)-1;
 		System.out.println(this.numSamples);
 		this.sampleSize = d.getPointsPerRow()*rowsPerSample;
 		System.out.println("sample size: "+this.sampleSize);
@@ -33,7 +33,7 @@ public class XBar extends GroupingChart {
 		for(int i = 0; i < this.numSamples; i++) {
 			int start = i*this.sampleSize;
 			int end = (i+1)*this.sampleSize;
-			double mean = calcPoints(start, end);
+			double mean = calcPoints(data.getAllPoints(), start, end);
 			points[i] = mean;
 			this.processMean += points[i];
 			System.out.println(i+" m: "+mean+" ("+start+"~"+end+")"+" +avg: "+this.processMean);
@@ -52,10 +52,10 @@ public class XBar extends GroupingChart {
 	/**
 	 * Calculates the mean for each sample
 	 */
-	public double calcPoints(int start, int end) {
+	public double calcPoints(double[] data, int start, int end) {
 		double sum = 0;
 		for(int i = start; i < end; i++) {
-			sum += this.data.getAllPoints().get(i);
+			sum += data[i];
 		}
 		return sum/(end-start);
 	}

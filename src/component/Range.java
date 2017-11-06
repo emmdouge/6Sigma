@@ -19,8 +19,8 @@ public class Range extends GroupingChart {
 		yNames = new ArrayList<String>();
 		yNames.add("Range");
 		d.setYNames(yNames);
-		double check = data.getAllPoints().size()/data.getPointsPerRow() % rowsPerSample;
-		this.numSamples = check == 0? data.getAllPoints().size()/data.getPointsPerRow()/rowsPerSample: ((int)data.getAllPoints().size()/data.getPointsPerRow()/rowsPerSample)-1;
+		double check = data.getAllPoints().length/data.getPointsPerRow() % rowsPerSample;
+		this.numSamples = check == 0? data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample: ((int)data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample)-1;
 		this.sampleSize = d.getPointsPerRow()*rowsPerSample;
 		System.out.println("sample size: "+this.sampleSize);
 		System.out.println("num samples: "+this.numSamples);
@@ -29,7 +29,7 @@ public class Range extends GroupingChart {
 		for(int i = 0; i < this.numSamples; i++) {
 			int start = i*this.sampleSize;
 			int end = (i+1)*this.sampleSize;
-			double range = calcPoints(start, end);
+			double range = calcPoints(data.getAllPoints(), start, end);
 			points[i] = range;
 			this.avgRange += points[i];
 			System.out.println(i+" r: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
@@ -48,12 +48,12 @@ public class Range extends GroupingChart {
 	/**
 	 * Calculates the range for each sample
 	 */
-	public double calcPoints(int start, int end) {
+	public double calcPoints(double[] data, int start, int end) {
 		double max = Double.MIN_VALUE;
 		double min = Double.MAX_VALUE;
 		
 		for(int i = start; i < end; i++) {
-			double currentPoint = this.data.getAllPoints().get(i);
+			double currentPoint = data[i];
 			if(currentPoint > max) {
 				max = currentPoint;
 			}

@@ -13,7 +13,7 @@ public class Homogeneity {
 		ArrayList<Double> logPortion = new ArrayList<Double>();  
 		ArrayList<Double> divPortion = new ArrayList<Double>();  
 		int numPopulations = d.getPointsPerRow();
-		int numPoints = d.getAllPoints().size()/numPopulations;
+		int numPoints = d.getAllPoints().length/numPopulations;
 		for(int i = 0; i < numPopulations; i++) {
 			data.add(new double[numPoints]);
 		}
@@ -21,7 +21,7 @@ public class Homogeneity {
 		System.out.println("points per population: "+numPoints);
 		for(int i = 0; i < data.size(); i++) {
 			for(int j = 0; j < numPoints; j++) {
-				data.get(i)[j] = d.getAllPoints().get((i*data.size())+j);
+				data.get(i)[j] = d.getAllPoints()[(i*data.size())+j];
 			}
 		}
 		int dof = 0;

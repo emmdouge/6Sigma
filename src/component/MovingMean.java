@@ -18,43 +18,71 @@ public class MovingMean extends GroupingChart {
 	public MovingMean(Data d, int k, double avgRange) throws Exception {
 		this.avgRange = avgRange;
 		this.data = d;
-		d.setType("Moving Mean");
-		yNames = new ArrayList<String>();
-		yNames.add("Mean k = "+k);
-		d.setYNames(yNames);
-		this.numSamples = data.getAllPoints().size()-k;
-		System.out.println(this.numSamples);
 		this.sampleSize = k;
 		this.offset = k;
-		System.out.println("sample size: "+this.sampleSize);
-		System.out.println("num samples: "+this.numSamples);
-		points = new double[this.numSamples];
-		for(int i = 0; i < this.numSamples; i++) {
-			int start = i;
-			int end = (i)+this.sampleSize;
-			double mean = calcPoints(start, end);
-			points[i] = mean;
-			this.processMean += points[i];
-			System.out.println(i+" mm: "+mean+" ("+start+"~"+end+")"+" +avg: "+this.processMean);
+		if(d.getUseCols()) {
+			d.setType("Moving Means");
+			ArrayList<double[]> allLines = new ArrayList<double[]>();
+			for(int x = 0; x < d.getPointsPerRow(); x++) {
+				this.numSamples = data.getCols().get(x).length-k;
+				System.out.println(this.numSamples);
+				System.out.println("sample size: "+this.sampleSize);
+				System.out.println("num samples: "+this.numSamples);
+				double[] points = new double[this.numSamples];
+				for(int i = 0; i < this.numSamples; i++) {
+					int start = i;
+					int end = (i)+this.sampleSize;
+					double mean = calcPoints(data.getCols().get(x), start, end);
+					points[i] = mean;
+	//				this.processMean += points[i];
+	//				System.out.println(i+" mm: "+mean+" ("+start+"~"+end+")"+" +avg: "+this.processMean);
+				}
+				this.processMean = this.processMean/this.numSamples;
+				System.out.println("process mean: "+this.processMean);
+				allLines.add(points);
+			}
+			limits = new ArrayList<Double>();
+			XYSeriesChart.run(d, allLines, limits, d.getColOffsets());
 		}
-		this.processMean = this.processMean/this.numSamples;
-		System.out.println("process mean: "+this.processMean);
-		limits = calcLimits();
-		Collections.sort(limits);
-		ArrayList<double[]> allLines = new ArrayList<double[]>();
-		allLines.add(points);
-		ArrayList<Integer> offsets = new ArrayList<Integer>();
-		offsets.add(this.offset);
-		XYSeriesChart.run(d, allLines, limits, offsets);
+		else {
+			d.setType("Moving Mean");
+			yNames = new ArrayList<String>();
+			yNames.add("Mean k = "+k);
+			d.setYNames(yNames);
+			this.numSamples = data.getAllPoints().length-k;
+			System.out.println(this.numSamples);
+			System.out.println("sample size: "+this.sampleSize);
+			System.out.println("num samples: "+this.numSamples);
+			points = new double[this.numSamples];
+
+			for(int i = 0; i < this.numSamples; i++) {
+				int start = i;
+				int end = (i)+this.sampleSize;
+				double mean = calcPoints(d.getAllPoints(), start, end);
+				points[i] = mean;
+				this.processMean += points[i];
+				System.out.println(i+" mm: "+mean+" ("+start+"~"+end+")"+" +avg: "+this.processMean);
+			}
+			this.processMean = this.processMean/this.numSamples;
+			System.out.println("process mean: "+this.processMean);
+			limits = calcLimits();
+			Collections.sort(limits);
+			ArrayList<double[]> allLines = new ArrayList<double[]>();
+			allLines.add(points);
+			ArrayList<Integer> offsets = new ArrayList<Integer>();
+			offsets.add(this.offset);
+			
+			XYSeriesChart.run(d, allLines, limits, offsets);
+		}
 	}
 	
 	/**
 	 * Calculates the mean for each sample
 	 */
-	public double calcPoints(int start, int end) {
+	public double calcPoints(double[] data, int start, int end) {
 		double sum = 0;
 		for(int i = start; i < end; i++) {
-			sum += this.data.getAllPoints().get(i);
+			sum += data[i];
 		}
 		return sum/(end-start);
 	}

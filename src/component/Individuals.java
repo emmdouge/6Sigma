@@ -17,9 +17,9 @@ public class Individuals extends GroupingChart {
 		yNames = new ArrayList<String>();
 		yNames.add("Individuals");
 		d.setYNames(yNames);
-		double[] points = new double[d.getAllPoints().size()];
+		double[] points = new double[d.getAllPoints().length];
 		for(int i = 0; i < points.length; i++) {
-			points[i] = calcPoints(i, i);
+			points[i] = calcPoints(data.getAllPoints(), i, i);
 		}
 		this.limits = calcLimits();
 		this.points = points;
@@ -39,8 +39,8 @@ public class Individuals extends GroupingChart {
 	}
 
 	@Override
-	public double calcPoints(int start, int end) {
-		return this.data.getAllPoints().get(start);
+	public double calcPoints(double[] data, int start, int end) {
+		return data[start];
 	}
 
 	@Override

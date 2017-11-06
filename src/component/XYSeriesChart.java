@@ -36,7 +36,8 @@ public class XYSeriesChart extends ApplicationFrame {
 		double max = Double.MIN_VALUE;
         final XYSeriesCollection data = new XYSeriesCollection();
 		for(int j = 0; j < datas.size(); j++) {
-	        XYSeries series = new XYSeries(d.getYNames().get(j));
+			String lineName = d.getUseCols()? d.getColNames()[j]: d.getYNames().get(j); 
+	        XYSeries series = new XYSeries(lineName);
 	        int offset = offsets.get(j);
 	        for(int i = 1+offset; i < datas.get(j).length+1+offsets.get(j); i++) {
 	        	

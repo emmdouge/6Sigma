@@ -12,14 +12,24 @@ public class Data {
 	private String[] colNames;
 	private int numRows;
 	private int pointsPerRow;
-	private ArrayList<Double> allPoints;
+	private double[] allPoints;
 	private ArrayList<double[]> cols;
 	private ArrayList<Integer> colOffsets;
 	private ArrayList<String> yNames;
 	private String type;
+	private boolean useCols;
 	
 	public Data(String filename) throws IOException {
+		this(filename, false);
+	}
+	
+	public Data(String filename, boolean useCols) throws IOException {
 		this.filename = filename;
+		this.useCols = useCols;
+	}
+	
+	public boolean getUseCols() {
+		return this.useCols;
 	}
 	
 	public String getFilename() {
@@ -83,12 +93,12 @@ public class Data {
 		return this.pointsPerRow;
 	}
 	
-	public ArrayList<Double> getAllPoints() {
+	public double[] getAllPoints() {
 		return this.allPoints;
 	}
 	
-	public void setAllPoints(ArrayList<Double> points) {
-		this.allPoints = points;
+	public void setAllPoints(double[] allPoints) {
+		this.allPoints = allPoints;
 	}
 
 	public void setYNames(ArrayList<String> yNames) {

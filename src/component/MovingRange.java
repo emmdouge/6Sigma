@@ -20,7 +20,7 @@ public class MovingRange extends GroupingChart {
 		yNames = new ArrayList<String>();
 		yNames.add("Range k = "+k);
 		d.setYNames(yNames);
-		this.numSamples = data.getAllPoints().size()-k;
+		this.numSamples = data.getAllPoints().length-k;
 		System.out.println(this.numSamples);
 		this.sampleSize = k;
 		this.offset = k;
@@ -30,7 +30,7 @@ public class MovingRange extends GroupingChart {
 		for(int i = 0; i < this.numSamples; i++) {
 			int start = i;
 			int end = (i)+this.sampleSize;
-			double range = calcPoints(start, end);
+			double range = calcPoints(data.getAllPoints(), start, end);
 			points[i] = range;
 			this.avgRange += points[i];
 			System.out.println(i+" mr: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
@@ -49,12 +49,12 @@ public class MovingRange extends GroupingChart {
 	/**
 	 * Calculates the range for each sample
 	 */
-	public double calcPoints(int start, int end) {
+	public double calcPoints(double[] data, int start, int end) {
 		double max = Double.MIN_VALUE;
 		double min = Double.MAX_VALUE;
 		
 		for(int i = start; i < end; i++) {
-			double currentPoint = this.data.getAllPoints().get(i);
+			double currentPoint = data[i];
 			if(currentPoint > max) {
 				max = currentPoint;
 			}

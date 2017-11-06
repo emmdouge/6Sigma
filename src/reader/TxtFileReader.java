@@ -11,17 +11,31 @@ import java.util.ArrayList;
  *
  */
 public class TxtFileReader {
+	public static Data readFile(String filename) throws IOException
+	{
+		filename = "data/"+filename+".csv";
+		
+		Data d = new Data(filename, false);
+		
+		readNumRows(d);
+		readPointsPerRow(d);
+		readData(d);
+		readProps(d);
+
+		return d;
+	}
+	
 	/**
 	 * Reads in a file and outputs the data in it
 	 * @param filename the file containing the data
 	 * @return an array of the line separated data
 	 * @throws IOException if file not found
 	 */
-	public static Data readFile(String filename) throws IOException
+	public static Data readFile(String filename, boolean useCols) throws IOException
 	{
 		filename = "data/"+filename+".csv";
 		
-		Data d = new Data(filename);
+		Data d = new Data(filename, useCols);
 		
 		readNumRows(d);
 		readPointsPerRow(d);
@@ -45,8 +59,12 @@ public class TxtFileReader {
 				points.add(Double.parseDouble(data[i]));
 			}
 		}
-		
-		d.setAllPoints(points);
+
+		double[] allPoints = new double[points.size()];
+		for(int a = 0; a < allPoints.length; a++) {
+			allPoints[a] = points.get(a);
+		}
+		d.setAllPoints(allPoints);
 		
 		System.out.println(points.size());
 
