@@ -18,13 +18,11 @@ public class TestIndivMovMean {
 
 	Data d1;
 	Data d2;
-	Data d3;
 	
 	@Before
 	public void setup() throws IOException {
 		d1 = TxtFileReader.readFile("shift");
-		d2 = TxtFileReader.readFile("NewTestsPassing");;
-		d3 = TxtFileReader.readFile("cyclo2");
+		d2 = TxtFileReader.readFile("NewTestsPassing");
 	}
 	
 	@Test
@@ -33,5 +31,4 @@ public class TestIndivMovMean {
 		IndivMovMean imr = new IndivMovMean(k, d1);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
-
 }
