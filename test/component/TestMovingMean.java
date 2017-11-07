@@ -38,21 +38,16 @@ public class TestMovingMean {
 		int k = 5;
 		MovingRange r = new MovingRange(shiftData, k);
 		MovingMean mm = new MovingMean(shiftData, k, r.getAvgRange());
-		assertEquals(211, mm.getPoints().length);
+		assertEquals(212, mm.getPoints().length);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
-	
-	@Test(expected = Exception.class)
-	public void testSampleSizeTooBigForShiftData() throws Exception {
-		MovingMean mm = new MovingMean(shiftData, 13, new MovingRange(shiftData, 13).getAvgRange());
-	}	
 	
 	@Test
 	public void testNewTestsPassingData() throws Exception {
 		int k = 5;
 		MovingRange r = new MovingRange(shiftData, k);
 		MovingMean mm = new MovingMean(shiftData, k, r.getAvgRange());
-		assertEquals(211, mm.getPoints().length);
+		assertEquals(212, mm.getPoints().length);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}	
 	
@@ -62,6 +57,11 @@ public class TestMovingMean {
 		MovingMean mm = new MovingMean(cyclo, k, 0);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
+	
+	@Test(expected = Exception.class)
+	public void testSampleSizeTooBigForShiftData() throws Exception {
+		MovingMean mm = new MovingMean(shiftData, 13, new MovingRange(shiftData, 13).getAvgRange());
+	}	
 
 //	@After
 //	public void confirm() {

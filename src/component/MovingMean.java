@@ -53,7 +53,7 @@ public class MovingMean extends GroupingChart {
 			yNames = new ArrayList<String>();
 			yNames.add("Mean k = "+k);
 			d.setYNames(yNames);
-			this.numSamples = data.getAllPoints().length-k;
+			this.numSamples = data.getAllPoints().length-this.sampleSize;
 			System.out.println(this.numSamples);
 			System.out.println("sample size: "+this.sampleSize);
 			System.out.println("num samples: "+this.numSamples);

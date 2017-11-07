@@ -73,15 +73,37 @@ public class XYSeriesChart extends ApplicationFrame {
 		
 		String[] xAxis = new String[maxNumPoints+d.getSampleSize()];
 		System.out.println("x: "+xAxis.length+" d: "+d.getXAxis().length);
-        if(xAxis.length >= maxNumPoints) {
-        	System.out.println(xAxis.length);
+        if((xAxis.length > maxNumPoints || xAxis.length-1 > d.getXAxis().length) && (!d.getType().contains("Moving") && !d.getType().contains("CUSUM"))) {
+    		xAxis = new String[maxNumPoints+d.getSampleSize()];
+        	System.out.println(xAxis.length+" f");
         	for(int i = 1; i < xAxis.length+1; i++) {
         		xAxis[i-1] = i+"";
         	}
         }
         else {
-            chart.getXYPlot().getDomainAxis().setLowerBound(1);
-        	xAxis = d.getXAxis(maxNumPoints);
+        	if(d.getType().contains("CUSUM")) {
+        		String[] xAxis2 = new String[maxNumPoints+d.getSampleSize()];
+        		xAxis2[0] = "";
+            	for(int i = 1; i < xAxis2.length; i++) {
+            		xAxis2[i] = d.getXAxis()[i-1];
+            	}
+            	System.out.println(xAxis.length+" cusum");
+            	xAxis = xAxis2;
+        	}
+        	else if (d.getXAxis().length == xAxis.length){
+        		xAxis = new String[d.getXAxis().length];
+            	System.out.println(xAxis.length+" eq");
+            	for(int i = 0; i < xAxis.length; i++) {
+            		xAxis[i] = d.getXAxis()[i]+"";
+            	}
+        	}
+        	else {
+        		xAxis = new String[maxNumPoints];
+            	System.out.println(xAxis.length+" lt");
+            	for(int i = 0; i < xAxis.length; i++) {
+            		xAxis[i] = (i+1)+"";
+            	}
+        	}
         }
 		if(!limits.isEmpty()) {
 			min = min > limits.get(0)? limits.get(0): min;
