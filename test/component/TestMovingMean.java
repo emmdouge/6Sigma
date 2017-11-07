@@ -58,7 +58,6 @@ public class TestMovingMean {
 	@Test
 	public void testCycloData() throws Exception {
 		int k = 5;
-		MovingRange r = new MovingRange(cyclo, k);
 		MovingMean mm = new MovingMean(cyclo, k, 0);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}

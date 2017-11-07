@@ -16,14 +16,17 @@ public class Range extends GroupingChart {
 	public Range(int rowsPerSample, Data d) throws Exception {
 		this.data = d;
 		if(d.getUseCols()) {
-			d.setType("Ranges");
+			d.setType("Ranges k = "+rowsPerSample);
+			d.setSampleSize(rowsPerSample);
+			this.sampleSize = rowsPerSample-1;
 			ArrayList<double[]> allLines = new ArrayList<double[]>();
+			ArrayList<Integer> colOffsets = new ArrayList<Integer>();
 			for(int x = 0; x < d.getPointsPerRow(); x++) {
-				double check = data.getCols().get(x).length % rowsPerSample;
-				this.numSamples = check == 0? data.getCols().get(x).length/rowsPerSample: ((int)data.getCols().get(x).length/rowsPerSample)-1;
+				colOffsets.add(d.getColOffsets().get(x)+this.sampleSize);
+				double check = data.getCols().get(x).length % this.sampleSize;
+				this.numSamples = check == 0? data.getCols().get(x).length/this.sampleSize-1: ((int)data.getCols().get(x).length/this.sampleSize)-1;
 				//rowsPerSample isn't actually rowsPerSample when its using cols
 				//its actually the sample size
-				this.sampleSize = rowsPerSample;
 				System.out.println(this.numSamples);
 				System.out.println("sample size: "+this.sampleSize);
 				System.out.println("num samples: "+this.numSamples);
@@ -41,10 +44,11 @@ public class Range extends GroupingChart {
 				allLines.add(points);
 			}
 			limits = new ArrayList<Double>();
-			XYSeriesChart.run(d, allLines, limits, d.getColOffsets());
+			XYSeriesChart.run(d, allLines, limits, colOffsets);
 		}
 		else {
-			d.setType("Range");
+			d.setType("Range k = "+rowsPerSample);
+			d.setSampleSize(0);
 			yNames = new ArrayList<String>();
 			yNames.add("Range");
 			d.setYNames(yNames);
@@ -65,7 +69,7 @@ public class Range extends GroupingChart {
 			}
 			this.avgRange = this.avgRange/this.numSamples;
 			System.out.println("avg range: "+this.avgRange);
-			limits = calcLimits();
+			limits = calcLimits(0);
 			Collections.sort(limits);
 			ArrayList<double[]> allLines = new ArrayList<double[]>();
 			allLines.add(points);
@@ -99,9 +103,11 @@ public class Range extends GroupingChart {
 	}
 
 	
-	protected ArrayList<Double> calcLimits() throws Exception {
+	protected ArrayList<Double> calcLimits(int k) throws Exception {
 		ArrayList<Double> limits = new ArrayList<Double>();
 		switch (this.sampleSize) {
+			case 0:
+				return new ArrayList<Double>();
 			case 1:
 				throw new Exception("SAMPLE SIZE TOO SMALL!");
 			case 2: 

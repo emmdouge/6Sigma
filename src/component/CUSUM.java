@@ -16,17 +16,18 @@ public class CUSUM extends GroupingChart {
 	public CUSUM(Data d) throws Exception {
 		this.data = d;
 		d.setType("CUSUM");
+		d.setSampleSize(0);
 		yNames = new ArrayList<String>();
 		yNames.add("CUSUM");
 		d.setYNames(yNames);
-		double[] points = new double[d.getAllPoints().length];
+		double[] points = new double[d.getAllPoints().length+1];
 		//numBootstraps have to at least be the number of points to calc diffMaxAmongBootstraps and not fail
-		ChangePointAnalyzer c = new ChangePointAnalyzer(d.getAllPoints().clone(), points.length, .05);
-		Bootstrap b = c.getAnalysis(c.getAllAnalysis().size()-1).calcBootstraps(0, points.length).get(0);
-		for(int i = 0; i < points.length; i++) {
+		ChangePointAnalyzer c = new ChangePointAnalyzer(d.getAllPoints().clone(), points.length-1, .05);
+		Bootstrap b = c.getAnalysis(c.getAllAnalysis().size()-1).calcBootstraps(0, points.length-1).get(0);
+		for(int i = 0; i <= points.length-1; i++) {
 			points[i] = b.getPoint(i).getCusum();
 		}
-		this.limits = calcLimits();
+		this.limits = calcLimits(0);
 		ArrayList<double[]> allLines = new ArrayList<double[]>();
 		allLines.add(points);
 		ArrayList<Integer> offsets = new ArrayList<Integer>();
@@ -48,7 +49,7 @@ public class CUSUM extends GroupingChart {
 	}
 
 	@Override
-	protected ArrayList<Double> calcLimits() throws Exception {
+	protected ArrayList<Double> calcLimits(int k) throws Exception {
 		return new ArrayList<Double>();
 	}
 }

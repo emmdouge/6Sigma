@@ -15,7 +15,7 @@ abstract public class  GroupingChart {
 	protected int offset = 0;
 	
 	abstract public double calcPoints(double[] data, int start, int end);
-	abstract protected ArrayList<Double> calcLimits() throws Exception;
+	abstract protected ArrayList<Double> calcLimits(int k) throws Exception;
 	
 	public double[] getPoints() {
 		return this.points;

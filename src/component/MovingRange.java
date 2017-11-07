@@ -16,15 +16,16 @@ public class MovingRange extends GroupingChart {
 	
 	public MovingRange(Data d, int k) throws Exception {
 		this.data = d;
-		this.sampleSize = k;
-		this.offset = k;
+		this.sampleSize = k-1;
+		d.setSampleSize(this.sampleSize);
+		this.offset = k-1;
 		if(d.getUseCols()) {
-			d.setType("Moving Ranges");
+			d.setType("Moving Ranges k ="+k);
 			ArrayList<double[]> allLines = new ArrayList<double[]>();
 			ArrayList<Integer> colOffsets = new ArrayList<Integer>();
 			for(int x = 0; x < d.getPointsPerRow(); x++) {
 				colOffsets.add(d.getColOffsets().get(x)+this.sampleSize);
-				this.numSamples = data.getCols().get(x).length-k;
+				this.numSamples = data.getCols().get(x).length-this.sampleSize;
 				System.out.println(this.numSamples);
 				System.out.println("sample size: "+this.sampleSize);
 				System.out.println("num samples: "+this.numSamples);
@@ -46,7 +47,7 @@ public class MovingRange extends GroupingChart {
 			XYSeriesChart.run(d, allLines, limits, d.getColOffsets());
 		}
 		else {
-			d.setType("Moving Range");
+			d.setType("Moving Range k = "+k);
 			yNames = new ArrayList<String>();
 			yNames.add("Range k = "+k);
 			d.setYNames(yNames);
@@ -65,7 +66,7 @@ public class MovingRange extends GroupingChart {
 			}
 			this.avgRange = this.avgRange/this.numSamples;
 			System.out.println("avg range: "+this.avgRange);
-			limits = calcLimits();
+			limits = calcLimits(k);
 			Collections.sort(limits);
 			ArrayList<double[]> allLines = new ArrayList<double[]>();
 			allLines.add(points);
@@ -94,9 +95,9 @@ public class MovingRange extends GroupingChart {
 		return Math.abs(max-min);
 	}
 	
-	protected ArrayList<Double> calcLimits() throws Exception {
+	protected ArrayList<Double> calcLimits(int k) throws Exception {
 		ArrayList<Double> limits = new ArrayList<Double>();
-		switch (this.sampleSize) {
+		switch (k) {
 			case 1:
 				throw new Exception("SAMPLE SIZE TOO SMALL!");
 			case 2: 

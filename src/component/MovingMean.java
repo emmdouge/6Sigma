@@ -12,21 +12,22 @@ public class MovingMean extends GroupingChart {
 	private double avgRange;
 	
 	public MovingMean(Data d, double avgRange) throws Exception {
-		this(d, 2, avgRange);
+		this(d, 3, avgRange);
 	}
 	
 	public MovingMean(Data d, int k, double avgRange) throws Exception {
 		this.avgRange = avgRange;
 		this.data = d;
-		this.sampleSize = k;
-		this.offset = k;
+		this.sampleSize = k-1;
+		d.setSampleSize(this.sampleSize);
+		this.offset = k-1;
 		if(d.getUseCols()) {
 			d.setType("Moving Means k = "+k);
 			ArrayList<Integer> colOffsets = new ArrayList<Integer>();
 			ArrayList<double[]> allLines = new ArrayList<double[]>();
 			for(int x = 0; x < d.getPointsPerRow(); x++) {
 				colOffsets.add(d.getColOffsets().get(x)+this.sampleSize);
-				this.numSamples = data.getCols().get(x).length-k;
+				this.numSamples = data.getCols().get(x).length-this.sampleSize;
 				System.out.println(this.numSamples);
 				System.out.println("sample size: "+this.sampleSize);
 				System.out.println("num samples: "+this.numSamples);
@@ -48,7 +49,7 @@ public class MovingMean extends GroupingChart {
 			XYSeriesChart.run(d, allLines, limits, d.getColOffsets());
 		}
 		else {
-			d.setType("Moving Mean");
+			d.setType("Moving Mean k ="+k);
 			yNames = new ArrayList<String>();
 			yNames.add("Mean k = "+k);
 			d.setYNames(yNames);
@@ -57,7 +58,6 @@ public class MovingMean extends GroupingChart {
 			System.out.println("sample size: "+this.sampleSize);
 			System.out.println("num samples: "+this.numSamples);
 			points = new double[this.numSamples];
-
 			for(int i = 0; i < this.numSamples; i++) {
 				int start = i;
 				int end = (i)+this.sampleSize;
@@ -68,7 +68,7 @@ public class MovingMean extends GroupingChart {
 			}
 			this.processMean = this.processMean/this.numSamples;
 			System.out.println("process mean: "+this.processMean);
-			limits = calcLimits();
+			limits = calcLimits(k);
 			Collections.sort(limits);
 			ArrayList<double[]> allLines = new ArrayList<double[]>();
 			allLines.add(points);
@@ -90,7 +90,7 @@ public class MovingMean extends GroupingChart {
 		return sum/(end-start);
 	}
 	
-	protected ArrayList<Double> calcLimits() throws Exception {
+	protected ArrayList<Double> calcLimits(int k) throws Exception {
 		ArrayList<Double> limits = new ArrayList<Double>();
 		double a2 = 0;
 		switch (this.sampleSize) {

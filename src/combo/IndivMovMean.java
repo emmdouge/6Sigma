@@ -12,7 +12,7 @@ import reader.Data;
 
 public class IndivMovMean {
 	public IndivMovMean(Data d) throws Exception {
-		this(2, d);
+		this(3, d);
 	}
 	
 	public IndivMovMean(int k, Data d) throws Exception {

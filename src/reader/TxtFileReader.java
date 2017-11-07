@@ -13,16 +13,7 @@ import java.util.ArrayList;
 public class TxtFileReader {
 	public static Data readFile(String filename) throws IOException
 	{
-		filename = "data/"+filename+".csv";
-		
-		Data d = new Data(filename, false);
-		
-		readNumRows(d);
-		readPointsPerRow(d);
-		readData(d);
-		readProps(d);
-
-		return d;
+		return readFile(filename, false);
 	}
 	
 	/**
@@ -81,16 +72,21 @@ public class TxtFileReader {
 		pointBR = new BufferedReader(pointR);
 		currentLine = null;
 		pointBR.readLine();
+		String[] xAxis = new String[d.getNumRows()];
 		for(int i = 0; i < d.getNumRows(); i++) {
 			String[] row = pointBR.readLine().split(",");
 			int offset = 0;
 			for(int j = 0; j < d.getPointsPerRow(); j++) {
+				if(j == 0) {
+					xAxis[i] = row[0];
+				}
 				if(!row[j+1].equals("NULL")) {
 					array[i][j] = Double.parseDouble(row[j+1]);
 				}
 			}
 			System.out.println();
 		}
+		d.setXAxis(xAxis);
 		d.setData(array);
 		ArrayList<Integer> colOffsets = new ArrayList<Integer>();
 		ArrayList<double[]> cols = new ArrayList<double[]>();

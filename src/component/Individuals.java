@@ -21,7 +21,7 @@ public class Individuals extends GroupingChart {
 		for(int i = 0; i < points.length; i++) {
 			points[i] = calcPoints(data.getAllPoints(), i, i);
 		}
-		this.limits = calcLimits();
+		this.limits = calcLimits(0);
 		this.points = points;
 		ArrayList<double[]> allLines = new ArrayList<double[]>();
 		allLines.add(points);
@@ -44,7 +44,7 @@ public class Individuals extends GroupingChart {
 	}
 
 	@Override
-	protected ArrayList<Double> calcLimits() throws Exception {
+	protected ArrayList<Double> calcLimits(int k) throws Exception {
 		return new ArrayList<Double>();
 	}
 }

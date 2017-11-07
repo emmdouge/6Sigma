@@ -38,7 +38,6 @@ public class TestMovingRange {
 	@Test(expected = Exception.class)
 	public void testSampleSizeTooBigForD1() throws Exception {
 		MovingRange r = new MovingRange(d1, 13);
-		assertEquals(18, r.getPoints().length);
 	}	
 	
 	@Test
