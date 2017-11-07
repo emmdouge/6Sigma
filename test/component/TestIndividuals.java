@@ -16,6 +16,7 @@ import component.Range;
 import component.XBar;
 import reader.Data;
 import reader.TxtFileReader;
+import shared.Constant;
 
 public class TestIndividuals {
 
@@ -24,8 +25,8 @@ public class TestIndividuals {
 	
 	@Before
 	public void setup() throws Exception {
-		shiftData = TxtFileReader.readFile("shift");
-		newTestsPassingData = TxtFileReader.readFile("NewTestsPassing");
+		shiftData = TxtFileReader.readFile(Constant.TEST_SHIFT);
+		newTestsPassingData = TxtFileReader.readFile(Constant.NEW_TESTS_PASSING);
 	}
 	
 	@Test

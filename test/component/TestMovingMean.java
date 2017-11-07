@@ -18,6 +18,7 @@ import component.Range;
 import component.XBar;
 import reader.Data;
 import reader.TxtFileReader;
+import shared.Constant;
 
 public class TestMovingMean {
 
@@ -27,9 +28,9 @@ public class TestMovingMean {
 	
 	@Before
 	public void setup() throws Exception {
-		shiftData = TxtFileReader.readFile("shift");
-		newTestsPassingData = TxtFileReader.readFile("NewTestsPassing");
-		cyclo = TxtFileReader.readFile("cyclo2", true);
+		shiftData = TxtFileReader.readFile(Constant.TEST_SHIFT);
+		newTestsPassingData = TxtFileReader.readFile(Constant.NEW_TESTS_PASSING);
+		cyclo = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
 	}
 	
 	@Test

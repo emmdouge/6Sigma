@@ -13,6 +13,7 @@ import combo.IndivMovMean;
 import component.MovingRange;
 import reader.Data;
 import reader.TxtFileReader;
+import shared.Constant;
 
 public class TestIndivMovMean {
 
@@ -21,8 +22,8 @@ public class TestIndivMovMean {
 	
 	@Before
 	public void setup() throws IOException {
-		d1 = TxtFileReader.readFile("shift");
-		d2 = TxtFileReader.readFile("NewTestsPassing");
+		d1 = TxtFileReader.readFile(Constant.TEST_SHIFT);
+		d2 = TxtFileReader.readFile(Constant.NEW_TESTS_PASSING);
 	}
 	
 	@Test

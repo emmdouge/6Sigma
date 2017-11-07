@@ -16,7 +16,7 @@ public class TestAnalysis {
 	
 	@Before
 	public void init() throws IOException {
-		Data lab2 = TxtFileReader.readFile(Constant.FILENAME);
+		Data lab2 = TxtFileReader.readFile(Constant.TEST_LAB2);
 		analyzer = new ChangePointAnalyzer(lab2.getAllPoints(), Constant.NUM_BOOTSTRAP, Constant.CONFIDENCE);
 	}
 	

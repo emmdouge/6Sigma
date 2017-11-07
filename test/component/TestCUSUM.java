@@ -16,6 +16,7 @@ import component.Range;
 import component.XBar;
 import reader.Data;
 import reader.TxtFileReader;
+import shared.Constant;
 
 public class TestCUSUM {
 
@@ -24,8 +25,8 @@ public class TestCUSUM {
 	
 	@Before
 	public void setup() throws Exception {
-		lab2Data = TxtFileReader.readFile("lab2");
-		newTestsPassingData = TxtFileReader.readFile("NewTestsPassing");
+		lab2Data = TxtFileReader.readFile(Constant.TEST_LAB2);
+		newTestsPassingData = TxtFileReader.readFile(Constant.NEW_TESTS_PASSING);
 	}
 	
 	@Test

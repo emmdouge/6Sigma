@@ -15,6 +15,7 @@ import component.Range;
 import component.XBar;
 import reader.Data;
 import reader.TxtFileReader;
+import shared.Constant;
 
 public class TestXBar {
 
@@ -25,10 +26,10 @@ public class TestXBar {
 	
 	@Before
 	public void setup() throws Exception {
-		shiftData = TxtFileReader.readFile("shift");
-		newTestsPassingData = TxtFileReader.readFile("NewTestsPassing");
+		shiftData = TxtFileReader.readFile(Constant.TEST_SHIFT);
+		newTestsPassingData = TxtFileReader.readFile(Constant.NEW_TESTS_PASSING);
 		r = new Range(shiftData);
-		cyclo = TxtFileReader.readFile("cyclo2", true);
+		cyclo = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
 	}
 	
 	@Test

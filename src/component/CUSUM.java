@@ -7,6 +7,7 @@ import org.jfree.ui.RefineryUtilities;
 import analyzer.Bootstrap;
 import analyzer.ChangePointAnalyzer;
 import reader.Data;
+import shared.Constant;
 
 public class CUSUM extends GroupingChart {
 
@@ -22,7 +23,7 @@ public class CUSUM extends GroupingChart {
 		d.setYNames(yNames);
 		double[] points = new double[d.getAllPoints().length+1];
 		//numBootstraps have to at least be the number of points to calc diffMaxAmongBootstraps and not fail
-		ChangePointAnalyzer c = new ChangePointAnalyzer(d.getAllPoints().clone(), points.length-1, .05);
+		ChangePointAnalyzer c = new ChangePointAnalyzer(d.getAllPoints().clone(), Constant.NUM_BOOTSTRAP, Constant.CONFIDENCE);
 		Bootstrap b = c.getAnalysis(c.getAllAnalysis().size()-1).calcBootstraps(0, points.length-1).get(0);
 		for(int i = 0; i <= points.length-1; i++) {
 			points[i] = b.getPoint(i).getCusum();

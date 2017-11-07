@@ -3,6 +3,7 @@ package component;
 import java.util.ArrayList;
 
 import reader.Data;
+import shared.Constant;
 import umontreal.iro.lecuyer.probdist.ChiSquareDist;;
 
 public class Homogeneity {
@@ -44,7 +45,7 @@ public class Homogeneity {
 		double correctionFactor = 1+(1/(3*(nm1)))*(divSum)-(1/dof);
 		double correctedTestStat = testStatistic/correctionFactor;
 		double p = ChiSquareDist.barF(nm1, 2, correctedTestStat);
-		if(p < .05) {
+		if(p < Constant.CONFIDENCE) {
 			throw new Exception("NOT HOMOGENEOUS!");
 		}
 	}

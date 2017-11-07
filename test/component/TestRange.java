@@ -13,6 +13,7 @@ import org.junit.Test;
 import component.Range;
 import reader.Data;
 import reader.TxtFileReader;
+import shared.Constant;
 
 public class TestRange {
 
@@ -22,9 +23,9 @@ public class TestRange {
 	
 	@Before
 	public void setup() throws IOException {
-		d1 = TxtFileReader.readFile("shift");
-		d2 = TxtFileReader.readFile("NewTestsPassing");
-		cyclo = TxtFileReader.readFile("cyclo2", true);
+		d1 = TxtFileReader.readFile(Constant.TEST_SHIFT);
+		d2 = TxtFileReader.readFile(Constant.NEW_TESTS_PASSING);
+		cyclo = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
 	}
 	
 	@Test
