@@ -126,11 +126,9 @@ public class MovingMean extends GroupingChart {
 			case  11: 
 				a2 = .29;
 				break;
-			case  12: 
+			default: 
 				a2 = .27;
 				break;
-			default:
-				throw new Exception("SAMPLE SIZE TOO BIG!");
 		}
 		limits.add(this.processMean+((2.0/3.0)*this.avgRange*a2));
 		limits.add(this.processMean-((2.0/3.0)*this.avgRange*a2));

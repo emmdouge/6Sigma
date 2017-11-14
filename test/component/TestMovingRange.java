@@ -36,10 +36,10 @@ public class TestMovingRange {
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	
-	@Test(expected = Exception.class)
-	public void testSampleSizeTooBigForD1() throws Exception {
-		MovingRange r = new MovingRange(d1, 13);
-	}	
+//	@Test(expected = Exception.class)
+//	public void testSampleSizeTooBigForD1() throws Exception {
+//		MovingRange r = new MovingRange(d1, 13);
+//	}	
 	
 	@Test
 	public void testD2() throws Exception {

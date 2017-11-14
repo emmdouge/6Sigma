@@ -57,6 +57,7 @@ public class Range extends GroupingChart {
 			this.sampleSize = d.getPointsPerRow()*rowsPerSample;
 			System.out.println("sample size: "+this.sampleSize);
 			System.out.println("num samples: "+this.numSamples);
+			if(rowsPerSample == 1)
 			Homogeneity.test(d);
 			points = new double[this.numSamples];
 			for(int i = 0; i < this.numSamples; i++) {
@@ -170,14 +171,13 @@ public class Range extends GroupingChart {
 				limits.add(this.avgRange*.56);
 				limits.add(this.avgRange*1.53);
 				return limits;
-			case  12: 
+			default: 
 				limits.add(this.avgRange*.4);
 				limits.add(this.avgRange*1.87);
 				limits.add(this.avgRange*.58);
 				limits.add(this.avgRange*1.51);
 				return limits;
-			default:
-				throw new Exception("SAMPLE SIZE TOO BIG!");
+			
 		}
 	}
 }

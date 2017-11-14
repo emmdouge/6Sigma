@@ -160,14 +160,12 @@ public class MovingRange extends GroupingChart {
 				limits.add(this.avgRange*.56);
 				limits.add(this.avgRange*1.53);
 				return limits;
-			case  12: 
+			default: 
 				limits.add(this.avgRange*.4);
 				limits.add(this.avgRange*1.87);
 				limits.add(this.avgRange*.58);
 				limits.add(this.avgRange*1.51);
 				return limits;
-			default:
-				throw new Exception("SAMPLE SIZE TOO BIG!");
 		}
 	}
 

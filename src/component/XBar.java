@@ -60,6 +60,7 @@ public class XBar extends GroupingChart {
 			this.sampleSize = d.getPointsPerRow()*rowsPerSample;
 			System.out.println("sample size: "+this.sampleSize);
 			System.out.println("num samples: "+this.numSamples);
+			if(rowsPerSample == 1)
 			Homogeneity.test(d);
 			points = new double[this.numSamples];
 			for(int i = 0; i < this.numSamples; i++) {

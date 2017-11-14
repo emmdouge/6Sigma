@@ -58,10 +58,10 @@ public class TestMovingMean {
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	
-	@Test(expected = Exception.class)
-	public void testSampleSizeTooBigForShiftData() throws Exception {
-		MovingMean mm = new MovingMean(shiftData, 13, new MovingRange(shiftData, 13).getAvgRange());
-	}	
+//	@Test(expected = Exception.class)
+//	public void testSampleSizeTooBigForShiftData() throws Exception {
+//		MovingMean mm = new MovingMean(shiftData, 13, new MovingRange(shiftData, 13).getAvgRange());
+//	}	
 
 //	@After
 //	public void confirm() {
