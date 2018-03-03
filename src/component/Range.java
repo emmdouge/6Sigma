@@ -23,8 +23,8 @@ public class Range extends GroupingChart {
 			ArrayList<Integer> colOffsets = new ArrayList<Integer>();
 			for(int x = 0; x < d.getPointsPerRow(); x++) {
 				colOffsets.add(d.getColOffsets().get(x)+this.sampleSize);
-				double check = data.getCols().get(x).length % this.sampleSize;
-				this.numSamples = check == 0? data.getCols().get(x).length/this.sampleSize-1: ((int)data.getCols().get(x).length/this.sampleSize)-1;
+				int check = data.getCols().get(x).length % this.sampleSize;
+				this.numSamples = check == 0? data.getCols().get(x).length/this.sampleSize: ((int)data.getCols().get(x).length/this.sampleSize);
 				//rowsPerSample isn't actually rowsPerSample when its using cols
 				//its actually the sample size
 				System.out.println(this.numSamples);
@@ -38,6 +38,9 @@ public class Range extends GroupingChart {
 					points[i] = range;
 					this.avgRange += points[i];
 					System.out.println(i+" mr: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
+				}
+				if(check == 0) {
+					d.cutoff();
 				}
 				this.avgRange = this.avgRange/this.numSamples;
 				System.out.println("avg range: "+this.avgRange);

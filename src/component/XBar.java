@@ -25,10 +25,8 @@ public class XBar extends GroupingChart {
 			ArrayList<Integer> colOffsets = new ArrayList<Integer>();
 			for(int x = 0; x < d.getPointsPerRow(); x++) {
 				colOffsets.add(d.getColOffsets().get(x)+this.sampleSize);
-				double check = data.getCols().get(x).length % this.sampleSize;
+				int check = data.getCols().get(x).length % this.sampleSize;
 				this.numSamples = check == 0? data.getCols().get(x).length/this.sampleSize: ((int)data.getCols().get(x).length/this.sampleSize);
-				//rowsPerSample isn't actually rowsPerSample when its using cols
-				//its actually the sample size
 				System.out.println(this.numSamples);
 				System.out.println("sample size: "+this.sampleSize);
 				System.out.println("num samples: "+this.numSamples);
@@ -40,6 +38,9 @@ public class XBar extends GroupingChart {
 					points[i] = mean;
 					this.processMean += points[i];
 					System.out.println(i+" m: "+mean+" ("+start+"~"+end+")"+" +avg: "+this.processMean);
+				}
+				if(check == 0) {
+					d.cutoff();
 				}
 				this.processMean = this.processMean/this.numSamples;
 				System.out.println("process mean: "+this.processMean);
@@ -136,7 +137,7 @@ public class XBar extends GroupingChart {
 				a2 = .27;
 				break;
 			default:
-				throw new Exception("SAMPLE SIZE TOO BIG!");
+				//throw new Exception("SAMPLE SIZE TOO BIG!");
 		}
 		limits.add(this.processMean+((2.0/3.0)*this.avgRange*a2));
 		limits.add(this.processMean-((2.0/3.0)*this.avgRange*a2));

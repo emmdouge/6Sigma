@@ -42,6 +42,10 @@ public class XYSeriesChart extends ApplicationFrame {
 		for(int j = 0; j < datas.size(); j++) {
 			if(maxNumPoints < datas.get(j).length) {
 				maxNumPoints = datas.get(j).length;
+				if(d.getCutFlag()) {
+					System.out.println("CUTOFF");
+					maxNumPoints--;
+				}
 			}
 			String lineName = d.getUseCols()? d.getColNames()[j]: d.getYNames().get(j); 
 	        XYSeries series = new XYSeries(lineName);

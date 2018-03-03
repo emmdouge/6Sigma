@@ -20,6 +20,7 @@ public class Data {
 	private String[] xAxis;
 	private String type;
 	private boolean useCols;
+	private boolean cutoff;
 	private int sampleSize;
 	
 	public Data(String filename) throws IOException {
@@ -27,8 +28,13 @@ public class Data {
 	}
 	
 	public Data(String filename, boolean useCols) throws IOException {
+		this(filename, useCols, false);
+	}
+	
+	public Data(String filename, boolean useCols, boolean cutoff) throws IOException {
 		this.filename = filename;
 		this.useCols = useCols;
+		this.cutoff = cutoff;
 	}
 	
 	public boolean getUseCols() {
@@ -148,5 +154,13 @@ public class Data {
 
 	public int getSampleSize() {
 		return this.sampleSize;
+	}
+
+	public boolean getCutFlag() {
+		return this.cutoff;
+	}
+
+	public void cutoff() {
+		this.cutoff = true;
 	}
 }
