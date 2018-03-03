@@ -20,8 +20,6 @@ public class MovingMean extends GroupingChart {
 		  this.avgRange = avgRange; 
 		  this.data = d; 
 		  this.sampleSize = k; 
-		  d.setSampleSize(this.sampleSize-1); 
-		  this.offset = k-1; 
 	      d.setType("Moving Means k = "+k); 
 	      ArrayList<Integer> colOffsets = new ArrayList<Integer>(); 
 	      ArrayList<double[]> allLines = new ArrayList<double[]>(); 
