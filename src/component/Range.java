@@ -50,12 +50,12 @@ public class Range extends GroupingChart {
 			XYSeriesChart.run(d, allLines, limits, colOffsets);
 		}
 		else {
-			d.setType("Range k = "+rowsPerSample);
 			d.setSampleSize(0);
 			yNames = new ArrayList<String>();
 			yNames.add("Range");
 			d.setYNames(yNames);
 			this.sampleSize = d.getPointsPerRow()*rowsPerSample;
+			d.setType("Range k = "+this.sampleSize);
 			this.numSamples = data.getAllPoints().length/this.sampleSize;
 			System.out.println("sample size: "+this.sampleSize);
 			System.out.println("num samples: "+this.numSamples);

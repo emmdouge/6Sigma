@@ -50,7 +50,6 @@ public class XBar extends GroupingChart {
 			XYSeriesChart.run(d, allLines, limits, colOffsets);
 		}
 		else {
-			d.setType("Mean k = "+rowsPerSample);
 			yNames = new ArrayList<String>();
 			yNames.add("Mean");
 			d.setYNames(yNames);
@@ -58,6 +57,7 @@ public class XBar extends GroupingChart {
 			
 			System.out.println(this.numSamples + " " + data.getPointsPerRow());
 			this.sampleSize = d.getPointsPerRow()*rowsPerSample;
+			d.setType("Mean k = "+this.sampleSize);
 			this.numSamples = data.getAllPoints().length/this.sampleSize;
 			System.out.println("sample size: "+this.sampleSize);
 			System.out.println("num samples: "+this.numSamples);
