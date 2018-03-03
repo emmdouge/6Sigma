@@ -77,12 +77,12 @@ public class Data {
 		this.cols = cols;
 	}
 	
-	public void setColOffsets(ArrayList<Integer> colOffsets) {
+	void setColOffsets(ArrayList<Integer> colOffsets) {
 		this.colOffsets = colOffsets;
 	}
 	
 	public ArrayList<Integer> getColOffsets() {
-		return this.colOffsets;
+		return (ArrayList<Integer>)this.colOffsets.clone();
 	}
 	
 	public int getSmallestColOffset() {

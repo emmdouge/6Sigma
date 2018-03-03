@@ -42,9 +42,8 @@ public class MovingRange extends GroupingChart {
 				System.out.println("avg range: "+this.avgRange);
 				allLines.add(points);
 			}
-			d.setColOffsets(colOffsets);
 			limits = new ArrayList<Double>();
-			XYSeriesChart.run(d, allLines, limits, d.getColOffsets());
+			XYSeriesChart.run(d, allLines, limits, colOffsets);
 		}
 		else {
 			d.setType("Moving Range k = "+k);
