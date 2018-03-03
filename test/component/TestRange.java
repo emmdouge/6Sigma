@@ -19,12 +19,14 @@ public class TestRange {
 
 	Data d1;
 	Data d2;
+	Data d3;
 	Data cyclo;
 	
 	@Before
 	public void setup() throws IOException {
 		d1 = TxtFileReader.readFile(Constant.TEST_SHIFT);
 		d2 = TxtFileReader.readFile(Constant.NEW_TESTS_PASSING);
+		d3 = TxtFileReader.readFile("lpe");
 		cyclo = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
 	}
 	
@@ -45,6 +47,19 @@ public class TestRange {
 	public void testD2() throws Exception {
 		Range r = new Range(1, d2);
 		assertEquals(59, r.getPoints().length);
+		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
+	}	
+	
+	@Test
+	public void testD3() throws Exception {
+		Range r = new Range(3, d3);
+		assertTrue(r.limits.contains(1.8310944028063156));
+		assertTrue(r.limits.contains(8.23992481262842));
+		assertTrue(r.limits.contains(99.33687135224262));
+		assertTrue(r.limits.contains(136.41653300907052));
+		assertEquals(19, r.numSamples);
+		assertEquals(59, d3.getAllPoints().length);
+		assertEquals(3, r.sampleSize);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}		
 	

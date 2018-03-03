@@ -52,13 +52,12 @@ public class Range extends GroupingChart {
 			yNames = new ArrayList<String>();
 			yNames.add("Range");
 			d.setYNames(yNames);
-			double check = data.getAllPoints().length/data.getPointsPerRow() % rowsPerSample;
-			this.numSamples = check == 0? data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample: ((int)data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample)-1;
 			this.sampleSize = d.getPointsPerRow()*rowsPerSample;
+			this.numSamples = data.getAllPoints().length/this.sampleSize;
 			System.out.println("sample size: "+this.sampleSize);
 			System.out.println("num samples: "+this.numSamples);
-			if(rowsPerSample == 1)
-			Homogeneity.test(d);
+			//if(rowsPerSample == 1)
+			//Homogeneity.test(d);
 			points = new double[this.numSamples];
 			for(int i = 0; i < this.numSamples; i++) {
 				int start = i*this.sampleSize;
