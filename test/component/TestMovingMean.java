@@ -40,8 +40,7 @@ public class TestMovingMean {
 	@Test
 	public void testShiftData() throws Exception {
 		int k = 5;
-		MovingRange r = new MovingRange(shiftData, k);
-		MovingMean mm = new MovingMean(shiftData, k, r.getAvgRange());
+		MovingMean mm = new MovingMean(shiftData, k, 0);
 		assertEquals(212, mm.getPoints().length);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
@@ -58,8 +57,7 @@ public class TestMovingMean {
 	@Test
 	public void testPeriodData() throws Exception {
 		int k = 3;
-		MovingRange r = new MovingRange(periodData, k);
-		MovingMean mm = new MovingMean(periodData, k, r.getAvgRange());
+		MovingMean mm = new MovingMean(periodData, k, 0);
 		assertEquals(10, mm.getPoints().length);
 		assertEquals(2483.333, mm.points[0], .001);
 		assertEquals(2480.666, mm.points[mm.points.length-1], .001);
@@ -69,7 +67,6 @@ public class TestMovingMean {
 	@Test
 	public void testPeriodColData() throws Exception {
 		int k = 3;
-		MovingRange r = new MovingRange(periodColData, k);
 		MovingMean mm = new MovingMean(periodColData, k, 0);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}	

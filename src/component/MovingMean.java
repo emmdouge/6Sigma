@@ -20,12 +20,13 @@ public class MovingMean extends GroupingChart {
 		  this.avgRange = avgRange; 
 		  this.data = d; 
 		  this.sampleSize = k; 
+		  d.setSampleSize(k-1);
 	      d.setType("Moving Means k = "+k); 
 	      ArrayList<Integer> colOffsets = new ArrayList<Integer>(); 
 	      ArrayList<double[]> allLines = new ArrayList<double[]>(); 
 	      //iterate through column
 	      for(int x = 0; x < d.getPointsPerRow(); x++) { 
-	        colOffsets.add(d.getColOffsets().get(x)); 
+	        colOffsets.add(d.getColOffsets().get(x)+this.sampleSize-1); 
 	        this.numSamples = data.getCols().get(x).length-this.sampleSize+1; 
 	        System.out.println(this.numSamples); 
 	        System.out.println("sample size: "+this.sampleSize); 
@@ -53,7 +54,7 @@ public class MovingMean extends GroupingChart {
 			this.sampleSize = k;
 			d.setSampleSize(this.sampleSize-1);
 			this.offset = k-1;
-			d.setType("Moving Mean k ="+k);
+			d.setType("Moving Mean k = "+k);
 			yNames = new ArrayList<String>();
 			yNames.add("Mean k = "+k);
 			d.setYNames(yNames);

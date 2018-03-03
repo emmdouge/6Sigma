@@ -38,10 +38,13 @@ public class XYSeriesChart extends ApplicationFrame {
 		double min = Double.MAX_VALUE;
 		double max = Double.MIN_VALUE;
         final XYSeriesCollection data = new XYSeriesCollection();
+        //max number of point that will be rendered
         int maxNumPoints = 0;
+        //iterates through every line and gets the one with the most points
 		for(int j = 0; j < datas.size(); j++) {
 			if(maxNumPoints < datas.get(j).length) {
 				maxNumPoints = datas.get(j).length;
+				//cuts off extra stuff to avoid leading lines
 				if(d.getCutFlag()) {
 					System.out.println("CUTOFF");
 					maxNumPoints--;
@@ -51,8 +54,10 @@ public class XYSeriesChart extends ApplicationFrame {
 	        XYSeries series = new XYSeries(lineName);
 	        int offset = offsets.get(j);
 	        for(int i = offset; i < datas.get(j).length+offset; i++) {
-	        	
+	        	if(i == offset)
+	        	System.out.println(j+"offset: "+offset);
 	        	series.add(i, datas.get(j)[i-offset]);
+	        	//min and max of ALL lines
 				if(min > datas.get(j)[i-offset]) {
 					min = datas.get(j)[i-offset];
 				}

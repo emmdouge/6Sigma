@@ -20,7 +20,7 @@ public class MovingRange extends GroupingChart {
 		d.setSampleSize(this.sampleSize);
 		this.offset = k-1;
 		if(d.getUseCols()) {
-			d.setType("Moving Ranges k ="+k);
+			d.setType("Moving Ranges k = "+k);
 			ArrayList<double[]> allLines = new ArrayList<double[]>();
 			ArrayList<Integer> colOffsets = new ArrayList<Integer>();
 			for(int x = 0; x < d.getPointsPerRow(); x++) {

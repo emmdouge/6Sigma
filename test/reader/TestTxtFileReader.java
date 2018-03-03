@@ -26,5 +26,14 @@ public class TestTxtFileReader {
 		}
 		assertEquals(24, dataActual.length);
 	}
+	
+	@Test
+	public void testColOffset() throws IOException {
+		Data d = TxtFileReader.readFile("periodcols");
+		assertEquals(3, d.getColOffsets().size());
+		assertEquals(0, d.getColOffsets().get(0).intValue());
+		assertEquals(3, d.getColOffsets().get(1).intValue());
+		assertEquals(6, d.getColOffsets().get(2).intValue());
+	}
 
 }
