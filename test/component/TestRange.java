@@ -53,6 +53,8 @@ public class TestRange {
 	@Test
 	public void testD3() throws Exception {
 		Range r = new Range(3, d3);
+		assertEquals(58, r.points[0], 0.001);
+		assertEquals(33.36507937, r.points[r.points.length-1], 0.001);
 		assertTrue(r.limits.contains(1.8310944028063156));
 		assertTrue(r.limits.contains(8.23992481262842));
 		assertTrue(r.limits.contains(99.33687135224262));

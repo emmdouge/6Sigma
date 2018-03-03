@@ -63,6 +63,8 @@ public class TestXBar {
 	@Test
 	public void testD3() throws Exception {
 		XBar x = new XBar(3, d3, 45.77736007);
+		assertEquals(42.33333333, x.points[0], 0.001);
+		assertEquals(16.50793651, x.points[x.points.length-1], 0.001);
 		assertTrue(x.limits.contains(3.629878861775431));
 		assertTrue(x.limits.contains(19.194181285575436));
 		assertTrue(x.limits.contains(81.45139098077543));
