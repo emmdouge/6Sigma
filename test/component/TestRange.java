@@ -17,23 +17,29 @@ import shared.Constant;
 
 public class TestRange {
 
-	Data d1;
-	Data d2;
-	Data d3;
+	Data shiftData;
+	Data lpeData;
 	Data cyclo;
 	
 	@Before
 	public void setup() throws IOException {
-		d1 = TxtFileReader.readFile(Constant.TEST_SHIFT);
-		d2 = TxtFileReader.readFile(Constant.NEW_TESTS_PASSING);
-		d3 = TxtFileReader.readFile("lpe");
+		shiftData = TxtFileReader.readFile(Constant.TEST_SHIFT);
+		lpeData = TxtFileReader.readFile("lpe");
 		cyclo = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
 	}
 	
 	@Test
-	public void testD1() throws Exception {
-		Range r = new Range(1, d1);
-		assertEquals(27, r.getPoints().length);
+	public void testShiftData() throws Exception {
+		Range r = new Range(1, shiftData);
+		assertEquals(11.6801595475982, r.points[0], 0.001);
+		assertEquals(16.9878631018377, r.points[r.points.length-1], 0.001);
+		assertTrue(r.limits.contains(4.056805110630323));
+		assertTrue(r.limits.contains(6.994491570052282));
+		assertTrue(r.limits.contains(22.662152686969396));
+		assertTrue(r.limits.contains(28.53752560581331));
+		assertEquals(216, shiftData.getAllPoints().length);
+		assertEquals(8, r.sampleSize);
+		assertEquals(27, r.numSamples);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	
@@ -41,18 +47,11 @@ public class TestRange {
 //	public void testSampleSizeTooBigForD1() throws Exception {
 //		Range r = new Range(3, d1);
 //		assertEquals(18, r.getPoints().length);
-//	}	
+//	}		
 	
 	@Test
-	public void testD2() throws Exception {
-		Range r = new Range(1, d2);
-		assertEquals(59, r.getPoints().length);
-		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
-	}	
-	
-	@Test
-	public void testD3() throws Exception {
-		Range r = new Range(3, d3);
+	public void testLinesPerEmp() throws Exception {
+		Range r = new Range(3, lpeData);
 		assertEquals(58, r.points[0], 0.001);
 		assertEquals(33.36507937, r.points[r.points.length-1], 0.001);
 		assertTrue(r.limits.contains(1.8310944028063156));
@@ -60,17 +59,10 @@ public class TestRange {
 		assertTrue(r.limits.contains(99.33687135224262));
 		assertTrue(r.limits.contains(136.41653300907052));
 		assertEquals(19, r.numSamples);
-		assertEquals(59, d3.getAllPoints().length);
+		assertEquals(59, lpeData.getAllPoints().length);
 		assertEquals(3, r.sampleSize);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
-	}		
-	
-	@Test
-	public void testD2FourWeeksRelease() throws Exception {
-		Range r = new Range(4, d2);
-		assertEquals(13, r.getPoints().length);
-		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
-	}
+	}	
 	
 	@Test
 	public void testCycloData() throws Exception {
