@@ -54,14 +54,14 @@ public class XBar extends GroupingChart {
 			yNames.add("Mean");
 			d.setYNames(yNames);
 			this.avgRange = avgRange;
-			double check = data.getAllPoints().length/data.getPointsPerRow() % rowsPerSample;
-			this.numSamples = check == 0? data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample: ((int)data.getAllPoints().length/data.getPointsPerRow()/rowsPerSample)-1;
-			System.out.println(this.numSamples);
+			
+			System.out.println(this.numSamples + " " + data.getPointsPerRow());
 			this.sampleSize = d.getPointsPerRow()*rowsPerSample;
+			this.numSamples = data.getAllPoints().length/this.sampleSize;
 			System.out.println("sample size: "+this.sampleSize);
 			System.out.println("num samples: "+this.numSamples);
-			if(rowsPerSample == 1)
-			Homogeneity.test(d);
+			//if(rowsPerSample == 1)
+			//Homogeneity.test(d);
 			points = new double[this.numSamples];
 			for(int i = 0; i < this.numSamples; i++) {
 				int start = i*this.sampleSize;
@@ -69,7 +69,7 @@ public class XBar extends GroupingChart {
 				double mean = calcPoints(data.getAllPoints(), start, end);
 				points[i] = mean;
 				this.processMean += points[i];
-				System.out.println(i+" m: "+mean+" ("+start+"~"+end+")"+" +avg: "+this.processMean);
+				System.out.println(i+" m: "+mean+" ("+start+"~"+(end-1)+")"+" +avg: "+this.processMean);
 			}
 			this.processMean = this.processMean/this.numSamples;
 			System.out.println("process mean: "+this.processMean);
