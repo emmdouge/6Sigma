@@ -64,10 +64,37 @@ public class TestRange {
 	
 	@Test
 	public void testCycloData() throws Exception {
-		Data data = TxtFileReader.readFile("periodcols", true);
-		Range r = new Range(1, data, 2);
+		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
+		Range r = new Range(3, data, 2);
+		XYSeriesChart xyChart = new XYSeriesChart(data, r.getAllLines(), r.getLimits(), r.getColOffsets());
+		assertEquals(9, xyChart.chart.getXYPlot().getDomainAxis().getUpperBound(), 0);
+		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
+	}
+	
+	@Test
+	public void testCycloData2() throws Exception {
+		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
+		Range r = new Range(4, data, 3);
 		XYSeriesChart xyChart = new XYSeriesChart(data, r.getAllLines(), r.getLimits(), r.getColOffsets());
 //		assertEquals(31, xyChart.chart.getXYPlot().getDomainAxis().getUpperBound(), 0);
+		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
+	}
+	
+	@Test
+	public void testCycloData3() throws Exception {
+		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
+		Range r = new Range(10, data, 2);
+		XYSeriesChart xyChart = new XYSeriesChart(data, r.getAllLines(), r.getLimits(), r.getColOffsets());
+		assertEquals(2, xyChart.chart.getXYPlot().getDomainAxis().getUpperBound(), 0);
+		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
+	}
+	
+	@Test
+	public void testCycloData4() throws Exception {
+		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
+		Range r = new Range(2, data, 2);
+		XYSeriesChart xyChart = new XYSeriesChart(data, r.getAllLines(), r.getLimits(), r.getColOffsets());
+		assertEquals(14, xyChart.chart.getXYPlot().getDomainAxis().getUpperBound(), 0);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 

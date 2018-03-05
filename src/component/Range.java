@@ -14,30 +14,28 @@ public class Range extends GroupingChart {
 	}
 	
 	public Range(Data d, int k) throws Exception {
-		this(1, d, 2);
+		this(1, d, k);
 	}
 	
 	public Range(int rowsPerSample, Data d, int k) throws Exception {
 		super(d);
 		if(data.getUseCols()) {
-			data.setType("Ranges k = "+rowsPerSample);
-			data.setSampleSize(0);
-			sampleSize = rowsPerSample-1;
+			data.setSampleSize(1);
+			sampleSize = k;
+			data.setType("Ranges k = "+sampleSize);
 			allLines = new ArrayList<double[]>();
 			colOffsets = new ArrayList<Integer>();
 			for(int x = 0; x < data.getPointsPerRow(); x++) {
 				this.colOffsets.add(data.getColOffsets().get(x));
 				int check = data.getCols().get(x).length % sampleSize;
-				this.numSamples = check == 0? data.getCols().get(x).length/sampleSize: ((int)data.getCols().get(x).length/sampleSize);
-				//rowsPerSample isn't actually rowsPerSample when its using cols
-				//its actually the sample size
+				this.numSamples = check == 0? data.getCols().get(x).length/rowsPerSample/sampleSize: ((int)data.getCols().get(x).length/(rowsPerSample)/sampleSize);
 				System.out.println(numSamples);
 				System.out.println("sample size: "+sampleSize);
 				System.out.println("num samples: "+numSamples);
 				points = new double[numSamples];
 				for(int i = 0; i < numSamples; i++) {
-					int start = i*sampleSize;
-					int end = (i+1)*sampleSize;
+					int start = (i*rowsPerSample)*sampleSize;
+					int end = ((i+1)*rowsPerSample)*sampleSize;
 					double range = calcPoints(data.getCols().get(x), start, end);
 					points[i] = range;
 					this.avgRange += points[i];
