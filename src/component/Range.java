@@ -14,71 +14,67 @@ public class Range extends GroupingChart {
 	}
 	
 	public Range(int rowsPerSample, Data d) throws Exception {
-		this.data = d;
-		if(d.getUseCols()) {
-			d.setType("Ranges k = "+rowsPerSample);
-			d.setSampleSize(rowsPerSample);
-			this.sampleSize = rowsPerSample-1;
-			ArrayList<double[]> allLines = new ArrayList<double[]>();
-			ArrayList<Integer> colOffsets = new ArrayList<Integer>();
-			for(int x = 0; x < d.getPointsPerRow(); x++) {
-				colOffsets.add(d.getColOffsets().get(x)+this.sampleSize);
-				int check = data.getCols().get(x).length % this.sampleSize;
-				this.numSamples = check == 0? data.getCols().get(x).length/this.sampleSize: ((int)data.getCols().get(x).length/this.sampleSize);
+		super(d);
+		if(data.getUseCols()) {
+			data.setType("Ranges k = "+rowsPerSample);
+			data.setSampleSize(rowsPerSample);
+			sampleSize = rowsPerSample-1;
+			allLines = new ArrayList<double[]>();
+			colOffsets = new ArrayList<Integer>();
+			for(int x = 0; x < data.getPointsPerRow(); x++) {
+				this.colOffsets.add(data.getColOffsets().get(x)+sampleSize);
+				int check = data.getCols().get(x).length % sampleSize;
+				this.numSamples = check == 0? data.getCols().get(x).length/sampleSize: ((int)data.getCols().get(x).length/sampleSize);
 				//rowsPerSample isn't actually rowsPerSample when its using cols
 				//its actually the sample size
-				System.out.println(this.numSamples);
-				System.out.println("sample size: "+this.sampleSize);
-				System.out.println("num samples: "+this.numSamples);
-				points = new double[this.numSamples];
-				for(int i = 0; i < this.numSamples; i++) {
-					int start = i*this.sampleSize;
-					int end = (i+1)*this.sampleSize;
+				System.out.println(numSamples);
+				System.out.println("sample size: "+sampleSize);
+				System.out.println("num samples: "+numSamples);
+				points = new double[numSamples];
+				for(int i = 0; i < numSamples; i++) {
+					int start = i*sampleSize;
+					int end = (i+1)*sampleSize;
 					double range = calcPoints(data.getCols().get(x), start, end);
 					points[i] = range;
 					this.avgRange += points[i];
 					System.out.println(i+" mr: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
 				}
 				if(check == 0) {
-					d.cutoff();
+					data.cutoff();
 				}
-				this.avgRange = this.avgRange/this.numSamples;
-				System.out.println("avg range: "+this.avgRange);
+				avgRange = avgRange/numSamples;
+				System.out.println("avg range: "+avgRange);
 				allLines.add(points);
 			}
-			limits = new ArrayList<Double>();
-			XYSeriesChart.run(d, allLines, limits, colOffsets);
+			XYSeriesChart.run(data, allLines, limits, colOffsets);
 		}
 		else {
-			d.setSampleSize(0);
-			yNames = new ArrayList<String>();
+			data.setSampleSize(0);
 			yNames.add("Range");
-			d.setYNames(yNames);
-			this.sampleSize = d.getPointsPerRow()*rowsPerSample;
-			d.setType("Range k = "+this.sampleSize);
-			this.numSamples = data.getAllPoints().length/this.sampleSize;
-			System.out.println("sample size: "+this.sampleSize);
-			System.out.println("num samples: "+this.numSamples);
+			data.setYNames(yNames);
+			sampleSize = data.getPointsPerRow()*rowsPerSample;
+			data.setType("Range k = "+sampleSize);
+			numSamples = data.getAllPoints().length/sampleSize;
+			System.out.println("sample size: "+sampleSize);
+			System.out.println("num samples: "+numSamples);
 			//if(rowsPerSample == 1)
 			//Homogeneity.test(d);
-			points = new double[this.numSamples];
-			for(int i = 0; i < this.numSamples; i++) {
-				int start = i*this.sampleSize;
-				int end = (i+1)*this.sampleSize;
+			points = new double[numSamples];
+			for(int i = 0; i < numSamples; i++) {
+				int start = i*sampleSize;
+				int end = (i+1)*sampleSize;
 				double range = calcPoints(data.getAllPoints(), start, end);
 				points[i] = range;
-				this.avgRange += points[i];
-				System.out.println(i+" r: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
+				avgRange += points[i];
+				System.out.println(i+" r: "+range+" ("+start+"~"+end+")"+" +avg: "+avgRange);
 			}
-			this.avgRange = this.avgRange/this.numSamples;
-			System.out.println("avg range: "+this.avgRange);
-			limits = calcLimits(0);
+			avgRange = avgRange/numSamples;
+			System.out.println("avg range: "+avgRange);
+			limits = calcLimits();
 			Collections.sort(limits);
-			ArrayList<double[]> allLines = new ArrayList<double[]>();
 			allLines.add(points);
-			ArrayList<Integer> offsets = new ArrayList<Integer>();
-			offsets.add(this.offset);
-			XYSeriesChart.run(d, allLines, limits, offsets);
+			colOffsets.add(0);
+			XYSeriesChart.run(data, allLines, limits, colOffsets);
 		}
 	}
 	
@@ -105,10 +101,9 @@ public class Range extends GroupingChart {
 		return this.avgRange;
 	}
 
-	
-	protected ArrayList<Double> calcLimits(int k) throws Exception {
+	protected ArrayList<Double> calcLimits() throws Exception {
 		ArrayList<Double> limits = new ArrayList<Double>();
-		switch (this.sampleSize) {
+		switch (sampleSize) {
 			case 0:
 				return new ArrayList<Double>();
 			case 1:

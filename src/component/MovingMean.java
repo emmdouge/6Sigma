@@ -15,18 +15,15 @@ public class MovingMean extends GroupingChart {
 		this(d, 3, avgRange);
 	}
 	
-	public MovingMean(Data d, int k, double avgRange) throws Exception {    
+	public MovingMean(Data d, int k, double avgRange) throws Exception {
+		super(d);
 		if(d.getUseCols()) { 
-		  this.avgRange = avgRange; 
-		  this.data = d; 
 		  this.sampleSize = k; 
 		  
 		  //pushes x axis forward
 		  d.setSampleSize(k-1);
 		  
 	      d.setType("Moving Means k = "+k); 
-	      ArrayList<Integer> colOffsets = new ArrayList<Integer>(); 
-	      ArrayList<double[]> allLines = new ArrayList<double[]>(); 
 	      //iterate through column
 	      for(int x = 0; x < d.getPointsPerRow(); x++) { 
 	        colOffsets.add(d.getColOffsets().get(x)+this.sampleSize-1); 
@@ -47,17 +44,14 @@ public class MovingMean extends GroupingChart {
 	        System.out.println("process mean: "+this.processMean); 
 	        allLines.add(points); 
 	      } 
-	      limits = new ArrayList<Double>(); 
 	      XYSeriesChart.run(d, allLines, limits, colOffsets); 
 	    } 
 		else {
 			this.avgRange = avgRange;
-			this.data = d;
 			this.sampleSize = k;
 			d.setSampleSize(this.sampleSize-1);
 			this.offset = k-1;
 			d.setType("Moving Mean k = "+k);
-			yNames = new ArrayList<String>();
 			yNames.add("Mean k = "+k);
 			d.setYNames(yNames);
 			this.numSamples = data.getAllPoints().length-this.sampleSize+1;
@@ -75,14 +69,12 @@ public class MovingMean extends GroupingChart {
 			}
 			this.processMean = this.processMean/this.numSamples;
 			System.out.println("process mean: "+this.processMean);
-			limits = calcLimits(k);
+			limits = calcLimits();
 			Collections.sort(limits);
-			ArrayList<double[]> allLines = new ArrayList<double[]>();
 			allLines.add(points);
-			ArrayList<Integer> offsets = new ArrayList<Integer>();
-			offsets.add(this.offset);
+			colOffsets.add(0);
 			
-			XYSeriesChart.run(d, allLines, limits, offsets);
+			XYSeriesChart.run(data, allLines, limits, colOffsets);
 		}
 	}
 	
@@ -97,10 +89,10 @@ public class MovingMean extends GroupingChart {
 		return sum/(end-start);
 	}
 	
-	protected ArrayList<Double> calcLimits(int k) throws Exception {
+	protected ArrayList<Double> calcLimits() throws Exception {
 		ArrayList<Double> limits = new ArrayList<Double>();
 		double a2 = 0;
-		switch (this.sampleSize) {
+		switch (sampleSize) {
 			case 1:
 				throw new Exception("SAMPLE SIZE TOO SMALL!");
 			case 2: 

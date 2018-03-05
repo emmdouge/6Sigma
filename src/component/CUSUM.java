@@ -15,10 +15,9 @@ public class CUSUM extends GroupingChart {
 	public ArrayList<String> yNames;
 	
 	public CUSUM(Data d) throws Exception {
-		this.data = d;
+		super(d);
 		d.setType("CUSUM");
 		d.setSampleSize(0);
-		yNames = new ArrayList<String>();
 		yNames.add("CUSUM");
 		d.setYNames(yNames);
 		double[] points = new double[d.getAllPoints().length+1];
@@ -28,12 +27,10 @@ public class CUSUM extends GroupingChart {
 		for(int i = 0; i <= points.length-1; i++) {
 			points[i] = b.getPoint(i).getCusum();
 		}
-		this.limits = calcLimits(0);
-		ArrayList<double[]> allLines = new ArrayList<double[]>();
+		this.limits = calcLimits();
 		allLines.add(points);
-		ArrayList<Integer> offsets = new ArrayList<Integer>();
-		offsets.add(this.offset);
-		XYSeriesChart.run(d, allLines, limits, offsets);
+		colOffsets.add(0);
+		XYSeriesChart.run(data, allLines, limits, colOffsets);
 	}
 	
 	public double[] getPoints() {
@@ -50,7 +47,7 @@ public class CUSUM extends GroupingChart {
 	}
 
 	@Override
-	protected ArrayList<Double> calcLimits(int k) throws Exception {
+	protected ArrayList<Double> calcLimits() throws Exception {
 		return new ArrayList<Double>();
 	}
 }

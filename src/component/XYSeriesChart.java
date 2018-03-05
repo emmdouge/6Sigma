@@ -26,6 +26,8 @@ import reader.Data;
 
 public class XYSeriesChart extends ApplicationFrame {
 
+	final JFreeChart chart;
+	
     /**
      * A demonstration application showing an XY series containing a null value.
      * @param offsets 
@@ -69,7 +71,7 @@ public class XYSeriesChart extends ApplicationFrame {
 		}
 		
 		
-        final JFreeChart chart = ChartFactory.createXYLineChart(
+        chart = ChartFactory.createXYLineChart(
     		d.getRowName()+" "+d.getType()+" Chart",
             d.getRowName(), 
             d.getFilename().split("/")[1], 

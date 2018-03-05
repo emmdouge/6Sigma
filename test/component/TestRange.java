@@ -19,13 +19,11 @@ public class TestRange {
 
 	Data shiftData;
 	Data lpeData;
-	Data cyclo;
 	
 	@Before
 	public void setup() throws IOException {
 		shiftData = TxtFileReader.readFile(Constant.TEST_SHIFT);
 		lpeData = TxtFileReader.readFile("lpe");
-		cyclo = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
 	}
 	
 	@Test
@@ -66,7 +64,10 @@ public class TestRange {
 	
 	@Test
 	public void testCycloData() throws Exception {
-		Range r = new Range(3, cyclo);
+		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
+		Range r = new Range(3, data);
+		XYSeriesChart xyChart = new XYSeriesChart(data, r.getAllLines(), r.getLimits(), r.getColOffsets());
+		assertEquals(31, xyChart.chart.getXYPlot().getDomainAxis().getUpperBound(), 0);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 

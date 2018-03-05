@@ -12,22 +12,19 @@ public class Individuals extends GroupingChart {
 	public ArrayList<String> yNames;
 	
 	public Individuals(Data d) throws Exception {
-		this.data = d;
+		super(d);
 		d.setType("Individuals");
-		yNames = new ArrayList<String>();
 		yNames.add("Individuals");
 		d.setYNames(yNames);
 		double[] points = new double[d.getAllPoints().length];
 		for(int i = 0; i < points.length; i++) {
 			points[i] = calcPoints(data.getAllPoints(), i, i);
 		}
-		this.limits = calcLimits(0);
+		this.limits = calcLimits();
 		this.points = points;
-		ArrayList<double[]> allLines = new ArrayList<double[]>();
 		allLines.add(points);
-		ArrayList<Integer> offsets = new ArrayList<Integer>();
-		offsets.add(this.offset);
-		XYSeriesChart.run(d, allLines, limits, offsets);
+		colOffsets.add(0);
+		XYSeriesChart.run(data, allLines, limits, colOffsets);
 	}
 	
 	public double[] getPoints() {
@@ -44,7 +41,7 @@ public class Individuals extends GroupingChart {
 	}
 
 	@Override
-	protected ArrayList<Double> calcLimits(int k) throws Exception {
+	protected ArrayList<Double> calcLimits() throws Exception {
 		return new ArrayList<Double>();
 	}
 }

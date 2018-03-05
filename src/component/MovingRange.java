@@ -15,7 +15,7 @@ public class MovingRange extends GroupingChart {
 	}
 	
 	public MovingRange(Data d, int k) throws Exception {
-		this.data = d;
+		super(d);
 		this.sampleSize = k-1;
 		d.setSampleSize(this.sampleSize);
 		this.offset = k-1;
@@ -65,7 +65,7 @@ public class MovingRange extends GroupingChart {
 			}
 			this.avgRange = this.avgRange/this.numSamples;
 			System.out.println("avg range: "+this.avgRange);
-			limits = calcLimits(k);
+			limits = calcLimits();
 			Collections.sort(limits);
 			ArrayList<double[]> allLines = new ArrayList<double[]>();
 			allLines.add(points);
@@ -94,9 +94,9 @@ public class MovingRange extends GroupingChart {
 		return Math.abs(max-min);
 	}
 	
-	protected ArrayList<Double> calcLimits(int k) throws Exception {
+	protected ArrayList<Double> calcLimits() throws Exception {
 		ArrayList<Double> limits = new ArrayList<Double>();
-		switch (k) {
+		switch (sampleSize) {
 			case 1:
 				throw new Exception("SAMPLE SIZE TOO SMALL!");
 			case 2: 
