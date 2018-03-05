@@ -10,19 +10,23 @@ public class Range extends GroupingChart {
 	private double avgRange;
 	
 	public Range(Data d) throws Exception {
-		this(1, d);
+		this(d, 2);
 	}
 	
-	public Range(int rowsPerSample, Data d) throws Exception {
+	public Range(Data d, int k) throws Exception {
+		this(1, d, 2);
+	}
+	
+	public Range(int rowsPerSample, Data d, int k) throws Exception {
 		super(d);
 		if(data.getUseCols()) {
 			data.setType("Ranges k = "+rowsPerSample);
-			data.setSampleSize(rowsPerSample);
+			data.setSampleSize(0);
 			sampleSize = rowsPerSample-1;
 			allLines = new ArrayList<double[]>();
 			colOffsets = new ArrayList<Integer>();
 			for(int x = 0; x < data.getPointsPerRow(); x++) {
-				this.colOffsets.add(data.getColOffsets().get(x)+sampleSize);
+				this.colOffsets.add(data.getColOffsets().get(x));
 				int check = data.getCols().get(x).length % sampleSize;
 				this.numSamples = check == 0? data.getCols().get(x).length/sampleSize: ((int)data.getCols().get(x).length/sampleSize);
 				//rowsPerSample isn't actually rowsPerSample when its using cols
