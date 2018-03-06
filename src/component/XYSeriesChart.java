@@ -46,11 +46,6 @@ public class XYSeriesChart extends ApplicationFrame {
 		for(int j = 0; j < datas.size(); j++) {
 			if(maxNumPoints < datas.get(j).length) {
 				maxNumPoints = datas.get(j).length;
-				//cuts off extra stuff to avoid leading lines
-				if(d.getCutFlag()) {
-					System.out.println("CUTOFF");
-					maxNumPoints--;
-				}
 			}
 			String lineName = d.getUseCols()? d.getColNames()[j]: d.getYNames().get(j); 
 	        XYSeries series = new XYSeries(lineName);
@@ -84,7 +79,7 @@ public class XYSeriesChart extends ApplicationFrame {
 		
 		String[] xAxis = new String[maxNumPoints+d.getSampleSize()];
 		System.out.println("x: "+xAxis.length+" d: "+d.getXAxis().length);
-        if((xAxis.length > maxNumPoints || xAxis.length-1 > d.getXAxis().length) && (!d.getType().contains("Moving") && !d.getType().contains("CUSUM"))) {
+        if(d.getCutFlag() && (!d.getType().contains("Moving") && !d.getType().contains("CUSUM"))) {
     		xAxis = new String[maxNumPoints+d.getSampleSize()];
         	System.out.println(xAxis.length+" f");
         	for(int i = 1; i < xAxis.length+1; i++) {

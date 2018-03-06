@@ -16,18 +16,10 @@ import reader.TxtFileReader;
 import shared.Constant;
 
 public class TestRange {
-
-	Data shiftData;
-	Data lpeData;
-	
-	@Before
-	public void setup() throws IOException {
-		shiftData = TxtFileReader.readFile(Constant.TEST_SHIFT);
-		lpeData = TxtFileReader.readFile("lpe");
-	}
 	
 	@Test
 	public void testShiftData() throws Exception {
+		Data shiftData = TxtFileReader.readFile(Constant.TEST_SHIFT);
 		Range r = new Range(1, shiftData, 3);
 		assertEquals(11.6801595475982, r.points[0], 0.001);
 		assertEquals(16.9878631018377, r.points[r.points.length-1], 0.001);
@@ -49,6 +41,7 @@ public class TestRange {
 	
 	@Test
 	public void testLinesPerEmp() throws Exception {
+		Data lpeData = TxtFileReader.readFile("lpe");
 		Range r = new Range(3, lpeData, 1);
 		assertEquals(58, r.points[0], 0.001);
 		assertEquals(33.36507937, r.points[r.points.length-1], 0.001);
@@ -63,7 +56,7 @@ public class TestRange {
 	}	
 	
 	@Test
-	public void testCycloData() throws Exception {
+	public void testCycloDataRPS3K2() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
 		Range r = new Range(3, data, 2);
 		XYSeriesChart xyChart = new XYSeriesChart(data, r.getAllLines(), r.getLimits(), r.getColOffsets());
@@ -72,7 +65,7 @@ public class TestRange {
 	}
 	
 	@Test
-	public void testCycloData2() throws Exception {
+	public void testCycloDataRPS4K3() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
 		Range r = new Range(4, data, 3);
 		XYSeriesChart xyChart = new XYSeriesChart(data, r.getAllLines(), r.getLimits(), r.getColOffsets());
@@ -81,7 +74,7 @@ public class TestRange {
 	}
 	
 	@Test
-	public void testCycloData3() throws Exception {
+	public void testCycloDataRPS10K2() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
 		Range r = new Range(10, data, 2);
 		XYSeriesChart xyChart = new XYSeriesChart(data, r.getAllLines(), r.getLimits(), r.getColOffsets());
@@ -90,7 +83,7 @@ public class TestRange {
 	}
 	
 	@Test
-	public void testCycloData4() throws Exception {
+	public void testCycloDataRPS2K2() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
 		Range r = new Range(2, data, 2);
 		XYSeriesChart xyChart = new XYSeriesChart(data, r.getAllLines(), r.getLimits(), r.getColOffsets());

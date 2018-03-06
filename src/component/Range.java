@@ -20,15 +20,15 @@ public class Range extends GroupingChart {
 	public Range(int rowsPerSample, Data d, int k) throws Exception {
 		super(d);
 		if(data.getUseCols()) {
-			data.setSampleSize(1);
 			sampleSize = k;
 			data.setType("Ranges k = "+sampleSize);
 			allLines = new ArrayList<double[]>();
 			colOffsets = new ArrayList<Integer>();
 			for(int x = 0; x < data.getPointsPerRow(); x++) {
-				this.colOffsets.add(data.getColOffsets().get(x));
-				int check = data.getCols().get(x).length % sampleSize;
-				this.numSamples = check == 0? data.getCols().get(x).length/rowsPerSample/sampleSize: ((int)data.getCols().get(x).length/(rowsPerSample)/sampleSize);
+//				this.colOffsets.add(data.getColOffsets().get(x)/rowsPerSample/sampleSize);
+				this.numSamples = data.getCols().get(x).length/rowsPerSample/sampleSize;
+				int remCol = data.getColOffsets().get(x) % rowsPerSample % sampleSize;
+				this.colOffsets.add(remCol == 0 && data.getColOffsets().get(x) == 0? data.getColOffsets().get(x)/rowsPerSample/sampleSize: ((int)(data.getColOffsets().get(x)/rowsPerSample/sampleSize)+1));
 				System.out.println(numSamples);
 				System.out.println("sample size: "+sampleSize);
 				System.out.println("num samples: "+numSamples);
@@ -41,9 +41,7 @@ public class Range extends GroupingChart {
 					this.avgRange += points[i];
 					System.out.println(i+" mr: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
 				}
-				if(check == 0) {
-					data.cutoff();
-				}
+				data.cutoff();
 				avgRange = avgRange/numSamples;
 				System.out.println("avg range: "+avgRange);
 				allLines.add(points);
@@ -51,7 +49,6 @@ public class Range extends GroupingChart {
 			XYSeriesChart.run(data, allLines, limits, colOffsets);
 		}
 		else {
-			data.setSampleSize(0);
 			yNames.add("Range");
 			data.setYNames(yNames);
 			sampleSize = data.getPointsPerRow()*rowsPerSample;
