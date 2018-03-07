@@ -25,10 +25,9 @@ public class Range extends GroupingChart {
 			allLines = new ArrayList<double[]>();
 			colOffsets = new ArrayList<Integer>();
 			for(int x = 0; x < data.getPointsPerRow(); x++) {
-//				this.colOffsets.add(data.getColOffsets().get(x)/rowsPerSample/sampleSize);
-				this.numSamples = data.getCols().get(x).length/rowsPerSample/sampleSize;
+				numSamples = data.getCols().get(x).length/rowsPerSample/sampleSize;
 				int remCol = data.getColOffsets().get(x) % rowsPerSample % sampleSize;
-				this.colOffsets.add(remCol == 0 && data.getColOffsets().get(x) == 0? data.getColOffsets().get(x)/rowsPerSample/sampleSize: ((int)(data.getColOffsets().get(x)/rowsPerSample/sampleSize)+1));
+				colOffsets.add(remCol == 0 && data.getColOffsets().get(x) == 0? data.getColOffsets().get(x)/rowsPerSample/sampleSize: ((int)(data.getColOffsets().get(x)/rowsPerSample/sampleSize)+1));
 				System.out.println(numSamples);
 				System.out.println("sample size: "+sampleSize);
 				System.out.println("num samples: "+numSamples);
@@ -39,7 +38,7 @@ public class Range extends GroupingChart {
 					double range = calcPoints(data.getCols().get(x), start, end);
 					points[i] = range;
 					this.avgRange += points[i];
-					System.out.println(i+" mr: "+range+" ("+start+"~"+end+")"+" +avg: "+this.avgRange);
+					System.out.println(i+" mr: "+range+" ("+start+"~"+(end-1)+")"+" +avg: "+avgRange);
 				}
 				data.cutoff();
 				avgRange = avgRange/numSamples;
@@ -51,21 +50,21 @@ public class Range extends GroupingChart {
 		else {
 			yNames.add("Range");
 			data.setYNames(yNames);
-			sampleSize = data.getPointsPerRow()*rowsPerSample;
+			sampleSize = k;
 			data.setType("Range k = "+sampleSize);
-			numSamples = data.getAllPoints().length/sampleSize;
+			numSamples = data.getCols().get(0).length/rowsPerSample/sampleSize;
 			System.out.println("sample size: "+sampleSize);
 			System.out.println("num samples: "+numSamples);
 			//if(rowsPerSample == 1)
 			//Homogeneity.test(d);
 			points = new double[numSamples];
 			for(int i = 0; i < numSamples; i++) {
-				int start = i*sampleSize;
-				int end = (i+1)*sampleSize;
+				int start = (i*rowsPerSample)*sampleSize;
+				int end = ((i+1)*rowsPerSample)*sampleSize;
 				double range = calcPoints(data.getAllPoints(), start, end);
 				points[i] = range;
 				avgRange += points[i];
-				System.out.println(i+" r: "+range+" ("+start+"~"+end+")"+" +avg: "+avgRange);
+				System.out.println(i+" r: "+range+" ("+start+"~"+(end-1)+")"+" +avg: "+avgRange);
 			}
 			avgRange = avgRange/numSamples;
 			System.out.println("avg range: "+avgRange);

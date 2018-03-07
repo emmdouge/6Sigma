@@ -21,15 +21,15 @@ public class TestRange {
 	public void testShiftData() throws Exception {
 		Data shiftData = TxtFileReader.readFile(Constant.TEST_SHIFT);
 		Range r = new Range(1, shiftData, 3);
-		assertEquals(11.6801595475982, r.points[0], 0.001);
-		assertEquals(16.9878631018377, r.points[r.points.length-1], 0.001);
-		assertTrue(r.limits.contains(4.056805110630323));
-		assertTrue(r.limits.contains(6.994491570052282));
-		assertTrue(r.limits.contains(22.662152686969396));
-		assertTrue(r.limits.contains(28.53752560581331));
+		assertEquals(3.74897, r.points[0], 0.001);
+		assertEquals(4.495270, r.points[r.points.length-1], 0.001);
+		assertTrue(r.limits.contains(0.2803444546636086));
+		assertTrue(r.limits.contains(1.2615500459862385));
+		assertTrue(r.limits.contains(15.208686665500764));
+		assertTrue(r.limits.contains(20.88566187243884));
 		assertEquals(216, shiftData.getAllPoints().length);
-		assertEquals(8, r.sampleSize);
-		assertEquals(27, r.numSamples);
+		assertEquals(3, r.sampleSize);
+		assertEquals(9, r.numSamples);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	
@@ -40,9 +40,25 @@ public class TestRange {
 //	}		
 	
 	@Test
+	public void testRand1RPS3K2() throws Exception {
+		Data rand1 = TxtFileReader.readFile("rand1");
+		Range r = new Range(2, rand1, 2);
+		assertEquals(3, r.points[0], 0.001);
+		assertEquals(22, r.points[r.points.length-1], 0.001);
+		assertTrue(r.limits.contains(0.0));
+		assertTrue(r.limits.contains(4.722666666666666));
+		assertTrue(r.limits.contains(30.160666666666664));
+		assertTrue(r.limits.contains(44.221333333333334));
+		assertEquals(15, r.numSamples);
+		assertEquals(60, rand1.getAllPoints().length);
+		assertEquals(2, r.sampleSize);
+		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
+	}			
+	
+	@Test
 	public void testLinesPerEmp() throws Exception {
 		Data lpeData = TxtFileReader.readFile("lpe");
-		Range r = new Range(3, lpeData, 1);
+		Range r = new Range(1, lpeData, 3);
 		assertEquals(58, r.points[0], 0.001);
 		assertEquals(33.36507937, r.points[r.points.length-1], 0.001);
 		assertTrue(r.limits.contains(1.8310944028063156));
