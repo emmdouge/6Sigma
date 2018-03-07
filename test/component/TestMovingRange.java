@@ -31,8 +31,9 @@ public class TestMovingRange {
 	
 	@Test
 	public void testD1() throws Exception {
-		MovingRange r = new MovingRange(d1, 8);
-		assertEquals(208, r.getPoints().length);
+		Data data = TxtFileReader.readFile(Constant.TEST_SHIFT);
+		MovingRange r = new MovingRange(1, data, 3);
+		assertEquals(24, r.numSamples);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	
