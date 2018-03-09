@@ -21,7 +21,7 @@ public class MovingMean extends GroupingChart {
 		  this.sampleSize = k; 
 		  
 		  //pushes x axis forward
-		  d.setSampleSize(k-1);
+		  d.setXOffset(k-1);
 		  
 	      d.setType("Moving Means k = "+k); 
 	      //iterate through column
@@ -49,7 +49,7 @@ public class MovingMean extends GroupingChart {
 		else {
 			this.avgRange = avgRange;
 			this.sampleSize = k;
-			d.setSampleSize(this.sampleSize-1);
+			d.setXOffset(this.sampleSize-1);
 			this.offset = k-1;
 			d.setType("Moving Mean k = "+k);
 			yNames.add("Mean k = "+k);

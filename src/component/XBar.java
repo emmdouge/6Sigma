@@ -19,7 +19,7 @@ public class XBar extends GroupingChart {
 		super(d);
 		if(data.getUseCols()) {
 			data.setType("Means k = "+rowsPerSample);
-			data.setSampleSize(rowsPerSample);
+			data.setXOffset(rowsPerSample);
 			sampleSize = rowsPerSample-1;
 			for(int x = 0; x < data.getPointsPerRow(); x++) {
 				colOffsets.add(data.getColOffsets().get(x));

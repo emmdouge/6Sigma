@@ -77,18 +77,18 @@ public class XYSeriesChart extends ApplicationFrame {
             false
         );
 		
-		String[] xAxis = new String[maxNumPoints+d.getSampleSize()];
+		String[] xAxis = new String[maxNumPoints];
 		System.out.println("x: "+xAxis.length+" d: "+d.getXAxis().length);
         if(d.getCutFlag() && (!d.getType().contains("Moving") && !d.getType().contains("CUSUM"))) {
-    		xAxis = new String[maxNumPoints+d.getSampleSize()];
+    		xAxis = new String[maxNumPoints];
         	System.out.println(xAxis.length+" f");
         	for(int i = 1; i < xAxis.length+1; i++) {
-        		xAxis[i-1] = i+"";
+        		xAxis[i-1] = (i)+"";
         	}
         }
         else {
         	if(d.getType().contains("CUSUM")) {
-        		String[] xAxis2 = new String[maxNumPoints+d.getSampleSize()];
+        		String[] xAxis2 = new String[maxNumPoints];
         		xAxis2[0] = "";
             	for(int i = 1; i < xAxis2.length; i++) {
             		xAxis2[i] = d.getXAxis()[i-1];
@@ -106,8 +106,8 @@ public class XYSeriesChart extends ApplicationFrame {
         	else {
         		xAxis = new String[maxNumPoints];
             	System.out.println(xAxis.length+" lt");
-            	for(int i = 0; i < xAxis.length; i++) {
-            		xAxis[i] = (i+1)+"";
+            	for(int i = 1; i < xAxis.length+1; i++) {
+            		xAxis[i-1] = (i+d.getXOffset())+"";
             	}
         	}
         }

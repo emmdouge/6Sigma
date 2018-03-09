@@ -20,13 +20,11 @@ public class TestMovingRange {
 
 	Data d1;
 	Data d2;
-	Data cyclo;
 	
 	@Before
 	public void setup() throws IOException {
 		d1 = TxtFileReader.readFile(Constant.TEST_SHIFT);
 		d2 = TxtFileReader.readFile(Constant.NEW_TESTS_PASSING);
-		cyclo = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
 	}
 	
 	@Test
@@ -45,14 +43,16 @@ public class TestMovingRange {
 	@Test
 	public void testD2() throws Exception {
 		MovingRange r = new MovingRange(d2, 3);
-		assertEquals(292, r.getPoints().length);
+		assertEquals(56, r.getPoints().length);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}	
 	
 	@Test
 	public void testCycloData() throws Exception {
-		int k = 5;
-		MovingRange r = new MovingRange(cyclo, k);
+		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
+		MovingRange r = new MovingRange(3, data, 4);
+		XYSeriesChart xyChart = new XYSeriesChart(data, r.getAllLines(), r.getLimits(), r.getColOffsets());
+		assertEquals(15, xyChart.chart.getXYPlot().getDomainAxis().getUpperBound(), 0);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 

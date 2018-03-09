@@ -20,28 +20,28 @@ public class MovingRange extends GroupingChart {
 	
 	public MovingRange(int rowsPerSample, Data d, int k) throws Exception {
 		super(d);
+		d.setXOffset(k-1);
 		if(data.getUseCols()) {
 			sampleSize = k;
-			data.setType("Ranges k = "+sampleSize);
+			data.setType("Moving Range k = "+sampleSize);
 			allLines = new ArrayList<double[]>();
 			colOffsets = new ArrayList<Integer>();
 			for(int x = 0; x < data.getPointsPerRow(); x++) {
 				numSamples = (data.getCols().get(x).length/rowsPerSample)-sampleSize;
-				int remCol = data.getColOffsets().get(x) % rowsPerSample % sampleSize;
-				colOffsets.add(remCol == 0 && data.getColOffsets().get(x) == 0? data.getColOffsets().get(x)/rowsPerSample/sampleSize: ((int)(data.getColOffsets().get(x)/rowsPerSample/sampleSize)+1));
+				int remCol = data.getColOffsets().get(x) % rowsPerSample;
+				colOffsets.add(remCol == 0 && data.getColOffsets().get(x) == 0? data.getColOffsets().get(x)/rowsPerSample: ((int)(data.getColOffsets().get(x)/rowsPerSample)+1));
 				System.out.println(numSamples);
 				System.out.println("sample size: "+sampleSize);
 				System.out.println("num samples: "+numSamples);
 				points = new double[numSamples];
 				for(int i = 0; i < numSamples; i++) {
-					int start = i*d.getPointsPerRow();
-					int end = start+((rowsPerSample*sampleSize*d.getPointsPerRow()));
+					int start = i;
+					int end = start+((rowsPerSample*sampleSize));
 					double range = calcPoints(data.getCols().get(x), start, end);
 					points[i] = range;
 					this.avgRange += points[i];
 					System.out.println(i+" mr: "+range+" ("+start+"~"+(end-1)+")"+" +avg: "+avgRange);
 				}
-				data.cutoff();
 				avgRange = avgRange/numSamples;
 				System.out.println("avg range: "+avgRange);
 				allLines.add(points);
@@ -52,7 +52,7 @@ public class MovingRange extends GroupingChart {
 			yNames.add("Range");
 			data.setYNames(yNames);
 			sampleSize = k;
-			data.setType("Range k = "+sampleSize);
+			data.setType("Moving Range k = "+sampleSize);
 			numSamples = (data.getCols().get(0).length/rowsPerSample)-sampleSize;
 			System.out.println("sample size: "+sampleSize);
 			System.out.println("num samples: "+numSamples);

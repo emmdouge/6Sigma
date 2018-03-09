@@ -84,7 +84,7 @@ public class TxtFileReader {
 					array[i][j] = Double.parseDouble(row[j+1]);
 				}
 			}
-			System.out.println();
+//			System.out.println();
 		}
 		d.setXAxis(xAxis);
 		d.setData(array);
@@ -102,7 +102,7 @@ public class TxtFileReader {
 			for(int j = offset, x = 0; j < d.getNumRows(); j++, x++) {
 				col[x] = array[j][i];
 			}
-			System.out.println("--------------------");
+//			System.out.println("--------------------");
 			cols.add(col);
 		}
 		pointBR.close();

@@ -148,11 +148,11 @@ public class Data {
 		return this.type;
 	}
 
-	public void setSampleSize(int sampleSize) {
+	public void setXOffset(int sampleSize) {
 		this.sampleSize = sampleSize;
 	}
 
-	public int getSampleSize() {
+	public int getXOffset() {
 		return this.sampleSize;
 	}
 

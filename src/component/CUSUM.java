@@ -17,7 +17,7 @@ public class CUSUM extends GroupingChart {
 	public CUSUM(Data d) throws Exception {
 		super(d);
 		d.setType("CUSUM");
-		d.setSampleSize(0);
+		d.setXOffset(0);
 		yNames.add("CUSUM");
 		d.setYNames(yNames);
 		double[] points = new double[d.getAllPoints().length+1];
