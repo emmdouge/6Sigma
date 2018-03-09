@@ -36,9 +36,6 @@ public class XBar extends GroupingChart {
 					processMean += points[i];
 					System.out.println(i+" m: "+mean+" ("+start+"~"+end+")"+" +avg: "+processMean);
 				}
-				if(check == 0) {
-					data.cutoff();
-				}
 				processMean = processMean/numSamples;
 				System.out.println("process mean: "+processMean);
 				allLines.add(points);

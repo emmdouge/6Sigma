@@ -155,12 +155,4 @@ public class Data {
 	public int getXOffset() {
 		return this.sampleSize;
 	}
-
-	public boolean getCutFlag() {
-		return this.cutoff;
-	}
-
-	public void cutoff() {
-		this.cutoff = true;
-	}
 }

@@ -40,7 +40,6 @@ public class Range extends GroupingChart {
 					this.avgRange += points[i];
 					System.out.println(i+" mr: "+range+" ("+start+"~"+(end-1)+")"+" +avg: "+avgRange);
 				}
-				data.cutoff();
 				avgRange = avgRange/numSamples;
 				System.out.println("avg range: "+avgRange);
 				allLines.add(points);

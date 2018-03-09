@@ -12,7 +12,6 @@ import shared.Constant;
 public class CUSUM extends GroupingChart {
 
 	protected double[] points;
-	public ArrayList<String> yNames;
 	
 	public CUSUM(Data d) throws Exception {
 		super(d);
