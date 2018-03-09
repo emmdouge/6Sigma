@@ -14,21 +14,7 @@ public class CUSUM extends GroupingChart {
 	protected double[] points;
 	
 	public CUSUM(Data d) throws Exception {
-		super(d);
-		d.setType("CUSUM");
-		d.setXOffset(0);
-		yNames.add("CUSUM");
-		d.setYNames(yNames);
-		double[] points = new double[d.getAllPoints().length+1];
-		//numBootstraps have to at least be the number of points to calc diffMaxAmongBootstraps and not fail
-		ChangePointAnalyzer c = new ChangePointAnalyzer(d.getAllPoints().clone(), Constant.NUM_BOOTSTRAP, Constant.CONFIDENCE);
-		Bootstrap b = c.getAnalysis(c.getAllAnalysis().size()-1).calcBootstraps(0, points.length-1).get(0);
-		for(int i = 0; i <= points.length-1; i++) {
-			points[i] = b.getPoint(i).getCusum();
-		}
-		this.limits = calcLimits();
-		allLines.add(points);
-		colOffsets.add(0);
+		super(0, d, 0);
 		XYSeriesChart.run(data, allLines, limits, colOffsets);
 	}
 	
@@ -48,5 +34,29 @@ public class CUSUM extends GroupingChart {
 	@Override
 	protected ArrayList<Double> calcLimits() throws Exception {
 		return new ArrayList<Double>();
+	}
+
+	@Override
+	public void calcSingleLine() throws Exception {
+		data.setType("CUSUM");
+		data.setXOffset(0);
+		yNames.add("CUSUM");
+		data.setYNames(yNames);
+		double[] points = new double[data.getAllPoints().length+1];
+		//numBootstraps have to at least be the number of points to calc diffMaxAmongBootstraps and not fail
+		ChangePointAnalyzer c = new ChangePointAnalyzer(data.getAllPoints().clone(), Constant.NUM_BOOTSTRAP, Constant.CONFIDENCE);
+		Bootstrap b = c.getAnalysis(c.getAllAnalysis().size()-1).calcBootstraps(0, points.length-1).get(0);
+		for(int i = 0; i <= points.length-1; i++) {
+			points[i] = b.getPoint(i).getCusum();
+		}
+		this.limits = calcLimits();
+		allLines.add(points);
+		colOffsets.add(0);
+	}
+
+	@Override
+	public void calcMultiLine() throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }

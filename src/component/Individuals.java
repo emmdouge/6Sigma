@@ -12,18 +12,7 @@ public class Individuals extends GroupingChart {
 	public ArrayList<String> yNames;
 	
 	public Individuals(Data d) throws Exception {
-		super(d);
-		d.setType("Individuals");
-		yNames.add("Individuals");
-		d.setYNames(yNames);
-		double[] points = new double[d.getAllPoints().length];
-		for(int i = 0; i < points.length; i++) {
-			points[i] = calcPoints(data.getAllPoints(), i, i);
-		}
-		this.limits = calcLimits();
-		this.points = points;
-		allLines.add(points);
-		colOffsets.add(0);
+		super(0, d, 0);
 		XYSeriesChart.run(data, allLines, limits, colOffsets);
 	}
 	
@@ -43,5 +32,26 @@ public class Individuals extends GroupingChart {
 	@Override
 	protected ArrayList<Double> calcLimits() throws Exception {
 		return new ArrayList<Double>();
+	}
+
+	@Override
+	public void calcSingleLine() throws Exception {
+		data.setType("Individuals");
+		yNames.add("Individuals");
+		data.setYNames(yNames);
+		double[] points = new double[data.getAllPoints().length];
+		for(int i = 0; i < points.length; i++) {
+			points[i] = calcPoints(data.getAllPoints(), i, i);
+		}
+		this.limits = calcLimits();
+		this.points = points;
+		allLines.add(points);
+		colOffsets.add(0);
+	}
+
+	@Override
+	public void calcMultiLine() throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }

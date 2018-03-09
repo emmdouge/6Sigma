@@ -16,9 +16,8 @@ public class MovingMean extends GroupingChart {
 	}
 	
 	public MovingMean(Data d, int k, double avgRange) throws Exception {
-		super(d);
-		if(d.getUseCols()) { 
-		  this.sampleSize = k; 
+		super(0, d, 0);
+		if(d.getUseCols()) {
 		  
 		  //pushes x axis forward
 		  d.setXOffset(k-1);
@@ -47,33 +46,6 @@ public class MovingMean extends GroupingChart {
 	      XYSeriesChart.run(d, allLines, limits, colOffsets); 
 	    } 
 		else {
-			this.avgRange = avgRange;
-			this.sampleSize = k;
-			d.setXOffset(this.sampleSize-1);
-			this.offset = k-1;
-			d.setType("Moving Mean k = "+k);
-			yNames.add("Mean k = "+k);
-			d.setYNames(yNames);
-			this.numSamples = data.getAllPoints().length-this.sampleSize+1;
-			System.out.println(this.numSamples);
-			System.out.println("sample size: "+this.sampleSize);
-			System.out.println("num samples: "+this.numSamples);
-			points = new double[this.numSamples];
-			for(int i = 0; i < this.numSamples; i++) {
-				int start = i;
-				int end = (i)+this.sampleSize;
-				double mean = calcPoints(d.getAllPoints(), start, end);
-				points[i] = mean;
-				this.processMean += points[i];
-				System.out.println(i+" mm: "+mean+" ("+start+"~"+(end-1)+")"+" +avg: "+this.processMean);
-			}
-			this.processMean = this.processMean/this.numSamples;
-			System.out.println("process mean: "+this.processMean);
-			limits = calcLimits();
-			Collections.sort(limits);
-			allLines.add(points);
-			colOffsets.add(0);
-			
 			XYSeriesChart.run(data, allLines, limits, colOffsets);
 		}
 	}
@@ -134,5 +106,41 @@ public class MovingMean extends GroupingChart {
 		limits.add(this.processMean+(this.avgRange*a2));
 		limits.add(this.processMean-(this.avgRange*a2));
 		return limits;
+	}
+
+	@Override
+	public void calcSingleLine() throws Exception {
+		this.avgRange = avgRange;
+		this.sampleSize = k;
+		data.setXOffset(this.sampleSize-1);
+		this.offset = k-1;
+		data.setType("Moving Mean k = "+k);
+		yNames.add("Mean k = "+k);
+		data.setYNames(yNames);
+		this.numSamples = data.getAllPoints().length-this.sampleSize+1;
+		System.out.println(this.numSamples);
+		System.out.println("sample size: "+this.sampleSize);
+		System.out.println("num samples: "+this.numSamples);
+		points = new double[this.numSamples];
+		for(int i = 0; i < this.numSamples; i++) {
+			int start = i;
+			int end = (i)+this.sampleSize;
+			double mean = calcPoints(data.getAllPoints(), start, end);
+			points[i] = mean;
+			this.processMean += points[i];
+			System.out.println(i+" mm: "+mean+" ("+start+"~"+(end-1)+")"+" +avg: "+this.processMean);
+		}
+		this.processMean = this.processMean/this.numSamples;
+		System.out.println("process mean: "+this.processMean);
+		limits = calcLimits();
+		Collections.sort(limits);
+		allLines.add(points);
+		colOffsets.add(0);
+	}
+
+	@Override
+	public void calcMultiLine() throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }
