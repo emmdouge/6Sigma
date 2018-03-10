@@ -10,15 +10,19 @@ public class Range extends GroupingChart {
 	private double avgRange;
 	
 	public Range(Data d) throws Exception {
-		this(d, 2);
+		this(1, d);
+	}	
+	
+	public Range(int rowsPerSample, Data d) throws Exception {
+		this(rowsPerSample, d, d.getPointsPerRow(), 1);
+	}
+
+	public Range(int rowsPerSample, Data d, int sampleSize) throws Exception {
+		this(rowsPerSample, d, sampleSize, sampleSize);
 	}
 	
-	public Range(Data d, int k) throws Exception {
-		this(1, d, k);
-	}
-	
-	public Range(int rowsPerSample, Data d, int k) throws Exception {
-		super(rowsPerSample, d, k);
+	public Range(int rowsPerSample, Data d, int sampleSize, int grouping) throws Exception {
+		super(rowsPerSample, d, sampleSize, grouping);
 	}
 
 	public void calcMultiLine() {
@@ -49,7 +53,7 @@ public class Range extends GroupingChart {
 		yNames.add("Range");
 		data.setYNames(yNames);
 		data.setType("Range k = "+sampleSize);
-		numSamples = data.getCols().get(0).length/rowsPerSample/sampleSize;
+		numSamples = data.getCols().get(0).length/rowsPerSample/grouping;
 		System.out.println("sample size: "+sampleSize);
 		System.out.println("num samples: "+numSamples);
 		//if(rowsPerSample == 1)

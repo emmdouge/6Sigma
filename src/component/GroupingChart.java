@@ -10,7 +10,7 @@ abstract public class  GroupingChart {
 	protected int sampleSize;
 	protected int numSamples;
 	protected int rowsPerSample;
-	protected int k;
+	protected int grouping;
 	protected double[] points;
 	ArrayList<Double> limits;
 	ArrayList<Integer> colOffsets;
@@ -18,10 +18,11 @@ abstract public class  GroupingChart {
 	ArrayList<String> yNames;
 	protected int offset = 0;
 	
-	public GroupingChart(int rowsPerSample, Data d, int k) {
+	public GroupingChart(int rowsPerSample, Data d, int k, int grouping) {
 		data = d;
 		this.rowsPerSample = rowsPerSample;
-		this.sampleSize = k;
+		this.sampleSize = k == 1? 2: k;
+		this.grouping = grouping;
 		allLines = new ArrayList<double[]>();
 		colOffsets = new ArrayList<Integer>();
 		limits = new ArrayList<Double>();

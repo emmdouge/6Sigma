@@ -12,7 +12,7 @@ public class Individuals extends GroupingChart {
 	public ArrayList<String> yNames;
 	
 	public Individuals(Data d) throws Exception {
-		super(0, d, 0);
+		super(0, d, 0, 0);
 		XYSeriesChart.run(data, allLines, limits, colOffsets);
 	}
 	

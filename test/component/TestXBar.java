@@ -18,51 +18,43 @@ import reader.TxtFileReader;
 import shared.Constant;
 
 public class TestXBar {
-
-	Data shiftData;
-	Data cyclo;
-	Data lpeData;
-	
-	@Before
-	public void setup() throws Exception {
-		shiftData = TxtFileReader.readFile(Constant.TEST_SHIFT);
-		lpeData = TxtFileReader.readFile("lpe");
-		cyclo = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
-	}
 	
 	@Test
 	public void testShiftData() throws Exception {
-		XBar x = new XBar(shiftData, 13.9889831401046);
-		assertEquals(76.3522052731743, x.points[0], 0.001);
-		assertEquals(74.8178427961166, x.points[x.points.length-1], 0.001);
-		assertTrue(x.limits.contains(72.42569885478292));
-		assertTrue(x.limits.contains(74.15100677539583));
-		assertTrue(x.limits.contains(81.05223845784742));
-		assertTrue(x.limits.contains(82.77754637846033));
-		assertEquals(216, shiftData.getAllPoints().length);
-		assertEquals(8, x.sampleSize);
-		assertEquals(27, x.numSamples);
+		Data data = TxtFileReader.readFile(Constant.TEST_SHIFT);
+		SingleLine s = new SingleLine(new XBar(1, data, 13.9889831401046, 8, 1));
+	    assertEquals(76.3522052731743, s.chart.points[0], 0.001); 
+	    assertEquals(74.8178427961166, s.chart.points[s.chart.points.length-1], 0.001); 
+	    assertTrue(s.chart.limits.contains(72.42569885478292)); 
+	    assertTrue(s.chart.limits.contains(74.15100677539583)); 
+	    assertTrue(s.chart.limits.contains(81.05223845784742)); 
+	    assertTrue(s.chart.limits.contains(82.77754637846033)); 
+	    assertEquals(216, data.getAllPoints().length); 
+	    assertEquals(8, s.chart.sampleSize); 
+	    assertEquals(27, s.chart.numSamples); 
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	
 	@Test
 	public void testLinesPerEmp() throws Exception {
-		XBar x = new XBar(3, lpeData, 45.77736007);
-		assertEquals(42.33333333, x.points[0], 0.001);
-		assertEquals(16.50793651, x.points[x.points.length-1], 0.001);
-		assertTrue(x.limits.contains(3.629878861775431));
-		assertTrue(x.limits.contains(19.194181285575436));
-		assertTrue(x.limits.contains(81.45139098077543));
-		assertTrue(x.limits.contains(97.01569340457544));
-		assertEquals(59, lpeData.getAllPoints().length);
-		assertEquals(3, x.sampleSize);
-		assertEquals(19, x.numSamples);
+		Data data = TxtFileReader.readFile("lpe");
+		SingleLine s = new SingleLine(new XBar(1, data, 45.77736007, 3));
+		assertEquals(42.33333333, s.chart.points[0], 0.001);
+		assertEquals(16.50793651, s.chart.points[s.chart.points.length-1], 0.001);
+		assertTrue(s.chart.limits.contains(3.629878861775431));
+		assertTrue(s.chart.limits.contains(19.194181285575436));
+		assertTrue(s.chart.limits.contains(81.45139098077543));
+		assertTrue(s.chart.limits.contains(97.01569340457544));
+		assertEquals(59, s.chart.data.getAllPoints().length);
+		assertEquals(3, s.chart.sampleSize);
+		assertEquals(19, s.chart.numSamples);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	
 	@Test
 	public void testCycloData() throws Exception {
-		XBar x = new XBar(3, cyclo, 0);
+		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
+		MultiLine m = new MultiLine(new XBar(3, data, 0, 1));
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 

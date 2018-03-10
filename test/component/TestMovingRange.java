@@ -30,8 +30,8 @@ public class TestMovingRange {
 	@Test
 	public void testD1() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.TEST_SHIFT);
-		MovingRange r = new MovingRange(1, data, 3);
-		assertEquals(24, r.numSamples);
+		SingleLine s = new SingleLine(new MovingRange(1, data, 3, 1));
+		assertEquals(24, s.chart.numSamples);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	
@@ -42,16 +42,16 @@ public class TestMovingRange {
 	
 	@Test
 	public void testD2() throws Exception {
-		MovingRange r = new MovingRange(d2, 3);
-		assertEquals(56, r.getPoints().length);
+		SingleLine s = new SingleLine(new MovingRange(1, d2, 3, 1));
+		assertEquals(56, s.chart.getPoints().length);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}	
 	
 	@Test
 	public void testCycloData() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
-		MovingRange r = new MovingRange(3, data, 4);
-		XYSeriesChart xyChart = new XYSeriesChart(data, r.getAllLines(), r.getLimits(), r.getColOffsets());
+		MultiLine m = new MultiLine(new MovingRange(3, data, 4));
+		XYSeriesChart xyChart = new XYSeriesChart(m.chart.data, m.chart.getAllLines(), m.chart.getLimits(), m.chart.getColOffsets());
 		assertEquals(15, xyChart.chart.getXYPlot().getDomainAxis().getUpperBound(), 0);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}

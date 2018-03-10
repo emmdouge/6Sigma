@@ -16,7 +16,7 @@ public class MovingMean extends GroupingChart {
 	}
 	
 	public MovingMean(Data d, int k, double avgRange) throws Exception {
-		super(0, d, 0);
+		super(0, d, 0, 0);
 		if(d.getUseCols()) {
 		  
 		  //pushes x axis forward
@@ -111,11 +111,7 @@ public class MovingMean extends GroupingChart {
 	@Override
 	public void calcSingleLine() throws Exception {
 		this.avgRange = avgRange;
-		this.sampleSize = k;
 		data.setXOffset(this.sampleSize-1);
-		this.offset = k-1;
-		data.setType("Moving Mean k = "+k);
-		yNames.add("Mean k = "+k);
 		data.setYNames(yNames);
 		this.numSamples = data.getAllPoints().length-this.sampleSize+1;
 		System.out.println(this.numSamples);

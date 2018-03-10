@@ -13,11 +13,19 @@ public class XBar extends GroupingChart {
 	
 	public XBar(Data d, double avgRange) throws Exception {
 		this(1, d, avgRange);
-	}
+	}	
 	
 	public XBar(int rowsPerSample, Data d, double avgRange) throws Exception {
-		super(rowsPerSample, d, 0);
-		XYSeriesChart.run(data, allLines, limits, colOffsets);
+		this(rowsPerSample, d, avgRange, d.getPointsPerRow(), 1);
+	}
+
+	public XBar(int rowsPerSample, Data d, double avgRange, int sampleSize) throws Exception {
+		this(rowsPerSample, d, avgRange, sampleSize, sampleSize);
+	}
+	
+	public XBar(int rowsPerSample, Data d, double avgRange, int sampleSize, int grouping) throws Exception {
+		super(rowsPerSample, d, sampleSize, grouping);
+		this.avgRange = avgRange;
 	}
 	
 	/**
@@ -84,29 +92,25 @@ public class XBar extends GroupingChart {
 
 	@Override
 	public void calcSingleLine() throws Exception {
-		this.avgRange = avgRange;
 		yNames.add("Mean");
 		data.setYNames(yNames);
-		
-		System.out.println(numSamples + " " + data.getPointsPerRow());
-		sampleSize = data.getPointsPerRow()*rowsPerSample;
 		data.setType("Mean k = "+sampleSize);
-		numSamples = data.getAllPoints().length/sampleSize;
+		numSamples = data.getCols().get(0).length/rowsPerSample/grouping;
 		System.out.println("sample size: "+sampleSize);
 		System.out.println("num samples: "+numSamples);
 		//if(rowsPerSample == 1)
 		//Homogeneity.test(d);
 		points = new double[numSamples];
 		for(int i = 0; i < numSamples; i++) {
-			int start = i*sampleSize;
-			int end = (i+1)*sampleSize;
-			double mean = calcPoints(data.getAllPoints(), start, end);
-			points[i] = mean;
+			int start = (i*rowsPerSample)*sampleSize;
+			int end = ((i+1)*rowsPerSample)*sampleSize;
+			double range = calcPoints(data.getAllPoints(), start, end);
+			points[i] = range;
 			processMean += points[i];
-			System.out.println(i+" m: "+mean+" ("+start+"~"+(end-1)+")"+" +avg: "+processMean);
+			System.out.println(i+" r: "+range+" ("+start+"~"+(end-1)+")"+" +avg: "+avgRange);
 		}
 		processMean = processMean/numSamples;
-		System.out.println("process mean: "+processMean);
+		System.out.println("avg range: "+avgRange);
 		limits = calcLimits();
 		Collections.sort(limits);
 		allLines.add(points);
@@ -115,26 +119,25 @@ public class XBar extends GroupingChart {
 
 	@Override
 	public void calcMultiLine() throws Exception {
-		data.setType("Means k = "+rowsPerSample);
-		data.setXOffset(rowsPerSample);
-		sampleSize = rowsPerSample-1;
+		data.setType("Mean k = "+sampleSize);
 		for(int x = 0; x < data.getPointsPerRow(); x++) {
-			colOffsets.add(data.getColOffsets().get(x));
-			int check = data.getCols().get(x).length % sampleSize;
-			numSamples = check == 0? data.getCols().get(x).length/sampleSize: ((int)data.getCols().get(x).length/sampleSize);
+			numSamples = data.getCols().get(x).length/rowsPerSample/sampleSize;
+			int remCol = data.getColOffsets().get(x) % rowsPerSample % sampleSize;
+			colOffsets.add(remCol == 0 && data.getColOffsets().get(x) == 0? data.getColOffsets().get(x)/rowsPerSample/sampleSize: ((int)(data.getColOffsets().get(x)/rowsPerSample/sampleSize)+1));
+			System.out.println(numSamples);
 			System.out.println("sample size: "+sampleSize);
 			System.out.println("num samples: "+numSamples);
 			points = new double[numSamples];
 			for(int i = 0; i < numSamples; i++) {
-				int start = i*sampleSize;
-				int end = (i+1)*sampleSize;
+				int start = (i*rowsPerSample)*sampleSize;
+				int end = ((i+1)*rowsPerSample)*sampleSize;
 				double mean = calcPoints(data.getCols().get(x), start, end);
 				points[i] = mean;
-				processMean += points[i];
-				System.out.println(i+" m: "+mean+" ("+start+"~"+end+")"+" +avg: "+processMean);
+				this.processMean += points[i];
+				System.out.println(i+" m: "+mean+" ("+start+"~"+(end-1)+")"+" +avgR: "+avgRange);
 			}
 			processMean = processMean/numSamples;
-			System.out.println("process mean: "+processMean);
+			System.out.println("avg range: "+avgRange);
 			allLines.add(points);
 		}
 	}

@@ -11,18 +11,26 @@ public class MovingRange extends GroupingChart {
 	private double avgRange;
 	
 	public MovingRange(Data d) throws Exception {
-		this(d, 2);
+		this(1, d);
+	}	
+	
+	public MovingRange(Data d, int sampleSize) throws Exception {
+		this(1, d, sampleSize);
 	}
 	
-	public MovingRange(Data d, int k) throws Exception {
-		this(1, d, k);
+	public MovingRange(int rowsPerSample, Data d) throws Exception {
+		this(rowsPerSample, d, d.getPointsPerRow(), 1);
+	}
+
+	public MovingRange(int rowsPerSample, Data d, int sampleSize) throws Exception {
+		this(rowsPerSample, d, sampleSize, sampleSize);
 	}
 	
-	public MovingRange(int rowsPerSample, Data d, int k) throws Exception {
-		super(0, d, 0);
-		data.setXOffset(k-1);
-		XYSeriesChart.run(data, allLines, limits, colOffsets);
+	public MovingRange(int rowsPerSample, Data d, int sampleSize, int grouping) throws Exception {
+		super(rowsPerSample, d, sampleSize, grouping);
+		data.setXOffset(sampleSize-1);
 	}
+	
 	/**
 	 * Calculates the range for each sample
 	 */
@@ -124,9 +132,8 @@ public class MovingRange extends GroupingChart {
 	public void calcSingleLine() throws Exception {
 		yNames.add("Range");
 		data.setYNames(yNames);
-		sampleSize = k;
 		data.setType("Moving Range k = "+sampleSize);
-		numSamples = (data.getCols().get(0).length/rowsPerSample)-sampleSize;
+		numSamples = (data.getCols().get(0).length/rowsPerSample/grouping)-sampleSize;
 		System.out.println("sample size: "+sampleSize);
 		System.out.println("num samples: "+numSamples);
 		//if(rowsPerSample == 1)
