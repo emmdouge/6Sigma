@@ -16,68 +16,32 @@ import component.MovingMean;
 import component.MovingRange;
 import component.Range;
 import component.XBar;
+import line.MultiLine;
+import line.SingleLine;
 import reader.Data;
 import reader.TxtFileReader;
 import shared.Constant;
 
 public class TestMovingMean {
-
-	Data shiftData;
-	Data newTestsPassingData;
-	Data cyclo;
-	Data periodData;
-	Data periodColData;
-	
-	@Before
-	public void setup() throws Exception {
-		shiftData = TxtFileReader.readFile(Constant.TEST_SHIFT);
-		newTestsPassingData = TxtFileReader.readFile(Constant.NEW_TESTS_PASSING);
-		periodData = TxtFileReader.readFile("period");
-		periodColData = TxtFileReader.readFile("periodcols", true);
-		cyclo = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
-	}
 	
 	@Test
-	public void testShiftData() throws Exception {
-		int k = 5;
-		MovingRange r = new MovingRange(k, shiftData);
-		MovingMean mm = new MovingMean(shiftData, k, r.getAvgRange());
-		assertEquals(212, mm.getPoints().length);
+	public void testMovMean() throws Exception {
+		Data data = TxtFileReader.readFile("movmean");
+		SingleLine s = new SingleLine(7, 1, new MovingMean(data));
+		assertEquals(148.14285714285714, s.chart.points[0], .001);
+		assertEquals(140.85714285714286, s.chart.points[s.chart.points.length-1], .001);
+		assertEquals(15, s.chart.numSamples);
+		XYSeriesChart xyChart = new XYSeriesChart(s.chart.data, s.chart.getAllLines(), s.chart.getLimits(), s.chart.getColOffsets());
+		assertEquals(14, xyChart.chart.getXYPlot().getDomainAxis().getUpperBound(), 0);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
-	
-	@Test
-	public void testNewTestsPassingData() throws Exception {
-		int k = 5;
-		MovingRange r = new MovingRange(k, shiftData);
-		MovingMean mm = new MovingMean(shiftData, k, r.getAvgRange());
-		assertEquals(212, mm.getPoints().length);
-		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
-	}	
-
-	@Test
-	public void testPeriodData() throws Exception {
-		int k = 3;
-		MovingRange r = new MovingRange(k, periodData);
-		MovingMean mm = new MovingMean(periodData, k, r.getAvgRange());
-		assertEquals(10, mm.getPoints().length);
-		assertEquals(2483.333, mm.points[0], .001);
-		assertEquals(2480.666, mm.points[mm.points.length-1], .001);
-		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
-	}	
-
-	@Test
-	public void testPeriodColData() throws Exception {
-		int k = 3;
-		MovingRange r = new MovingRange(k, periodColData);
-		MovingMean mm = new MovingMean(periodColData, k, 0);
-		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
-	}	
 	
 	@Test
 	public void testCycloData() throws Exception {
-		int k = 5;
-		MovingMean mm = new MovingMean(cyclo, k, 0);
+		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
+		MultiLine m = new MultiLine(4, new MovingMean(3, data));
+		XYSeriesChart xyChart = new XYSeriesChart(m.chart.data, m.chart.getAllLines(), m.chart.getLimits(), m.chart.getColOffsets());
+		assertEquals(16, xyChart.chart.getXYPlot().getDomainAxis().getUpperBound(), 0);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	

@@ -121,7 +121,7 @@ public class MovingRange extends GroupingChart {
 		yNames.add("Range");
 		data.setYNames(yNames);
 		data.setType("Moving Range k = "+sampleSize);
-		numSamples = (data.getCols().get(0).length/rowsPerSample/grouping)-sampleSize;
+		numSamples = (data.getCols().get(0).length/rowsPerSample/grouping)-sampleSize+1;
 		System.out.println("sample size: "+sampleSize);
 		System.out.println("num samples: "+numSamples);
 		//if(rowsPerSample == 1)
@@ -150,9 +150,10 @@ public class MovingRange extends GroupingChart {
 		allLines = new ArrayList<double[]>();
 		colOffsets = new ArrayList<Integer>();
 		for(int x = 0; x < data.getPointsPerRow(); x++) {
-			numSamples = (data.getCols().get(x).length/rowsPerSample)-sampleSize;
+			numSamples = (data.getCols().get(x).length/rowsPerSample)-sampleSize+1;
+			int rem = data.getCols().get(x).length % rowsPerSample;
 			int remCol = data.getColOffsets().get(x) % rowsPerSample;
-			colOffsets.add(remCol == 0 && data.getColOffsets().get(x) == 0? data.getColOffsets().get(x)/rowsPerSample: ((int)(data.getColOffsets().get(x)/rowsPerSample)+1));
+			colOffsets.add((rem == 0 && remCol == 0) || data.getColOffsets().get(x) == 0? data.getColOffsets().get(x)/rowsPerSample: ((int)(data.getColOffsets().get(x)/rowsPerSample)+1));
 			System.out.println(numSamples);
 			System.out.println("sample size: "+sampleSize);
 			System.out.println("num samples: "+numSamples);

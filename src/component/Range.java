@@ -16,6 +16,31 @@ public class Range extends GroupingChart {
 	public Range(int rowsPerSample, Data d) throws Exception {
 		super(rowsPerSample, d);
 	}
+	public void calcSingleLine() throws Exception {
+		yNames.add("Range");
+		data.setYNames(yNames);
+		data.setType("Range k = "+sampleSize);
+		numSamples = data.getCols().get(0).length/rowsPerSample/grouping;
+		System.out.println("sample size: "+sampleSize);
+		System.out.println("num samples: "+numSamples);
+		//if(rowsPerSample == 1)
+		//Homogeneity.test(d);
+		points = new double[numSamples];
+		for(int i = 0; i < numSamples; i++) {
+			int start = (i*rowsPerSample)*sampleSize;
+			int end = ((i+1)*rowsPerSample)*sampleSize;
+			double range = calcPoints(data.getAllPoints(), start, end);
+			points[i] = range;
+			avgRange += points[i];
+			System.out.println(i+" r: "+range+" ("+start+"~"+(end-1)+")"+" +avg: "+avgRange);
+		}
+		avgRange = avgRange/numSamples;
+		System.out.println("avg range: "+avgRange);
+		limits = calcLimits();
+		Collections.sort(limits);
+		allLines.add(points);
+		colOffsets.add(0);
+	}
 
 	public void calcMultiLine() {
 		data.setType("Ranges k = "+sampleSize);
@@ -42,31 +67,6 @@ public class Range extends GroupingChart {
 		}
 	}
 
-	public void calcSingleLine() throws Exception {
-		yNames.add("Range");
-		data.setYNames(yNames);
-		data.setType("Range k = "+sampleSize);
-		numSamples = data.getCols().get(0).length/rowsPerSample/grouping;
-		System.out.println("sample size: "+sampleSize);
-		System.out.println("num samples: "+numSamples);
-		//if(rowsPerSample == 1)
-		//Homogeneity.test(d);
-		points = new double[numSamples];
-		for(int i = 0; i < numSamples; i++) {
-			int start = (i*rowsPerSample)*sampleSize;
-			int end = ((i+1)*rowsPerSample)*sampleSize;
-			double range = calcPoints(data.getAllPoints(), start, end);
-			points[i] = range;
-			avgRange += points[i];
-			System.out.println(i+" r: "+range+" ("+start+"~"+(end-1)+")"+" +avg: "+avgRange);
-		}
-		avgRange = avgRange/numSamples;
-		System.out.println("avg range: "+avgRange);
-		limits = calcLimits();
-		Collections.sort(limits);
-		allLines.add(points);
-		colOffsets.add(0);
-	}
 	
 	/**
 	 * Calculates the range for each sample

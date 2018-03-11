@@ -17,7 +17,7 @@ public class IndivMovMean {
 	
 	public IndivMovMean(int k, Data d) throws Exception {
 		Individuals i = new Individuals(d);
-		MovingMean mm = new MovingMean(d, k);
+		MovingMean mm = new MovingMean(k, d);
 		d.setType("Individuals & Moving Mean");
 		ArrayList<String> yNames = new ArrayList<String>();
 		yNames.add(i.getYNames().get(0));

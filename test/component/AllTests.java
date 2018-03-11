@@ -7,7 +7,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
   TestRange.class,
   TestXBar.class,
-  TestMovingRange.class
+  TestMovingRange.class,
+  TestMovingMean.class
 })
 
 public class AllTests {

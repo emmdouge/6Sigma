@@ -11,8 +11,12 @@ public class MovingMean extends GroupingChart {
 	private double processMean;
 	private double avgRange;
 	
-	public MovingMean(Data d, double avgRange) throws Exception {
-		this(d, 3, avgRange);
+	public MovingMean(Data d) throws Exception {
+		this(1, d);
+	}
+	
+	public MovingMean(int rowsPerSample, Data d) throws Exception {
+		super(rowsPerSample, d);
 	}
 	
 	public MovingMean(Data d, int k, double avgRange) throws Exception {
@@ -110,24 +114,26 @@ public class MovingMean extends GroupingChart {
 
 	@Override
 	public void calcSingleLine() throws Exception {
-		this.avgRange = avgRange;
-		data.setXOffset(this.sampleSize-1);
+		data.setXOffset(sampleSize-1);
+		yNames.add("Mean");
 		data.setYNames(yNames);
-		this.numSamples = data.getAllPoints().length-this.sampleSize+1;
-		System.out.println(this.numSamples);
-		System.out.println("sample size: "+this.sampleSize);
-		System.out.println("num samples: "+this.numSamples);
-		points = new double[this.numSamples];
-		for(int i = 0; i < this.numSamples; i++) {
-			int start = i;
-			int end = (i)+this.sampleSize;
+		data.setType("Moving Mean k = "+sampleSize);
+		numSamples = (data.getCols().get(0).length/rowsPerSample/grouping)-sampleSize+1;
+		System.out.println("sample size: "+sampleSize);
+		System.out.println("num samples: "+numSamples);
+		//if(rowsPerSample == 1)
+		//Homogeneity.test(d);
+		points = new double[numSamples];
+		for(int i = 0; i < numSamples; i++) {
+			int start = i*data.getPointsPerRow();
+			int end = start+((rowsPerSample*sampleSize*data.getPointsPerRow()));
 			double mean = calcPoints(data.getAllPoints(), start, end);
 			points[i] = mean;
-			this.processMean += points[i];
-			System.out.println(i+" mm: "+mean+" ("+start+"~"+(end-1)+")"+" +avg: "+this.processMean);
+			processMean += points[i];
+			System.out.println(i+" mm: "+mean+" ("+start+"~"+(end-1)+")"+" +avg: "+processMean);
 		}
-		this.processMean = this.processMean/this.numSamples;
-		System.out.println("process mean: "+this.processMean);
+		processMean = processMean/numSamples;
+		System.out.println("processMean: "+processMean);
 		limits = calcLimits();
 		Collections.sort(limits);
 		allLines.add(points);
@@ -136,7 +142,30 @@ public class MovingMean extends GroupingChart {
 
 	@Override
 	public void calcMultiLine() throws Exception {
-		// TODO Auto-generated method stub
-		
+		data.setXOffset(sampleSize-1);
+		data.setType("Moving Mean k = "+sampleSize);
+		allLines = new ArrayList<double[]>();
+		colOffsets = new ArrayList<Integer>();
+		for(int x = 0; x < data.getPointsPerRow(); x++) {
+			numSamples = (data.getCols().get(x).length/rowsPerSample)-sampleSize+1;
+			int rem = data.getCols().get(x).length % rowsPerSample;
+			int remCol = data.getColOffsets().get(x) % rowsPerSample;
+			colOffsets.add((rem == 0 && remCol == 0) || data.getColOffsets().get(x) == 0? data.getColOffsets().get(x)/rowsPerSample: ((int)(data.getColOffsets().get(x)/rowsPerSample)+1));
+			System.out.println(numSamples);
+			System.out.println("sample size: "+sampleSize);
+			System.out.println("num samples: "+numSamples);
+			points = new double[numSamples];
+			for(int i = 0; i < numSamples; i++) {
+				int start = i*rowsPerSample;
+				int end = start+((rowsPerSample*sampleSize));
+				double mean = calcPoints(data.getCols().get(x), start, end);
+				points[i] = mean;
+				this.processMean += points[i];
+				System.out.println(i+" mm: "+mean+" ("+start+"~"+(end-1)+")"+" +avg: "+processMean);
+			}
+			processMean = processMean/numSamples;
+			System.out.println("processMean: "+processMean);
+			allLines.add(points);
+		}
 	}
 }
