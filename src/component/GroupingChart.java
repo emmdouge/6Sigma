@@ -6,23 +6,23 @@ import reader.Data;
 
 abstract public class  GroupingChart {
 
-	protected Data data;
-	protected int sampleSize;
-	protected int numSamples;
-	protected int rowsPerSample;
-	protected int grouping;
-	protected double[] points;
-	ArrayList<Double> limits;
-	ArrayList<Integer> colOffsets;
-	ArrayList<double[]> allLines;
-	ArrayList<String> yNames;
-	protected int offset = 0;
+	public Data data;
+	public int sampleSize;
+	public int numSamples;
+	public int rowsPerSample;
+	public int grouping;
+	public double[] points;
+	public ArrayList<Double> limits;
+	public ArrayList<Integer> colOffsets;
+	public ArrayList<double[]> allLines;
+	public ArrayList<String> yNames;
+	public int offset = 0;
 	
-	public GroupingChart(int rowsPerSample, Data d, int k, int grouping) {
+	public GroupingChart(int rowsPerSample, Data d) {
 		data = d;
 		this.rowsPerSample = rowsPerSample;
-		this.sampleSize = k == 1? 2: k;
-		this.grouping = grouping;
+//		this.sampleSize = k == 1? 2: k;
+//		this.grouping = grouping;
 		allLines = new ArrayList<double[]>();
 		colOffsets = new ArrayList<Integer>();
 		limits = new ArrayList<Double>();

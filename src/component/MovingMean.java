@@ -16,7 +16,7 @@ public class MovingMean extends GroupingChart {
 	}
 	
 	public MovingMean(Data d, int k, double avgRange) throws Exception {
-		super(0, d, 0, 0);
+		super(0, d);
 		if(d.getUseCols()) {
 		  
 		  //pushes x axis forward

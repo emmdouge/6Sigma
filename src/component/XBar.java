@@ -15,16 +15,12 @@ public class XBar extends GroupingChart {
 		this(1, d, avgRange);
 	}	
 	
-	public XBar(int rowsPerSample, Data d, double avgRange) throws Exception {
-		this(rowsPerSample, d, avgRange, d.getPointsPerRow(), 1);
-	}
-
-	public XBar(int rowsPerSample, Data d, double avgRange, int sampleSize) throws Exception {
-		this(rowsPerSample, d, avgRange, sampleSize, sampleSize);
+	public XBar(int rowsPerSample, Data d) throws Exception {
+		this(rowsPerSample, d, 0);
 	}
 	
-	public XBar(int rowsPerSample, Data d, double avgRange, int sampleSize, int grouping) throws Exception {
-		super(rowsPerSample, d, sampleSize, grouping);
+	public XBar(int rowsPerSample, Data d, double avgRange) throws Exception {
+		super(rowsPerSample, d);
 		this.avgRange = avgRange;
 	}
 	

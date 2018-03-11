@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import component.Range;
+import line.SingleLine;
 import reader.Data;
 import reader.TxtFileReader;
 import shared.Constant;
@@ -20,7 +21,7 @@ public class TestRange {
 	@Test
 	public void testShiftData() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.TEST_SHIFT);
-		SingleLine s = new SingleLine(new Range(1, data, 8, 1));
+		SingleLine s = new SingleLine(data.getPointsPerRow(), 1, new Range(data));
 		assertEquals(11.680159547598109, s.chart.points[0], 0.001);
 		assertEquals(16.987863101837803, s.chart.points[s.chart.points.length-1], 0.001);
 		assertTrue(s.chart.limits.contains(4.056805110630323));
@@ -35,7 +36,7 @@ public class TestRange {
 	@Test
 	public void testShiftDataRefactor() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.TEST_SHIFT);
-		SingleLine s = new SingleLine(new Range(3, data, 8, 1));
+		SingleLine s = new SingleLine(data.getPointsPerRow(), 1, new Range(3, data));
 		assertEquals(20.586789797589006, s.chart.points[0], 0.001);
 		assertEquals(16.987863101837803, s.chart.points[s.chart.points.length-1], 0.001);
 		assertTrue(s.chart.limits.contains(5.558806930351891));
@@ -50,7 +51,7 @@ public class TestRange {
 	@Test
 	public void testRand1() throws Exception {
 		Data data = TxtFileReader.readFile("rand1");
-		SingleLine s = new SingleLine(new Range(2, data, 2, 2));
+		SingleLine s = new SingleLine(2, 2, new Range(2, data));
 		assertEquals(3, s.chart.points[0], 0.001);
 		assertEquals(22, s.chart.points[s.chart.points.length-1], 0.001);
 		assertTrue(s.chart.limits.contains(0.0));
@@ -65,7 +66,7 @@ public class TestRange {
 	@Test
 	public void testLinesPerEmp() throws Exception {
 		Data data = TxtFileReader.readFile("lpe");
-		SingleLine s = new SingleLine(new Range(1, data, 3, 3));
+		SingleLine s = new SingleLine(3, 3, new Range(data));
 		assertEquals(58, s.chart.points[0], 0.001);
 		assertEquals(33.36507937, s.chart.points[s.chart.points.length-1], 0.001);
 		assertTrue(s.chart.limits.contains(1.8310944028063156));

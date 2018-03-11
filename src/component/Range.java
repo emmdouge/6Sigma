@@ -11,18 +11,10 @@ public class Range extends GroupingChart {
 	
 	public Range(Data d) throws Exception {
 		this(1, d);
-	}	
-	
-	public Range(int rowsPerSample, Data d) throws Exception {
-		this(rowsPerSample, d, d.getPointsPerRow(), 1);
 	}
 
-	public Range(int rowsPerSample, Data d, int sampleSize) throws Exception {
-		this(rowsPerSample, d, d.getPointsPerRow(), sampleSize);
-	}
-	
-	public Range(int rowsPerSample, Data d, int sampleSize, int grouping) throws Exception {
-		super(rowsPerSample, d, sampleSize, grouping);
+	public Range(int rowsPerSample, Data d) throws Exception {
+		super(rowsPerSample, d);
 	}
 
 	public void calcMultiLine() {

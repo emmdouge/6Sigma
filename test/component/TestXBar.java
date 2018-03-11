@@ -13,6 +13,8 @@ import org.junit.Test;
 
 import component.Range;
 import component.XBar;
+import line.MultiLine;
+import line.SingleLine;
 import reader.Data;
 import reader.TxtFileReader;
 import shared.Constant;
@@ -22,7 +24,7 @@ public class TestXBar {
 	@Test
 	public void testShiftData() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.TEST_SHIFT);
-		SingleLine s = new SingleLine(new XBar(1, data, 13.9889831401046, 8, 1));
+		SingleLine s = new SingleLine(data.getPointsPerRow(), 1, new XBar(data, 13.9889831401046));
 	    assertEquals(76.3522052731743, s.chart.points[0], 0.001); 
 	    assertEquals(74.8178427961166, s.chart.points[s.chart.points.length-1], 0.001); 
 	    assertTrue(s.chart.limits.contains(72.42569885478292)); 
@@ -37,7 +39,7 @@ public class TestXBar {
 	@Test
 	public void testLinesPerEmp() throws Exception {
 		Data data = TxtFileReader.readFile("lpe");
-		SingleLine s = new SingleLine(new XBar(1, data, 45.77736007, 3, 3));
+		SingleLine s = new SingleLine(3, 3, new XBar(data, 45.77736007));
 		assertEquals(42.33333333, s.chart.points[0], 0.001);
 		assertEquals(16.50793651, s.chart.points[s.chart.points.length-1], 0.001);
 		assertTrue(s.chart.limits.contains(3.629878861775431));
@@ -52,7 +54,7 @@ public class TestXBar {
 	@Test
 	public void testCycloData() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
-		MultiLine m = new MultiLine(new XBar(3, data, 0, 2, 1));
+		MultiLine m = new MultiLine(2, new XBar(3, data));
 		assertEquals(10, m.chart.allLines.get(0).length);
 		assertEquals(10, m.chart.allLines.get(1).length);
 		assertEquals(10, m.chart.allLines.get(2).length);

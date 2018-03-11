@@ -14,7 +14,7 @@ public class CUSUM extends GroupingChart {
 	protected double[] points;
 	
 	public CUSUM(Data d) throws Exception {
-		super(0, d, 0, 0);
+		super(0, d);
 		XYSeriesChart.run(data, allLines, limits, colOffsets);
 	}
 	

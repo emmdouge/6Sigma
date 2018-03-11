@@ -12,23 +12,10 @@ public class MovingRange extends GroupingChart {
 	
 	public MovingRange(Data d) throws Exception {
 		this(1, d);
-	}	
-	
-	public MovingRange(Data d, int sampleSize) throws Exception {
-		this(1, d, sampleSize);
 	}
 	
 	public MovingRange(int rowsPerSample, Data d) throws Exception {
-		this(rowsPerSample, d, d.getPointsPerRow(), 1);
-	}
-
-	public MovingRange(int rowsPerSample, Data d, int sampleSize) throws Exception {
-		this(rowsPerSample, d, sampleSize, sampleSize);
-	}
-	
-	public MovingRange(int rowsPerSample, Data d, int sampleSize, int grouping) throws Exception {
-		super(rowsPerSample, d, sampleSize, grouping);
-		data.setXOffset(sampleSize-1);
+		super(rowsPerSample, d);
 	}
 	
 	/**
@@ -130,6 +117,7 @@ public class MovingRange extends GroupingChart {
 
 	@Override
 	public void calcSingleLine() throws Exception {
+		data.setXOffset(sampleSize-1);
 		yNames.add("Range");
 		data.setYNames(yNames);
 		data.setType("Moving Range k = "+sampleSize);
@@ -157,6 +145,7 @@ public class MovingRange extends GroupingChart {
 
 	@Override
 	public void calcMultiLine() throws Exception {
+		data.setXOffset(sampleSize-1);
 		data.setType("Moving Range k = "+sampleSize);
 		allLines = new ArrayList<double[]>();
 		colOffsets = new ArrayList<Integer>();
