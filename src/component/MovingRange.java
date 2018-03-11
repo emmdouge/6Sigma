@@ -169,7 +169,7 @@ public class MovingRange extends GroupingChart {
 			System.out.println("num samples: "+numSamples);
 			points = new double[numSamples];
 			for(int i = 0; i < numSamples; i++) {
-				int start = i;
+				int start = i*rowsPerSample;
 				int end = start+((rowsPerSample*sampleSize));
 				double range = calcPoints(data.getCols().get(x), start, end);
 				points[i] = range;

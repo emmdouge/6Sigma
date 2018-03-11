@@ -50,7 +50,7 @@ public class TestMovingRange {
 	@Test
 	public void testCycloData() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
-		MultiLine m = new MultiLine(new MovingRange(3, data, 4));
+		MultiLine m = new MultiLine(new MovingRange(3, data, 4, 1));
 		XYSeriesChart xyChart = new XYSeriesChart(m.chart.data, m.chart.getAllLines(), m.chart.getLimits(), m.chart.getColOffsets());
 		assertEquals(15, xyChart.chart.getXYPlot().getDomainAxis().getUpperBound(), 0);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));

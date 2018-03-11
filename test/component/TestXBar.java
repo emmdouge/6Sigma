@@ -52,7 +52,7 @@ public class TestXBar {
 	@Test
 	public void testCycloData() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
-		MultiLine m = new MultiLine(new XBar(3, data, 0, 1));
+		MultiLine m = new MultiLine(new XBar(3, data, 0, 2, 1));
 		assertEquals(10, m.chart.allLines.get(0).length);
 		assertEquals(10, m.chart.allLines.get(1).length);
 		assertEquals(10, m.chart.allLines.get(2).length);
