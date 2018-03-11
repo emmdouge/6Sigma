@@ -122,15 +122,16 @@ public class XBar extends GroupingChart {
 		data.setType("Mean k = "+sampleSize);
 		for(int x = 0; x < data.getPointsPerRow(); x++) {
 			numSamples = data.getCols().get(x).length/rowsPerSample/sampleSize;
+			int rem = data.getCols().get(x).length % rowsPerSample % sampleSize;
 			int remCol = data.getColOffsets().get(x) % rowsPerSample % sampleSize;
-			colOffsets.add(remCol == 0 && data.getColOffsets().get(x) == 0? data.getColOffsets().get(x)/rowsPerSample/sampleSize: ((int)(data.getColOffsets().get(x)/rowsPerSample/sampleSize)+1));
+			colOffsets.add(rem == remCol || data.getColOffsets().get(x) == 0? data.getColOffsets().get(x)/rowsPerSample/sampleSize: ((int)(data.getColOffsets().get(x)/rowsPerSample/sampleSize)+1));
 			System.out.println(numSamples);
 			System.out.println("sample size: "+sampleSize);
 			System.out.println("num samples: "+numSamples);
 			points = new double[numSamples];
 			for(int i = 0; i < numSamples; i++) {
-				int start = (i*rowsPerSample)*sampleSize;
-				int end = ((i+1)*rowsPerSample)*sampleSize;
+				int start = (i*rowsPerSample)*sampleSize*grouping;
+				int end = ((i+1)*rowsPerSample)*sampleSize*grouping;
 				double mean = calcPoints(data.getCols().get(x), start, end);
 				points[i] = mean;
 				this.processMean += points[i];

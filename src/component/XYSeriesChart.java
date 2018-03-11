@@ -27,6 +27,7 @@ import reader.Data;
 public class XYSeriesChart extends ApplicationFrame {
 
 	final JFreeChart chart;
+	final XYSeriesCollection data;
 	
     /**
      * A demonstration application showing an XY series containing a null value.
@@ -39,7 +40,7 @@ public class XYSeriesChart extends ApplicationFrame {
         super(d.getType()+" Chart");
 		double min = Double.MAX_VALUE;
 		double max = Double.MIN_VALUE;
-        final XYSeriesCollection data = new XYSeriesCollection();
+        data = new XYSeriesCollection();
         //max number of point that will be rendered
         int maxNumPoints = 0;
         //iterates through every line and gets the one with the most points

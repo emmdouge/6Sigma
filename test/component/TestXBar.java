@@ -32,13 +32,12 @@ public class TestXBar {
 	    assertEquals(216, data.getAllPoints().length); 
 	    assertEquals(8, s.chart.sampleSize); 
 	    assertEquals(27, s.chart.numSamples); 
-		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	
 	@Test
 	public void testLinesPerEmp() throws Exception {
 		Data data = TxtFileReader.readFile("lpe");
-		SingleLine s = new SingleLine(new XBar(1, data, 45.77736007, 3));
+		SingleLine s = new SingleLine(new XBar(1, data, 45.77736007, 3, 3));
 		assertEquals(42.33333333, s.chart.points[0], 0.001);
 		assertEquals(16.50793651, s.chart.points[s.chart.points.length-1], 0.001);
 		assertTrue(s.chart.limits.contains(3.629878861775431));
@@ -48,19 +47,32 @@ public class TestXBar {
 		assertEquals(59, s.chart.data.getAllPoints().length);
 		assertEquals(3, s.chart.sampleSize);
 		assertEquals(19, s.chart.numSamples);
-		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
 	
 	@Test
 	public void testCycloData() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
 		MultiLine m = new MultiLine(new XBar(3, data, 0, 1));
-		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
+		assertEquals(10, m.chart.allLines.get(0).length);
+		assertEquals(10, m.chart.allLines.get(1).length);
+		assertEquals(10, m.chart.allLines.get(2).length);
+		assertEquals(10, m.chart.allLines.get(3).length);
+		assertEquals(7, m.chart.allLines.get(4).length);
+		assertEquals(7, m.chart.allLines.get(5).length);
+		assertEquals(6, m.chart.allLines.get(6).length);
+		assertEquals(5, m.chart.allLines.get(7).length);
+		assertEquals(4, m.chart.allLines.get(8).length);
+		XYSeriesChart xyChart = new XYSeriesChart(m.chart.data, m.chart.getAllLines(), m.chart.getLimits(), m.chart.getColOffsets());
+		assertEquals(9, xyChart.chart.getXYPlot().getDomainAxis().getUpperBound(), 0);
+		//package H starts at 6
+		assertEquals(6, xyChart.data.getSeries(7).getDataItem(0).getXValue()+1, 0);
+		//package I (last package) starts at 7
+		assertEquals(7, xyChart.data.getSeries(8).getDataItem(0).getXValue()+1, 0);
 	}
 
-//	@After
-//	public void confirm() {
-//		//0 is yes
-//		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
-//	}
+	@After
+	public void confirm() {
+		//0 is yes
+		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
+	}
 }
