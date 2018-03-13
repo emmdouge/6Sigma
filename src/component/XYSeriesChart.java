@@ -112,7 +112,8 @@ public class XYSeriesChart extends ApplicationFrame {
         	System.out.println(limits.get(i));
         }
         System.out.println("max: "+maxNumPoints);
-        chart.getXYPlot().getRangeAxis().setRange(min, max+1);
+        if(!limits.isEmpty())
+        chart.getXYPlot().getRangeAxis().setRange(min, max > limits.get(3)? max: limits.get(3)+(limits.get(3)/d.getAllPoints().length));
         chart.getXYPlot().setDomainAxis(new SymbolAxis(d.getRowName(), xAxis));
         chart.getXYPlot().getDomainAxis().setLowerBound(0);
         chart.getXYPlot().getDomainAxis().setUpperBound(chart.getXYPlot().getDomainAxis().getUpperBound()-.5);
