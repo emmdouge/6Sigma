@@ -42,6 +42,9 @@ public class SigmaSix extends Application {
     @FXML
     private ChoiceBox<String> lineTypes;
 
+    @FXML
+    private Button fileButton;
+
     @Override
     public void start(final Stage stage) throws IOException {
     	this.primaryStage = stage;
@@ -49,23 +52,6 @@ public class SigmaSix extends Application {
 
     	showMainView();
     	showSingleLineForm();
-
-//        stage.setTitle("File Chooser Sample");
-
-        final FileChooser fileChooser = new FileChooser();
-
-        final Button openButton = new Button("Open a .CSV File...");
-
-        openButton.setOnAction(
-            new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(final ActionEvent e) {
-                    File file = fileChooser.showOpenDialog(stage);
-                    if (file != null) {
-                        openFile(file);
-                    }
-                }
-            });
     }
 
     /**
@@ -92,6 +78,20 @@ public class SigmaSix extends Application {
 				}
             }
           });
+
+
+        final FileChooser fileChooser = new FileChooser();
+
+        fileButton.setOnAction(
+            new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(final ActionEvent e) {
+                    File file = fileChooser.showOpenDialog(primaryStage);
+                    if (file != null) {
+                        openFile(file);
+                    }
+                }
+            });
     }
 
     private void switchForm(Number index) throws IOException {

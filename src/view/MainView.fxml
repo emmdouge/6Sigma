@@ -11,6 +11,7 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
             <ChoiceBox fx:id="lineTypes" prefWidth="150.0" />
+            <Button id="fileButton" fx:id="fileButton" mnemonicParsing="false" text="Open .CSV File..." />
         </items>
       </ToolBar>
    </top>
