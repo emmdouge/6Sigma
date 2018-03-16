@@ -46,6 +46,8 @@ public class SigmaSix extends Application {
      */
     @FXML
     private ChoiceBox<String> lineTypes;
+    @FXML
+    private ChoiceBox<String> chartTypes;
 
     @FXML
     private Button fileButton;
@@ -72,6 +74,16 @@ public class SigmaSix extends Application {
     	ObservableList<String> list = FXCollections.observableArrayList(types);
     	lineTypes.setItems(list);
     	lineTypes.setValue("INVALID");
+
+    	types = new ArrayList<String>();
+    	types.add("X-Bar");
+    	types.add("Range");
+    	types.add("Moving Mean");
+    	types.add("Moving Range");
+    	types.add("CUSUM");
+    	list = FXCollections.observableArrayList(types);
+    	chartTypes.setItems(list);
+    	chartTypes.setValue("X-Bar");
 
         lineTypes.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -187,7 +199,11 @@ public class SigmaSix extends Application {
 
     @FXML
     private void previewClicked() throws Exception {
-    	new SingleLine(2, 2, new Range(d));
+    	String lineType = lineTypes.getValue();
+    	String chartType = chartTypes.getValue();
+    	if(d.getCols().size() == 1) {
+    		new SingleLine(2, 2, new Range(d));
+    	}
     	System.out.println("CLICKED!");
     }
 }
