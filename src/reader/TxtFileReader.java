@@ -15,7 +15,7 @@ public class TxtFileReader {
 	{
 		return readFile(filename, false);
 	}
-	
+
 	/**
 	 * Reads in a file and outputs the data in it
 	 * @param filename the file containing the data
@@ -24,10 +24,8 @@ public class TxtFileReader {
 	 */
 	public static Data readFile(String filename, boolean useCols) throws IOException
 	{
-		filename = "data/"+filename+".csv";
-		
 		Data d = new Data(filename, useCols);
-		
+
 		readNumRows(d);
 		readPointsPerRow(d);
 		readData(d);
@@ -35,12 +33,12 @@ public class TxtFileReader {
 
 		return d;
 	}
-	
+
 	private static void readData(Data d) throws FileNotFoundException, IOException {
 
 		FileReader pointR =  new FileReader(d.getFilename());
 		BufferedReader pointBR = new BufferedReader(pointR);
-		String currentLine = null;	
+		String currentLine = null;
 		currentLine = pointBR.readLine();
 		ArrayList<Double> points  = new ArrayList<Double>();
 		while ((currentLine = pointBR.readLine()) != null) {
@@ -56,14 +54,14 @@ public class TxtFileReader {
 			allPoints[a] = points.get(a);
 		}
 		d.setAllPoints(allPoints);
-		
+
 		System.out.println(points.size());
 
-		double[][] array = new double[d.getNumRows()][d.getPointsPerRow()];		
-				
+		double[][] array = new double[d.getNumRows()][d.getPointsPerRow()];
+
 		for(int i = 0; i < d.getNumRows(); i++) {
 			for(int j = 0; j < d.getPointsPerRow(); j++) {
-				array[i][j] = Double.MIN_VALUE; 
+				array[i][j] = Double.MIN_VALUE;
 			}
 		}
 
@@ -109,13 +107,13 @@ public class TxtFileReader {
 		d.setColOffsets(colOffsets);
 		d.setCols(cols);
 	}
-	
+
 //	private static void readData(Data d) throws FileNotFoundException, IOException {
 //
 //		FileReader pointR =  new FileReader(d.getFilename());
 //		BufferedReader pointBR = new BufferedReader(pointR);
 //		String currentLine = null;
-//		double[][] array = new double[d.getNumRows()][d.getPointsPerRow()];		
+//		double[][] array = new double[d.getNumRows()][d.getPointsPerRow()];
 //		currentLine = pointBR.readLine();
 //		ArrayList<Double> points  = new ArrayList<Double>();
 //		while ((currentLine = pointBR.readLine()) != null) {
@@ -124,21 +122,21 @@ public class TxtFileReader {
 //				points.add(Double.parseDouble(data[i]));
 //			}
 //		}
-//		
+//
 //		d.setAllPoints(points);
-//		
+//
 //		System.out.println(points.size());
 //		pointBR.close();
-//				
+//
 //		for(int i = 0; i < d.getNumRows(); i++) {
 //			for(int j = 0; j < d.getPointsPerRow(); j++) {
 //				System.out.print("("+i+":"+j+":"+((i*d.getPointsPerRow())+j)+")");
-//				array[i][j] = points.get((i*d.getPointsPerRow())+j); 
+//				array[i][j] = points.get((i*d.getPointsPerRow())+j);
 //				System.out.print(array[i][j]+", ");
 //			}
 //			System.out.println();
 //		}
-//		
+//
 //		d.setData(array);
 //	}
 
@@ -179,7 +177,7 @@ public class TxtFileReader {
 	public static void readProps(Data d) throws IOException {
 		FileReader pointR =  new FileReader(d.getFilename());
 		BufferedReader pointBR = new BufferedReader(pointR);
-		String firstLine = null;	
+		String firstLine = null;
 		firstLine = pointBR.readLine();
         String[] props = firstLine.split(",");
 		d.setRowName(props[0]);
@@ -190,5 +188,5 @@ public class TxtFileReader {
 		d.setColNames(colNames);
 		pointBR.close();
 	}
-	
+
 }

@@ -18,7 +18,7 @@
    <bottom>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <buttons>
-          <Button mnemonicParsing="false" text="Preview" />
+          <Button mnemonicParsing="false" onAction="#previewClicked" text="Preview" />
             <Button mnemonicParsing="false" text="Save" />
         </buttons>
       </ButtonBar>

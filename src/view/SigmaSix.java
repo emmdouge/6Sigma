@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import component.Range;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -28,12 +29,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import line.SingleLine;
+import reader.Data;
+import reader.TxtFileReader;
 
 public class SigmaSix extends Application {
 
     private Desktop desktop = Desktop.getDesktop();
     private Stage primaryStage;
     private static BorderPane mainLayout;
+    private static Data d;
 
     /**
      * fxml tag allows this to be seen by scene builder to bind it
@@ -61,11 +66,12 @@ public class SigmaSix extends Application {
     @FXML
     private void initialize() {
     	ArrayList<String> types = new ArrayList<String>();
+    	types.add("INVALID");
     	types.add("Single-Line");
     	types.add("Multi-Line");
     	ObservableList<String> list = FXCollections.observableArrayList(types);
     	lineTypes.setItems(list);
-    	lineTypes.setValue("Single-Line");
+    	lineTypes.setValue("INVALID");
 
         lineTypes.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -96,12 +102,46 @@ public class SigmaSix extends Application {
 
     private void switchForm(Number index) throws IOException {
     	System.out.println(lineTypes.getValue());
-    	if(index.intValue() == 0){
-    		showSingleLineForm();
-    	} else {
-    		showMultiLineForm();;
+    	if(index.intValue() == LINETYPE.NA.ordinal() || d == null) {
+    		lineTypes.getSelectionModel().select(LINETYPE.NA.ordinal());
+    		mainLayout.setCenter(null);
+    	}
+    	else {
+	    	if(d != null) {
+	    		int numCols = d.getCols().size();
+	    		System.out.println(numCols);
+	    		if (numCols > 1) {
+			    	if(index.intValue() == LINETYPE.SINGLE_LINE.ordinal()) {
+			    		lineTypes.getSelectionModel().select(LINETYPE.SINGLE_LINE.ordinal());
+		    			showSingleLineForm();
+			    	} else if(index.intValue() == LINETYPE.MULTI_LINE.ordinal())  {
+			    		lineTypes.getSelectionModel().select(LINETYPE.MULTI_LINE.ordinal());
+		    			showMultiLineForm();
+			    	}
+	    		}
+	    		else if (numCols == 1) {
+	    			lineTypes.getSelectionModel().select(LINETYPE.SINGLE_LINE.ordinal());
+	    			showMiniSingleLineForm();
+	    		}
+	    	}
     	}
     }
+
+    private ObservableList<String> createLineTypeList() {
+    	ArrayList<String> types = new ArrayList<String>();
+    	types.add("INVALID");
+    	types.add("Single-Line");
+    	types.add("Multi-Line");
+    	ObservableList<String> list = FXCollections.observableArrayList(types);
+    	return list;
+    }
+
+    private void showMiniSingleLineForm() throws IOException {
+    	FXMLLoader loader = new FXMLLoader();
+    	loader.setLocation(SigmaSix.class.getResource("/view/MiniSingleLineForm.fxml"));
+    	BorderPane miniSingleLineForm = loader.load();
+    	mainLayout.setCenter(miniSingleLineForm);
+	}
 
     private void showSingleLineForm() throws IOException {
     	FXMLLoader loader = new FXMLLoader();
@@ -113,8 +153,8 @@ public class SigmaSix extends Application {
     private void showMultiLineForm() throws IOException {
     	FXMLLoader loader = new FXMLLoader();
     	loader.setLocation(SigmaSix.class.getResource("/view/MultiLineForm.fxml"));
-    	BorderPane singleLineForm = loader.load();
-    	mainLayout.setCenter(singleLineForm);
+    	BorderPane multiLineForm = loader.load();
+    	mainLayout.setCenter(multiLineForm);
 	}
 
 	private void showMainView() throws IOException {
@@ -131,14 +171,29 @@ public class SigmaSix extends Application {
     }
 
     private void openFile(File file) {
-//        try {
-            System.out.println(file.getAbsolutePath());
-//        }
-//        catch (IOException ex) {
-//            Logger.getLogger(
-//                FileChooser.class.getName()).log(
-//                    Level.SEVERE, null, ex
-//                );
-//        }
+        try {
+    		String path = file.getAbsolutePath();
+            System.out.println(path);
+            d = TxtFileReader.readFile(path);
+        	switchForm(LINETYPE.SINGLE_LINE.ordinal());
+        }
+        catch (IOException ex) {
+            Logger.getLogger(
+                FileChooser.class.getName()).log(
+                    Level.SEVERE, null, ex
+                );
+        }
     }
+
+    @FXML
+    private void previewClicked() throws Exception {
+    	new SingleLine(2, 2, new Range(d));
+    	System.out.println("CLICKED!");
+    }
+}
+
+enum LINETYPE {
+	NA,
+	SINGLE_LINE,
+	MULTI_LINE
 }

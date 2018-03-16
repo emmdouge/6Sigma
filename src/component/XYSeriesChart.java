@@ -65,19 +65,19 @@ public class XYSeriesChart extends ApplicationFrame {
 	        }
 	        data.addSeries(series);
 		}
-		
-		
+
+
         chart = ChartFactory.createXYLineChart(
     		d.getRowName()+" "+d.getType()+" Chart",
-            d.getRowName(), 
-            d.getFilename().split("/")[1], 
+            d.getRowName(),
+            d.getFilename().split("/")[d.getFilename().split("/").length-1],
             data,
             PlotOrientation.VERTICAL,
             true,
             true,
             false
         );
-		
+
         //x axis values to be used by chart
 		String[] xAxis = new String[maxNumPoints];
 		if(d.getType().contains("CUSUM")) {
