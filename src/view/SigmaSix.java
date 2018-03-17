@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import component.ChartFactory;
 import component.Range;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -22,6 +23,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -29,6 +31,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import line.MultiLine;
 import line.SingleLine;
 import reader.Data;
 import reader.TxtFileReader;
@@ -48,6 +51,13 @@ public class SigmaSix extends Application {
     private ChoiceBox<String> lineTypes;
     @FXML
     private ChoiceBox<String> chartTypes;
+    @FXML
+    private TextField sampleSize;
+    private static int sampleSizeInt;
+
+    @FXML
+    private TextField rowsPerSample;
+    private static int rowsPerSampleInt;
 
     @FXML
     private Button fileButton;
@@ -62,54 +72,88 @@ public class SigmaSix extends Application {
     }
 
     /**
-     * JavaFX already allocates memory for instance vars tagged with @FXML
-     * automatically calls this method(?)
+     * called on the form loaded which may not contain all the fxml vars,
+     * hence null checks
      */
     @FXML
     private void initialize() {
     	ArrayList<String> types = new ArrayList<String>();
-    	types.add("INVALID");
-    	types.add("Single-Line");
-    	types.add("Multi-Line");
     	ObservableList<String> list = FXCollections.observableArrayList(types);
-    	lineTypes.setItems(list);
-    	lineTypes.setValue("INVALID");
+    	if(lineTypes != null) {
+	    	types.add("INVALID");
+	    	types.add("Single-Line");
+	    	types.add("Multi-Line");
+	    	list = FXCollections.observableArrayList(types);
+	    	lineTypes.setItems(list);
+	    	lineTypes.setValue("INVALID");
 
-    	types = new ArrayList<String>();
-    	types.add("X-Bar");
-    	types.add("Range");
-    	types.add("Moving Mean");
-    	types.add("Moving Range");
-    	types.add("CUSUM");
-    	list = FXCollections.observableArrayList(types);
-    	chartTypes.setItems(list);
-    	chartTypes.setValue("X-Bar");
+	        lineTypes.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+	            @Override
+	            public void changed(ObservableValue<? extends Number> observableValue, Number preChangeIndex, Number postChangeIndex) {
+		              try {
+						switchForm(postChangeIndex);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            }
+	          });
+    	}
 
-        lineTypes.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number preChangeIndex, Number postChangeIndex) {
-	              try {
-					switchForm(postChangeIndex);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            }
-          });
+    	if(chartTypes != null) {
+	    	types = new ArrayList<String>();
+	    	types.add("X-Bar");
+	    	types.add("Range");
+	    	types.add("Moving Mean");
+	    	types.add("Moving Range");
+	    	types.add("CUSUM");
+	    	list = FXCollections.observableArrayList(types);
+	    	chartTypes.setItems(list);
+	    	chartTypes.setValue("X-Bar");
+    	}
 
 
         final FileChooser fileChooser = new FileChooser();
 
-        fileButton.setOnAction(
-            new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(final ActionEvent e) {
-                    File file = fileChooser.showOpenDialog(primaryStage);
-                    if (file != null) {
-                        openFile(file);
-                    }
-                }
-            });
+        if(fileButton != null) {
+	        fileButton.setOnAction(
+	            new EventHandler<ActionEvent>() {
+	                @Override
+	                public void handle(final ActionEvent e) {
+	                    File file = fileChooser.showOpenDialog(primaryStage);
+	                    if (file != null) {
+	                        openFile(file);
+	                    }
+	                }
+	            });
+        }
+        //if sampleSize is on loaded form
+        if(sampleSize != null) {
+        	numbersOnly(sampleSize);
+        	sampleSize.textProperty().addListener((observable, oldValue, newValue) -> {
+        	    System.out.println("textfield changed from " + oldValue + " to " + newValue);
+        	    sampleSizeInt = Integer.parseInt(newValue);
+        	});
+        }
+        if(rowsPerSample != null) {
+        	numbersOnly(rowsPerSample);
+        	rowsPerSample.textProperty().addListener((observable, oldValue, newValue) -> {
+        	    System.out.println("textfield changed from " + oldValue + " to " + newValue);
+        	    rowsPerSampleInt = Integer.parseInt(newValue);
+        	});
+        }
+    }
+
+    private void numbersOnly(TextField field) {
+    	field.textProperty().addListener(new ChangeListener<String>() {
+    	    @Override
+    	    public void changed(ObservableValue<? extends String> observable, String oldValue,
+    	        String newValue) {
+    	        if (!newValue.matches("\\d*")) {
+    	            field.setText(newValue.replaceAll("[^\\d]", ""));
+    	        }
+    	    }
+    	});
     }
 
     private void switchForm(Number index) throws IOException {
@@ -137,15 +181,6 @@ public class SigmaSix extends Application {
 	    		}
 	    	}
     	}
-    }
-
-    private ObservableList<String> createLineTypeList() {
-    	ArrayList<String> types = new ArrayList<String>();
-    	types.add("INVALID");
-    	types.add("Single-Line");
-    	types.add("Multi-Line");
-    	ObservableList<String> list = FXCollections.observableArrayList(types);
-    	return list;
     }
 
     private void showMiniSingleLineForm() throws IOException {
@@ -201,8 +236,17 @@ public class SigmaSix extends Application {
     private void previewClicked() throws Exception {
     	String lineType = lineTypes.getValue();
     	String chartType = chartTypes.getValue();
-    	if(d.getCols().size() == 1) {
-    		new SingleLine(2, 2, new Range(d));
+    	System.out.println(lineType+" "+chartType);
+    	if(d != null && !lineType.equals("INVALID")) {
+    		if(d.getCols().size() == 1) {
+    			new SingleLine(sampleSizeInt, sampleSizeInt, ChartFactory.build(1, chartType, d));
+    		} else {
+    			if (lineType.equals("Single-Line")) {
+    				new SingleLine(sampleSizeInt, rowsPerSampleInt, ChartFactory.build(1, chartType, d));
+    			} else if (lineType.equals("Multi-Line")) {
+    				new MultiLine(sampleSizeInt, ChartFactory.build(rowsPerSampleInt, chartType, d));
+    			}
+    		}
     	}
     	System.out.println("CLICKED!");
     }
