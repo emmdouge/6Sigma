@@ -20,9 +20,8 @@
    <bottom>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <buttons>
-            <Label fx:id="filename" prefHeight="18.0" prefWidth="274.0" text="Filename" />
+            <Label fx:id="filename" prefHeight="18.0" prefWidth="274.0" text="No File Loaded..." />
           <Button mnemonicParsing="false" onAction="#previewClicked" text="Preview" />
-            <Button mnemonicParsing="false" text="Save" />
         </buttons>
       </ButtonBar>
    </bottom>

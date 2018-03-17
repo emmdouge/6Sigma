@@ -253,7 +253,7 @@ public class SigmaSix extends Application {
     		if(d.getCols().size() == 1) {
     			new SingleLine(sampleSizeInt, sampleSizeInt, ChartFactory.build(1, chartType, d));
     		} else {
-    			if (lineType.equals("Single-Line")) {
+    			if (lineType.equals("Single-Line") || lineType.equals("CUSUM")) {
     				new SingleLine(sampleSizeInt, rowsPerSampleInt, ChartFactory.build(1, chartType, d));
     			} else if (lineType.equals("Multi-Line")) {
     				new MultiLine(sampleSizeInt, ChartFactory.build(rowsPerSampleInt, chartType, d));

@@ -12,16 +12,15 @@ import shared.Constant;
 public class CUSUM extends GroupingChart {
 
 	protected double[] points;
-	
+
 	public CUSUM(Data d) throws Exception {
 		super(0, d);
-		XYSeriesChart.run(data, allLines, limits, colOffsets);
 	}
-	
+
 	public double[] getPoints() {
 		return this.points;
 	}
-	
+
 	public ArrayList<String> getYNames() {
 		return this.yNames;
 	}
@@ -57,6 +56,6 @@ public class CUSUM extends GroupingChart {
 	@Override
 	public void calcMultiLine() throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
