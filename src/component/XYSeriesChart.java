@@ -2,9 +2,9 @@ package component;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.awt.BasicStroke; 
+import java.awt.BasicStroke;
 
-import org.jfree.chart.ChartPanel; 
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.axis.SymbolAxis;
@@ -28,15 +28,15 @@ public class XYSeriesChart extends ApplicationFrame {
 
 	final JFreeChart chart;
 	final XYSeriesCollection data;
-	
+
     /**
      * A demonstration application showing an XY series containing a null value.
-     * @param offsets 
+     * @param offsets
      *
      * @param title  the frame title.
      */
     public XYSeriesChart(Data d, ArrayList<double[]> datas, ArrayList<Double> limits, ArrayList<Integer> offsets) {
-    
+
         super(d.getType()+" Chart");
 		double min = Double.MAX_VALUE;
 		double max = Double.MIN_VALUE;
@@ -48,7 +48,7 @@ public class XYSeriesChart extends ApplicationFrame {
 			if(maxNumPoints < datas.get(j).length) {
 				maxNumPoints = datas.get(j).length;
 			}
-			String lineName = d.getUseCols()? d.getColNames()[j]: d.getYNames().get(j); 
+			String lineName = d.getUseCols()? d.getColNames()[j]: d.getYNames().get(j);
 	        XYSeries series = new XYSeries(lineName);
 	        int offset = offsets.get(j);
 	        for(int i = offset; i < datas.get(j).length+offset; i++) {
@@ -100,7 +100,7 @@ public class XYSeriesChart extends ApplicationFrame {
         		xAxis[i-1] = (i+d.getXOffset())+"";
         	}
     	}
-    	
+
 		if(!limits.isEmpty()) {
 			min = min > limits.get(0)? limits.get(0): min;
 			max = max < limits.get(limits.size()-1)? limits.get(limits.size()-1): max;
@@ -127,9 +127,9 @@ public class XYSeriesChart extends ApplicationFrame {
    public static void run(Data d, ArrayList<double[]> data, ArrayList<Double> limits, ArrayList<Integer> offsets) {
 	  if(Graph.show) {
 		   XYSeriesChart chart = new XYSeriesChart(d, data, limits, offsets);
-	      chart.pack( );          
-	      RefineryUtilities.centerFrameOnScreen( chart );          
-	      chart.setVisible( true ); 
+	      chart.pack( );
+	      RefineryUtilities.centerFrameOnScreen( chart );
+	      chart.setVisible( true );
 	  }
    }
 }

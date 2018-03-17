@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 import component.ChartFactory;
 import component.Range;
 import javafx.application.Application;
@@ -23,6 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -61,6 +65,9 @@ public class SigmaSix extends Application {
 
     @FXML
     private Button fileButton;
+
+    @FXML
+    private Label filename;
 
     @Override
     public void start(final Stage stage) throws IOException {
@@ -169,14 +176,17 @@ public class SigmaSix extends Application {
 	    		if (numCols > 1) {
 			    	if(index.intValue() == LINETYPE.SINGLE_LINE.ordinal()) {
 			    		lineTypes.getSelectionModel().select(LINETYPE.SINGLE_LINE.ordinal());
+	    				d.useCols(false);
 		    			showSingleLineForm();
 			    	} else if(index.intValue() == LINETYPE.MULTI_LINE.ordinal())  {
 			    		lineTypes.getSelectionModel().select(LINETYPE.MULTI_LINE.ordinal());
-		    			showMultiLineForm();
+	    				d.useCols(true);
+			    		showMultiLineForm();
 			    	}
 	    		}
 	    		else if (numCols == 1) {
 	    			lineTypes.getSelectionModel().select(LINETYPE.SINGLE_LINE.ordinal());
+    				d.useCols(false);
 	    			showMiniSingleLineForm();
 	    		}
 	    	}
@@ -222,7 +232,9 @@ public class SigmaSix extends Application {
     		String path = file.getAbsolutePath();
             System.out.println(path);
             d = TxtFileReader.readFile(path);
-        	switchForm(LINETYPE.SINGLE_LINE.ordinal());
+            path = path.split("\\\\")[path.split("\\\\").length-1];
+            filename.setText(path);
+            switchForm(LINETYPE.SINGLE_LINE.ordinal());
         }
         catch (IOException ex) {
             Logger.getLogger(
