@@ -155,4 +155,8 @@ public class Data {
 	public int getXOffset() {
 		return this.sampleSize;
 	}
+
+	public void useCols(boolean useCols) {
+		this.useCols = useCols;
+	}
 }

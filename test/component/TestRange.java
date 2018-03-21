@@ -17,7 +17,7 @@ import reader.TxtFileReader;
 import shared.Constant;
 
 public class TestRange {
-	
+
 	@Test
 	public void testShiftData() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.TEST_SHIFT);
@@ -31,8 +31,8 @@ public class TestRange {
 		assertEquals(216, data.getAllPoints().length);
 		assertEquals(8, s.chart.sampleSize);
 		assertEquals(27, s.chart.numSamples);
-	}	
-	
+	}
+
 	@Test
 	public void testShiftDataRefactor() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.TEST_SHIFT);
@@ -47,25 +47,25 @@ public class TestRange {
 		assertEquals(8, s.chart.sampleSize);
 		assertEquals(9, s.chart.numSamples);
 	}
-	
+
 	@Test
 	public void testRand1() throws Exception {
-		Data data = TxtFileReader.readFile("rand1");
-		SingleLine s = new SingleLine(2, 2, new Range(2, data));
+		Data data = TxtFileReader.readFile(Constant.RAND1);
+		SingleLine s = new SingleLine(4, 4, new Range(data));
 		assertEquals(3, s.chart.points[0], 0.001);
 		assertEquals(22, s.chart.points[s.chart.points.length-1], 0.001);
-		assertTrue(s.chart.limits.contains(0.0));
-		assertTrue(s.chart.limits.contains(4.722666666666666));
-		assertTrue(s.chart.limits.contains(30.160666666666664));
-		assertTrue(s.chart.limits.contains(44.221333333333334));
+		assertTrue(s.chart.limits.contains(1.0733333333333333));
+		assertTrue(s.chart.limits.contains(3.1126666666666662));
+		assertTrue(s.chart.limits.contains(20.71533333333333));
+		assertTrue(s.chart.limits.contains(27.584666666666664));
 		assertEquals(15, s.chart.numSamples);
 		assertEquals(60, data.getAllPoints().length);
-		assertEquals(2, s.chart.sampleSize);
-	}			
-	
+		assertEquals(4, s.chart.sampleSize);
+	}
+
 	@Test
 	public void testLinesPerEmp() throws Exception {
-		Data data = TxtFileReader.readFile("lpe");
+		Data data = TxtFileReader.readFile(Constant.LPE);
 		SingleLine s = new SingleLine(3, 3, new Range(data));
 		assertEquals(58, s.chart.points[0], 0.001);
 		assertEquals(33.36507937, s.chart.points[s.chart.points.length-1], 0.001);

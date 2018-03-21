@@ -26,16 +26,6 @@ public class CUSUM extends GroupingChart {
 	}
 
 	@Override
-	public double calcPoints(double[] data, int start, int end) {
-		return data[start];
-	}
-
-	@Override
-	protected ArrayList<Double> calcLimits() throws Exception {
-		return new ArrayList<Double>();
-	}
-
-	@Override
 	public void calcSingleLine() throws Exception {
 		data.setType("CUSUM");
 		data.setXOffset(0);

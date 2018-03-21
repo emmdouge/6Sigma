@@ -7,23 +7,18 @@ import org.jfree.ui.RefineryUtilities;
 import reader.Data;
 
 public class XBar extends GroupingChart {
-	
+
 	private double processMean;
 	private double avgRange;
-	
-	public XBar(Data d, double avgRange) throws Exception {
-		this(1, d, avgRange);
-	}	
-	
+
+	public XBar(Data d) throws Exception {
+		this(1, d);
+	}
+
 	public XBar(int rowsPerSample, Data d) throws Exception {
-		this(rowsPerSample, d, 0);
-	}
-	
-	public XBar(int rowsPerSample, Data d, double avgRange) throws Exception {
 		super(rowsPerSample, d);
-		this.avgRange = avgRange;
 	}
-	
+
 	@Override
 	public void calcSingleLine() throws Exception {
 		yNames.add("Mean");
@@ -38,12 +33,14 @@ public class XBar extends GroupingChart {
 		for(int i = 0; i < numSamples; i++) {
 			int start = (i*rowsPerSample)*sampleSize;
 			int end = ((i+1)*rowsPerSample)*sampleSize;
-			double range = calcPoints(data.getAllPoints(), start, end);
-			points[i] = range;
+			double mean = calcAvg(data.getAllPoints(), start, end);
+			avgRange += calcRange(data.getAllPoints(), start, end);
+			points[i] = mean;
 			processMean += points[i];
-			System.out.println(i+" r: "+range+" ("+start+"~"+(end-1)+")"+" +avg: "+avgRange);
+			System.out.println(i+" m: "+mean+" ("+start+"~"+(end-1)+")"+" +avg: "+avgRange);
 		}
 		processMean = processMean/numSamples;
+		avgRange = avgRange/numSamples;
 		System.out.println("avg range: "+avgRange);
 		limits = calcLimits();
 		Collections.sort(limits);
@@ -66,28 +63,19 @@ public class XBar extends GroupingChart {
 			for(int i = 0; i < numSamples; i++) {
 				int start = (i*rowsPerSample)*sampleSize*grouping;
 				int end = ((i+1)*rowsPerSample)*sampleSize*grouping;
-				double mean = calcPoints(data.getCols().get(x), start, end);
+				double mean = calcAvg(data.getCols().get(x), start, end);
+				avgRange += calcRange(data.getAllPoints(), start, end);
 				points[i] = mean;
 				this.processMean += points[i];
 				System.out.println(i+" m: "+mean+" ("+start+"~"+(end-1)+")"+" +avgR: "+avgRange);
 			}
 			processMean = processMean/numSamples;
+			avgRange = avgRange/numSamples;
 			System.out.println("avg range: "+avgRange);
 			allLines.add(points);
 		}
 	}
-	
-	/**
-	 * Calculates the mean for each sample
-	 */
-	public double calcPoints(double[] data, int start, int end) {
-		double sum = 0;
-		for(int i = start; i < end; i++) {
-			sum += data[i];
-		}
-		return sum/(end-start);
-	}
-	
+
 	protected ArrayList<Double> calcLimits() throws Exception {
 		ArrayList<Double> limits = new ArrayList<Double>();
 		double a2 = 0;
@@ -96,37 +84,37 @@ public class XBar extends GroupingChart {
 				return new ArrayList<Double>();
 			case 1:
 				throw new Exception("SAMPLE SIZE TOO SMALL!");
-			case 2: 
+			case 2:
 				a2 = 1.88;
 				break;
-			case 3: 
+			case 3:
 				a2 = 1.02;
 				break;
-			case 4: 
+			case 4:
 				a2 = .73;
 				break;
-			case 5: 
+			case 5:
 				a2 = .58;
 				break;
-			case 6: 
+			case 6:
 				a2 = .48;
 				break;
-			case 7: 
+			case 7:
 				a2 = .42;
 				break;
-			case 8: 
+			case 8:
 				a2 = .37;
 				break;
-			case 9: 
+			case 9:
 				a2 = .34;
 				break;
-			case 10: 
+			case 10:
 				a2 = .31;
 				break;
-			case  11: 
+			case  11:
 				a2 = .29;
 				break;
-			case  12: 
+			case  12:
 				a2 = .27;
 				break;
 			default:

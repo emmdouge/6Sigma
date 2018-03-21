@@ -23,10 +23,10 @@ import reader.TxtFileReader;
 import shared.Constant;
 
 public class TestMovingMean {
-	
+
 	@Test
 	public void testMovMean() throws Exception {
-		Data data = TxtFileReader.readFile("movmean");
+		Data data = TxtFileReader.readFile(Constant.MovMean);
 		SingleLine s = new SingleLine(7, 1, new MovingMean(data));
 		assertEquals(148.14285714285714, s.chart.points[0], .001);
 		assertEquals(140.85714285714286, s.chart.points[s.chart.points.length-1], .001);
@@ -35,7 +35,7 @@ public class TestMovingMean {
 		assertEquals(14, xyChart.chart.getXYPlot().getDomainAxis().getUpperBound(), 0);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
-	
+
 	@Test
 	public void testCycloData() throws Exception {
 		Data data = TxtFileReader.readFile(Constant.PACKAGE_AVG_CYCLO_COMPLEXITY, true);
@@ -44,11 +44,11 @@ public class TestMovingMean {
 		assertEquals(16, xyChart.chart.getXYPlot().getDomainAxis().getUpperBound(), 0);
 		assertEquals(0, JOptionPane.showConfirmDialog(null, "Does this look right?", "TEST", JOptionPane.YES_NO_OPTION));
 	}
-	
+
 //	@Test(expected = Exception.class)
 //	public void testSampleSizeTooBigForShiftData() throws Exception {
 //		MovingMean mm = new MovingMean(shiftData, 13, new MovingRange(shiftData, 13).getAvgRange());
-//	}	
+//	}
 
 //	@After
 //	public void confirm() {
