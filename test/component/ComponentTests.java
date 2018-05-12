@@ -11,7 +11,7 @@ import org.junit.runners.Suite;
   TestMovingMean.class
 })
 
-public class AllTests {
+public class ComponentTests {
   // the class remains empty,
   // used only as a holder for the above annotations
 }

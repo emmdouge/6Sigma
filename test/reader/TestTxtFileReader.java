@@ -29,7 +29,7 @@ public class TestTxtFileReader {
 	
 	@Test
 	public void testColOffset() throws IOException {
-		Data d = TxtFileReader.readFile("periodcols");
+		Data d = TxtFileReader.readFile(Constant.PERIOD_COLS);
 		assertEquals(3, d.getColOffsets().size());
 		assertEquals(0, d.getColOffsets().get(0).intValue());
 		assertEquals(3, d.getColOffsets().get(1).intValue());

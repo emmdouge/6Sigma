@@ -29,5 +29,7 @@ public class Constant {
 	public static final String RAND1 = "data/rand1.csv";
 
 	public static final String LPE = "data/lpe.csv";
+	
+	public static final String PERIOD_COLS = "data/periodcols.csv";
 
 }
